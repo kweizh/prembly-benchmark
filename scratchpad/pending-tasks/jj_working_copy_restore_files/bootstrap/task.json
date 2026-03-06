@@ -1,0 +1,37 @@
+{
+  "task_name": "jj_working_copy_restore_files",
+  "task_description": "# Recover a Corrupted Working Copy After Interrupted History Edit\n\n## Scenario\n\nYou are an incident responder who was mid-way through editing a commit's contents when your terminal session was interrupted. You were amending a commit named **\"wip: integrate metrics module\"** in a jj repository at `/home/user/incident-repo`. During the interruption, your working copy accumulated unintended partial edits to two files:\n\n- `src/metrics.py` — partially overwritten with garbage debug output\n- `config/settings.toml` — accidentally had its database section deleted\n\nThe repository has three commits on the main line:\n\n1. **\"init: project scaffold\"** — the root commit with the initial project files\n2. **\"feat: add config module\"** — adds `config/settings.toml` with a valid `[database]` section\n3. **\"wip: integrate metrics module\"** — adds `src/metrics.py` and modifies `config/settings.toml`\n\nYou are currently editing commit **\"wip: integrate metrics module\"** (it is the working-copy commit, indicated by `@` in `jj log`). Your working copy contains the corrupted versions of both files.\n\n## Your Task\n\nRestore the working-copy files to the **clean state that was recorded in the parent commit** (\"feat: add config module\"), then verify the repository status is clean.\n\nSpecifically, you must:\n\n### Step 1 — Inspect the current state\n\nFirst, understand what the working copy currently looks like compared to its parent. Use the appropriate jj command to display the diff of the current working-copy commit. Identify which files are modified and what the current (corrupted) state of the working copy contains.\n\nNote: In jj, the working copy is automatically snapshotted. When you run any jj command, jj snapshots whatever is on disk as the working-copy commit (`@`). This means the corrupted files are already recorded as changes in your working-copy commit relative to its parent.\n\n### Step 2 — Restore both files from the parent revision\n\nUse the `jj restore` command to restore **both** `src/metrics.py` and `config/settings.toml` from the **parent commit** of the current working-copy commit.\n\nKey facts about `jj restore`:\n- `jj restore [FILESETS]...` restores the specified paths in the working copy (destination) from the parent commit (source) by default\n- You can explicitly specify `--from <REVSET>` to name the source revision\n- The parent of the working-copy commit is referred to as `@-` in revset syntax\n- To restore a specific file path, pass it as a positional argument (fileset)\n- You can restore multiple files in a single command\n\nIMPORTANT: Do NOT use `jj restore` without specifying the file paths — doing so would restore ALL files from the parent, which may drop intentional changes in other files. Restore only the two corrupted files by name.\n\n### Step 3 — Verify the working copy is clean\n\nAfter restoring, confirm that the working-copy commit has **no changes** relative to its parent. Use `jj status` (or `jj st`) to check that no files are listed as modified in the working copy.\n\nIf the restore succeeded, `jj status` should show that the working-copy commit is empty (no changes compared to its parent). The working-copy commit should still exist as an empty commit on top of \"wip: integrate metrics module\"'s parent — this is normal jj behavior; jj never automatically removes a working-copy commit even if it becomes empty.\n\n### Step 4 — Confirm the file contents\n\nUse `jj file show` or standard Unix tools to confirm that the restored files contain the correct content from the parent commit:\n\n- `src/metrics.py` should contain the original metrics module source (not the corrupted debug garbage)\n- `config/settings.toml` should have the complete `[database]` section intact\n\n## Starting Environment\n\nThe repository at `/home/user/incident-repo` already exists and contains:\n\n- A valid jj repository (`.jj/` directory present)\n- Three committed revisions as described above\n- A working-copy commit (`@`) that is set to edit \"wip: integrate metrics module\" — meaning `@` IS the \"wip\" commit itself (the working-copy revision equals the wip commit)\n- Corrupted content in `src/metrics.py` and `config/settings.toml` on disk (already snapshotted by jj as working-copy changes)\n- User identity configured: `user.name = \"Incident Responder\"` and `user.email = \"ir@example.com\"`\n\nThe repository is at `/home/user/incident-repo`. All commands should be run from within that directory.\n\n## Expected Outcome\n\nAfter completing this task:\n\n1. `jj status` run from `/home/user/incident-repo` shows **no modified files** (the working-copy commit is empty relative to its parent)\n2. The file `src/metrics.py` on disk contains the exact content from the parent commit (\"feat: add config module\"'s version)\n3. The file `config/settings.toml` on disk contains the exact content from the parent commit, with the `[database]` section intact\n4. The jj operation log (`jj op log`) contains a `restore` operation entry, confirming that `jj restore` was used\n5. The commit history (`jj log`) still shows all three original commits plus the empty working-copy commit on top\n\n## Constraints\n\n- Use only `jj` commands (no `git` commands)\n- Do not use `sudo` or root access\n- Work only within `/home/user/incident-repo`\n- Do not delete or abandon any commits\n",
+  "truth": {
+    "summary": "The user must use `jj restore src/metrics.py config/settings.toml` (or equivalent with --from @-) to restore the two corrupted files from the parent commit, resulting in a clean working-copy commit with no changes.",
+    "final_state": {
+      "repo_path": "/home/user/incident-repo",
+      "jj_status_clean": true,
+      "description": "After the restore, jj status must show no modified files. The working-copy commit (@) must have zero changes compared to its parent.",
+      "files": {
+        "src/metrics.py": {
+          "must_exist": true,
+          "must_match_parent_content": true,
+          "expected_content_snippet": "def collect_metrics():",
+          "must_not_contain": "DEBUG_GARBAGE"
+        },
+        "config/settings.toml": {
+          "must_exist": true,
+          "must_match_parent_content": true,
+          "expected_content_snippet": "[database]",
+          "must_not_contain": "CORRUPTED"
+        }
+      },
+      "jj_diff_empty": true,
+      "operation_log_contains_restore": true,
+      "commit_count_unchanged": true,
+      "description_of_working_copy_parent": "wip: integrate metrics module"
+    },
+    "verification_commands": [
+      "jj status --no-pager (must output nothing or 'The working copy is clean')",
+      "jj diff --no-pager (must produce no diff output)",
+      "jj op log --no-pager --limit 3 --no-graph -T description (must contain 'restore')",
+      "cat /home/user/incident-repo/src/metrics.py (must contain 'def collect_metrics():')",
+      "cat /home/user/incident-repo/config/settings.toml (must contain '[database]')"
+    ]
+  }
+}

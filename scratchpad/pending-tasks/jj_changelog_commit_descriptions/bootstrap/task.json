@@ -1,0 +1,64 @@
+{
+  "task_name": "jj_changelog_commit_descriptions",
+  "task_description": "# Construct Changelog-Safe Commit Descriptions in Jujutsu\n\n## Background\n\nYou are an open-source maintainer who coordinates contributions via both Gerrit and GitHub. Your project follows a strict changelog convention: every commit description that will appear in the changelog must follow the pattern:\n\n```\n<type>(<scope>): <short summary>\n\n<optional body>\n\nChange-Id: <value>\n```\n\nThe `Change-Id` trailer is required by Gerrit's upload workflow. The `<type>(<scope>): <short summary>` format is required for automated changelog generation (e.g., by tools like `conventional-changelog`). GitHub reviewers also rely on this first-line format when reading pull request titles.\n\nIn this task you will practice constructing well-formed, changelog-safe commit descriptions using `jj describe`, and then verify that the resulting descriptions are correct using `jj log` with a template.\n\n## Repository Setup\n\nYou have a jj repository located at `/home/user/myrepo`. It already contains two commits:\n\n1. A commit with description **\"chore(init): initialise project skeleton\"** — the oldest committed change.\n2. A commit with description **\"docs(readme): add contributing guide\"** — a more recent committed change.\n\nThe working copy (`@`) sits on an **empty change** (no description) that is a child of the `docs(readme): add contributing guide` commit. There are **no bookmarks** in the repository at this point.\n\n## Your Tasks\n\nYou must complete the following steps, in order, using only `jj` commands. Do not edit files directly with a text editor — all description changes must be made using `jj describe -m`.\n\n### Task 1: Add a new file and describe the working-copy change\n\nThe working copy (`@`) currently has no description. You need to:\n\n1. Create a new file called `CHANGELOG.md` in the repository root. You can write any content you like — e.g., a single heading `# Changelog`.\n2. Describe the working-copy change (`@`) with the following **exact** description (including the `Change-Id` trailer):\n\n```\nfeat(changelog): add CHANGELOG file\n\nAdds the initial CHANGELOG.md to track release notes.\n\nChange-Id: I0000000000000000000000000000000000000001\n```\n\nUse `jj describe -m` to set this description. Be careful: the description must include **all three parts** — the conventional-commit summary line, the body paragraph, and the `Change-Id` trailer — separated by blank lines.\n\n**Hint:** When a description contains multiple lines (including blank lines), you must pass the full multi-line string as the argument to `-m`. In a shell, you can use `$'...'` quoting with `\\n` for newlines, or a heredoc-style approach.\n\n### Task 2: Create a new change and describe it\n\nAfter describing the working copy, create a new empty change on top of the current `@` using `jj new`. Then describe this new working-copy change (`@`) with the following **exact** description:\n\n```\nfix(parser): correct off-by-one error in line counter\n\nThe line counter was returning count-1 instead of count for\nnon-empty inputs. This caused incorrect highlighting in the UI.\n\nChange-Id: I0000000000000000000000000000000000000002\n```\n\nAgain, the description must include the summary line, the body, and the `Change-Id` trailer.\n\n### Task 3: Amend the description of the earlier commit\n\nThe commit with description **\"docs(readme): add contributing guide\"** has a typo: the word `contributing` should be `contribution`. You must update its description to the following **exact** text:\n\n```\ndocs(readme): add contribution guide\n\nChange-Id: Idocs000000000000000000000000000000000000\n```\n\nTo amend a commit that is **not** the current working copy, use `jj describe` with the `-r` flag to specify the target revision. You can identify the commit by using a revset expression such as `description(substring:'docs(readme)')` or by inspecting `jj log` to find its change ID.\n\n**Important:** Do not use `jj edit` to check out the old commit — use `jj describe -r <revset>` directly.\n\n## Verification\n\nAfter completing all three tasks, the repository should be in the following state:\n\n- The commit graph (from oldest to newest) contains these four commits:\n  1. `chore(init): initialise project skeleton` — unchanged\n  2. `docs(readme): add contribution guide` — note corrected spelling, with `Change-Id: Idocs000000000000000000000000000000000000`\n  3. `feat(changelog): add CHANGELOG file` — with the full multi-line description and `Change-Id: I0000000000000000000000000000000000000001`\n  4. `fix(parser): correct off-by-one error in line counter` — with the full multi-line description and `Change-Id: I0000000000000000000000000000000000000002`\n\n- The working copy (`@`) points to the `fix(parser): correct off-by-one error in line counter` commit.\n- The file `CHANGELOG.md` exists in the repository at commit 3.\n- You can verify the commit descriptions at any time using:\n  - `jj log --no-pager -T 'description ++ \"\\n---\\n\"'` to dump all descriptions\n  - `jj show -r <revset>` to inspect a specific commit's description and diff\n",
+  "truth": {
+    "repo_path": "/home/user/myrepo",
+    "final_state": {
+      "commit_count_non_root": 5,
+      "commit_graph_summary": [
+        {
+          "position": 1,
+          "description_first_line": "chore(init): initialise project skeleton",
+          "has_change_id_trailer": false
+        },
+        {
+          "position": 2,
+          "description_first_line": "docs(readme): add contribution guide",
+          "change_id_trailer": "Idocs000000000000000000000000000000000000"
+        },
+        {
+          "position": 3,
+          "description_first_line": "feat(changelog): add CHANGELOG file",
+          "change_id_trailer": "I0000000000000000000000000000000000000001",
+          "files_added": ["CHANGELOG.md"]
+        },
+        {
+          "position": 4,
+          "description_first_line": "fix(parser): correct off-by-one error in line counter",
+          "change_id_trailer": "I0000000000000000000000000000000000000002"
+        },
+        {
+          "position": 5,
+          "description_first_line": "",
+          "note": "empty working-copy change on top of fix(parser) commit"
+        }
+      ],
+      "working_copy_description_first_line": "",
+      "working_copy_parent_description_first_line": "fix(parser): correct off-by-one error in line counter",
+      "changelog_md_exists_in_repo": true,
+      "verification_commands": [
+        "jj log --no-pager --no-graph -T 'description ++ \"\\n---\\n\"'",
+        "jj show --no-pager -r 'description(substring:\"docs(readme)\")'",
+        "jj show --no-pager -r 'description(substring:\"feat(changelog)\")'",
+        "jj show --no-pager -r 'description(substring:\"fix(parser)\")'",
+        "jj log --no-pager -r 'description(substring:\"docs(readme)\")' -T 'description'"
+      ],
+      "expected_descriptions_contain": {
+        "docs_commit": "docs(readme): add contribution guide",
+        "docs_commit_change_id": "Idocs000000000000000000000000000000000000",
+        "feat_commit": "feat(changelog): add CHANGELOG file",
+        "feat_commit_change_id": "I0000000000000000000000000000000000000001",
+        "fix_commit": "fix(parser): correct off-by-one error in line counter",
+        "fix_commit_change_id": "I0000000000000000000000000000000000000002"
+      }
+    },
+    "setup_state": {
+      "initial_commits": [
+        {"description_first_line": "chore(init): initialise project skeleton", "files": ["skeleton.py"]},
+        {"description_first_line": "docs(readme): add contributing guide", "files": ["README.md"]}
+      ],
+      "initial_bookmarks": [],
+      "working_copy_at_start": "empty change on top of 'docs(readme): add contributing guide'"
+    }
+  }
+}

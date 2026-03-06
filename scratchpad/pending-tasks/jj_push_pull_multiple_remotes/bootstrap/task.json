@@ -1,0 +1,28 @@
+{
+  "task_name": "jj_push_pull_multiple_remotes",
+  "task_description": "# Upstream-Submission Workflow with Multiple Remotes\n\nYou are a contributor preparing to submit a feature branch upstream. Your local jj repository is already set up at `/home/user/myproject` with two local bare git repositories acting as remotes:\n\n- **`origin`** — located at `/home/user/remotes/origin.git` (represents your personal fork)\n- **`upstream`** — located at `/home/user/remotes/upstream.git` (represents the upstream project)\n\nThe repository already has:\n- An initial commit with description `\"initial commit\"` on bookmark `main` (already pushed to both remotes)\n- A feature commit with description `\"add feature\"` on bookmark `feature` (only local so far)\n- Both remotes are configured and `main` is tracked from `origin`\n\nYour goal is to complete the upstream-submission workflow using the following sequence of tasks:\n\n## Tasks\n\n### 1. Inspect the current state\n\nList all configured git remotes to confirm both `origin` and `upstream` are present. Then list all bookmarks (including remote-tracking ones) to understand the current sync state.\n\n### 2. Push `feature` bookmark to `origin`\n\nPush the local `feature` bookmark to the `origin` remote. After pushing, verify that the remote-tracking bookmark `feature@origin` now exists and is in sync with the local `feature` bookmark.\n\n### 3. Track the remote feature bookmark\n\nAfter pushing, explicitly start tracking `feature@origin` (it may already be tracked after a push, but confirm with `jj bookmark list --tracked`). If not already tracked, use `jj bookmark track` to track it.\n\n### 4. Fetch from `upstream`\n\nFetch all bookmarks from the `upstream` remote. Inspect what bookmarks are now visible from upstream (use `jj bookmark list --all-remotes` to see all remote bookmarks including untracked ones).\n\n### 5. Create a new commit on top of `feature` for the upstream submission\n\nFrom the `feature` bookmark, create a new child commit with the description `\"prepare upstream submission\"`. This commit should add a file called `SUBMISSION.md` in `/home/user/myproject` with the content `upstream ready`. Use `jj describe` and file creation as needed.\n\n### 6. Move the `feature` bookmark to the new commit\n\nAdvance the `feature` bookmark to point to your new `\"prepare upstream submission\"` commit.\n\n### 7. Push `feature` to `upstream`\n\nPush the `feature` bookmark to the `upstream` remote (not just `origin`). You must specify the remote explicitly since you want to target `upstream` rather than the default.\n\n### 8. Verify final state\n\nConfirm the final state:\n- `jj git remote list` shows both `origin` and `upstream`\n- `jj bookmark list --all-remotes` shows `feature` tracked on both `origin` and `upstream`\n- The `upstream` remote's bare git repo at `/home/user/remotes/upstream.git` contains a branch `feature` whose tip commit has the message `prepare upstream submission`\n- The file `SUBMISSION.md` exists in the working copy of `/home/user/myproject` with content `upstream ready`\n\n## Important Notes\n\n- All `jj` commands should be run from within `/home/user/myproject`\n- Use `jj git remote list` (not `git remote`) to list remotes\n- Use `jj git fetch --remote <name>` to fetch from a specific remote\n- Use `jj git push --remote <name> --bookmark <bookmark>` to push to a specific remote\n- When pushing a bookmark for the first time to a remote, jj will automatically begin tracking it\n- The `jj bookmark list -a` flag shows all remote bookmarks including untracked ones\n- You do NOT need to resolve any conflicts for this task\n- Do not use any `git` commands directly — only `jj` commands\n",
+  "truth": {
+    "repo_path": "/home/user/myproject",
+    "origin_remote_path": "/home/user/remotes/origin.git",
+    "upstream_remote_path": "/home/user/remotes/upstream.git",
+    "required_remotes": ["origin", "upstream"],
+    "feature_bookmark_pushed_to_origin": true,
+    "feature_bookmark_pushed_to_upstream": true,
+    "feature_tracked_from_origin": true,
+    "feature_tracked_from_upstream": true,
+    "upstream_git_repo_has_feature_branch": true,
+    "upstream_feature_tip_commit_message": "prepare upstream submission",
+    "submission_file_path": "/home/user/myproject/SUBMISSION.md",
+    "submission_file_content": "upstream ready",
+    "main_bookmark_exists": true,
+    "main_exists_on_both_remotes": true,
+    "verification_commands": [
+      "cd /home/user/myproject && jj git remote list | grep origin",
+      "cd /home/user/myproject && jj git remote list | grep upstream",
+      "cd /home/user/myproject && jj bookmark list --all-remotes | grep 'feature@upstream'",
+      "cd /home/user/myproject && jj bookmark list --all-remotes | grep 'feature@origin'",
+      "git -C /home/user/remotes/upstream.git log feature --oneline | grep 'prepare upstream submission'",
+      "test -f /home/user/myproject/SUBMISSION.md && grep -q 'upstream ready' /home/user/myproject/SUBMISSION.md"
+    ]
+  }
+}
