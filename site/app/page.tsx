@@ -61,7 +61,7 @@ export default async function Home() {
       let model = parts[1] || "Unknown";
 
       if (parts.length === 2) {
-        agentRaw = "Terminus-2";
+        agentRaw = "Codex";
         model = parts[0];
       }
 
