@@ -18,20 +18,30 @@ export function TrajectoryPage({
   stderrText,
   verifierText,
 }: TrajectoryPageProps) {
-  const [iframeLoading, setIframeLoading] = useState(false);
+  const [iframeLoading, setIframeLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("trajectory");
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const hideSkeletonTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    setIframeLoading(true);
-  }, [trajectoryUrl]);
+    return () => {
+      if (hideSkeletonTimeoutRef.current) {
+        clearTimeout(hideSkeletonTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleIframeLoad = () => {
-    setIframeLoading(false);
-    setTimeout(() => {
+    if (hideSkeletonTimeoutRef.current) {
+      clearTimeout(hideSkeletonTimeoutRef.current);
+    }
+
+    hideSkeletonTimeoutRef.current = setTimeout(() => {
+      setIframeLoading(false);
       if (iframeRef.current) {
         iframeRef.current.style.opacity = "1";
       }
+      hideSkeletonTimeoutRef.current = null;
     }, 300);
   };
 
