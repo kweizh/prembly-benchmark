@@ -1,8 +1,9 @@
 import tasksData from "@/zealt/tasks.json";
-import { TrajectoryPage } from "./components/trajectory-page";
+import { TrajectoryPage, type TabConfig } from "./components/trajectory-page";
 import zealtConfig from "@/zealt/config.json";
 import { redirect } from "next/navigation";
 import { AlertTriangle, Check, ExternalLink, HelpCircle, X as XIcon } from "lucide-react";
+import { Suspense } from "react";
 
 
 type RouteParams = {
@@ -251,6 +252,21 @@ export default async function TrajectoryRoutePage({
 }) {
   const resolvedParams = await params;
 
+  const tabsConfig: TabConfig[] = [
+    {
+      value: "trajectory",
+      label: "Trajectory",
+    },
+    {
+      value: "log",
+      label: "Log",
+    },
+    {
+      value: "test",
+      label: "Test",
+    },
+  ];
+
   const trialEntry = findTrialEntry(resolvedParams.name, resolvedParams.jobId);
   const fallbackUrl = trialEntry
     ? buildFallbackUrl(trialEntry.job_name, trialEntry.trial_name)
@@ -313,12 +329,15 @@ export default async function TrajectoryRoutePage({
         </div>
       </div>
       <div className="min-h-0 flex-1">
-        <TrajectoryPage
-          trajectoryUrl={trajectoryUrl}
-          fallbackUrl={fallbackUrl ?? ''}
-          stderrLogUrl={stderrLogUrl}
-          verifierLogUrl={verifierLogUrl}
-        />
+        <Suspense fallback={null}>
+          <TrajectoryPage
+            trajectoryUrl={trajectoryUrl}
+            fallbackUrl={fallbackUrl ?? ''}
+            stderrLogUrl={stderrLogUrl}
+            verifierLogUrl={verifierLogUrl}
+            tabsConfig={tabsConfig}
+          />
+        </Suspense>
       </div>
     </div>
   );
