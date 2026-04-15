@@ -1,14 +1,11 @@
 import os
 import shutil
-import subprocess
 import pytest
 
-PROJECT_DIR = "/home/user/project"
+PROJECT_DIR = "/home/user/app"
 
-def test_node_binary_available():
-    assert shutil.which("node") is not None, "node binary not found in PATH."
-
-def test_npm_binary_available():
+def test_nodejs_installed():
+    assert shutil.which("node") is not None, "Node.js binary 'node' not found in PATH."
     assert shutil.which("npm") is not None, "npm binary not found in PATH."
 
 def test_project_dir_exists():

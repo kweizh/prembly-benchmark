@@ -8,18 +8,14 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /home/user/project && chmod 0755 /home/user /home/user/project
-
-# Pre-install nock for tests
-RUN cd /home/user/project && \
-    npm init -y && \
-    npm install nock axios
+RUN mkdir -p /home/user/app && chmod 0755 /home/user/app
 
 LABEL Author="any-task-builder"
-LABEL Description="Node.js environment for Prembly API polling script."
+LABEL Description="Node.js environment for Prembly background job polling task."
 
 # Container contents:
-#   - Node.js v24 installed
-#   - /home/user/project directory created with nock pre-installed
+#   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
+#   - Node.js v24 for running the polling script
+#   - /home/user/app: base directory for the project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

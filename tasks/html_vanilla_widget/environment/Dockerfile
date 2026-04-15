@@ -15,14 +15,12 @@ RUN agent-browser install
 RUN mkdir -p /home/user && chmod 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="Prembly HTML Vanilla Widget task environment with browser verification dependencies."
-
-RUN mkdir -p /home/user/prembly-widget
+LABEL Description="Vanilla HTML widget task environment with Node.js v24 installed, including browser verification dependencies."
 
 # Container contents:
 #   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
-#   - Node.js v24 for the browser verification environment
+#   - Node.js v24 for the Vite vanilla project
 #   - browser verification dependencies: Pochi CLI, agent-browser, ffmpeg, ripgrep, and more
-#   - /home/user/prembly-widget: base directory for the project
+#   - /home/user: base directory for the project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

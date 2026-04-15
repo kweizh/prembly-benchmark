@@ -11,11 +11,15 @@ RUN apt-get update -y && \
 RUN mkdir -p /home/user && chmod 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="Node.js environment for building a Prembly KYB verification API."
+LABEL Description="Node.js environment for Prembly KYB business verification task."
+
+RUN mkdir -p /home/user/project && \
+    cd /home/user/project && \
+    npm init -y && \
+    npm install axios
 
 # Container contents:
-#   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
-#   - Node.js v24 for the API development
-#   - /home/user: base directory for the project
+#   - Node.js v24 installed
+#   - /home/user/project created with axios installed
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

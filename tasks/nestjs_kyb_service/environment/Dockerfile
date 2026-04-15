@@ -12,11 +12,12 @@ RUN apt-get update -y && \
 RUN mkdir -p /home/user && chmod 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="NestJS project environment with @nestjs/cli installed for Prembly integration."
+LABEL Description="NestJS KYB verification service task environment."
 
 # Container contents:
-#   - Node.js v24 and npm installed.
-#   - @nestjs/cli installed globally.
-#   - /home/user is prepared for the project.
+#   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
+#   - Node.js v24 for the NestJS task environment
+#   - @nestjs/cli installed globally
+#   - /home/user: base directory for the project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

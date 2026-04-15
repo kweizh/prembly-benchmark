@@ -1,0 +1,55 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 13ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py .F.                                            [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_webhook_valid_signature _________________________
+
+start_app = None
+
+    def test_webhook_valid_signature(start_app):
+        """Test POST /webhook/prembly with valid signature"""
+        payload = json.dumps({"event": "verification.completed", "status": "success"})
+        secret = os.environ.get("PREMBLY_WEBHOOK_SECRET", os.environ.get("PREMBLY_API_KEY", "test_secret"))
+        signature = hmac.new(secret.encode(), payload.encode(), hashlib.sha512).hexdigest()
+    
+        result = subprocess.run(
+            [
+                "curl", "-s", "-w", "%{http_code}", "-o", "/dev/null", "-X", "POST", f"http://localhost:{PORT}/webhook/prembly",
+                "-H", "Content-Type: application/json",
+                "-H", f"x-prembly-signature: {signature}",
+                "-d", payload
+            ],
+            capture_output=True, text=True
+        )
+        assert result.returncode == 0, f"curl failed: {result.stderr}"
+        http_code = result.stdout.strip()
+>       assert http_code in ["200", "201"], f"Expected 200 or 201 for valid webhook, got {http_code}"
+E       AssertionError: Expected 200 or 201 for valid webhook, got 401
+E       assert '401' in ['200', '201']
+
+tests/test_final_state.py:77: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_kyb_verify_endpoint
+PASSED tests/test_final_state.py::test_webhook_invalid_signature
+FAILED tests/test_final_state.py::test_webhook_valid_signature - AssertionErr...
+========================= 1 failed, 2 passed in 1.06s ==========================

@@ -1,0 +1,58 @@
+{
+    "id": "1e7325a6-badf-4733-8f42-181630a65045",
+    "started_at": "2026-04-16T16:06:23.867217",
+    "finished_at": "2026-04-16T16:38:58.045327",
+    "n_total_trials": 20,
+    "stats": {
+        "n_trials": 20,
+        "n_errors": 10,
+        "evals": {
+            "pochi__gemini-3.1-pro__tasks": {
+                "n_trials": 13,
+                "n_errors": 10,
+                "metrics": [
+                    {
+                        "mean": 0.15
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "1.0": [
+                            "background_job_polling__BGZD4sV",
+                            "express_secure_proxy__ZKoaiio",
+                            "fastify_webhook_handler__sk2N9Bw"
+                        ],
+                        "0.0": [
+                            "bvn_verification_api__nKGiCMv",
+                            "document_verification_retry_flow__sjUjZ9H",
+                            "driver_license_check__rfSTR6d",
+                            "html_vanilla_widget__FmfFHrd",
+                            "multi_step_onboarding_flow__cjReRoP",
+                            "nestjs_kyb_service__EYfqCnq",
+                            "nextjs_api_route_proxy__jXhF83s",
+                            "nodejs_backend_verify_nin__yxrkdeV",
+                            "rate_limit_handler__9iP8rSK",
+                            "vue_widget_setup__HBZw628"
+                        ]
+                    }
+                },
+                "exception_stats": {
+                    "AgentTimeoutError": [
+                        "bvn_verification_api__nKGiCMv",
+                        "html_vanilla_widget__FmfFHrd",
+                        "vue_widget_setup__HBZw628"
+                    ],
+                    "NonZeroAgentExitCodeError": [
+                        "error_handling_middleware__eaZ36Qk",
+                        "express_nin_lookup_cache__iQEFB7P",
+                        "face_liveliness_react__EUdryK9",
+                        "fintech_wallet_creation__tBwzSG2",
+                        "kyb_business_verification__eCoQKKi",
+                        "mock_webhook_server__Smvgkbt",
+                        "webhook_signature_verification__ZqaNcPh"
+                    ]
+                }
+            }
+        }
+    }
+}

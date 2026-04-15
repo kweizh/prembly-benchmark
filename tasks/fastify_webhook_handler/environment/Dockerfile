@@ -8,13 +8,14 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /home/user/prembly-webhook && chmod 0755 /home/user /home/user/prembly-webhook
+RUN mkdir -p /home/user/app && chmod 0755 /home/user /home/user/app
 
 LABEL Author="any-task-builder"
-LABEL Description="Prembly Webhook Fastify Server environment with Node.js v24 installed."
+LABEL Description="Node.js environment for building a Fastify webhook handler."
 
 # Container contents:
 #   - Node.js v24 installed
-#   - /home/user/prembly-webhook empty directory created for project initialization
+#   - Python3 and pytest installed
+#   - /home/user/app directory created for the project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

@@ -1,0 +1,99 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 22ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py .F                                             [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_html_vanilla_widget ___________________________
+
+start_app = None
+
+    def test_html_vanilla_widget(start_app):
+        reason = "The application should have a button to launch the Prembly widget and should load without errors."
+        truth = "Navigate to http://localhost:3000. Verify that there is a button to launch the Prembly widget. The application should load without JavaScript errors."
+    
+        verifier = PochiVerifier()
+>       result = verifier.verify(
+            reason=reason,
+            truth=truth,
+            use_browser_agent=True,
+            trajectory_dir="/logs/verifier/pochi/test_html_vanilla_widget"
+        )
+
+tests/test_final_state.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+root/.cache/uv/archive-v0/jlkESwwNYyx7Qpq1zpmAO/lib/python3.12/site-packages/pochi_verifier/verifier.py:195: in verify
+    return self._parse_result(proc.stdout, proc.stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <pochi_verifier.verifier.PochiVerifier object at 0x77f3187caf90>
+stdout = '- Initializing MCP connections...\nYou\n## Reason for this test The application should have a button to launch the Pr...n steps. As per the rules, if a verification step cannot be executed, a \'fail\' status must be returned."\n}   \n  \n'
+stderr = '\x1b[37m2026-04-16 08:29:26.239\x1b[39m\x1b[0m\x1b[0m\t\x1b[32m\x1b[1mDEBUG\x1b[22m\x1b[39m\x1b[0m\x1b[0m\t\x1b[37m$b...enerating task title, old: ## Reason for this test, new: Verify Prembly widget launch button and application loading\n'
+
+    def _parse_result(self, stdout: str, stderr: str) -> VerificationResult:
+        """Parses the stdout from pochi to extract the verification result."""
+        # Find the JSON object that follows the `Task Completed` marker (with possible whitespace)
+        match = re.search(r"Task Completed.*?(\{.*)", stdout, re.DOTALL)
+        if not match:
+            raise PochiOutputError("Cannot extract the JSON from the output message.")
+        json_str = match.group(1)
+        # Extract the full JSON object, accounting for nested/escaped braces
+        brace_count = 0
+        in_string = False
+        escape = False
+        for i, c in enumerate(json_str):
+            if escape:
+                escape = False
+                continue
+            if c == '\\':
+                escape = True
+                continue
+            if c == '"':
+                in_string = not in_string
+            if not in_string:
+                if c == '{':
+                    brace_count += 1
+                elif c == '}':
+                    brace_count -= 1
+                    if brace_count == 0:
+                        json_str = json_str[:i+1]
+                        break
+        try:
+            parsed_json = json.loads(json_str)
+        except json.JSONDecodeError as e:
+            raise PochiOutputError(f"Failed to parse JSON from pochi output: {e}") from e
+    
+        status = parsed_json.get("status")
+        reason = parsed_json.get("reason")
+    
+        if not status or not reason:
+            raise PochiOutputError("The result JSON is missing 'status' or 'reason'.")
+    
+        if status == "fail":
+>           raise VerificationFailedError(f"Verification failed: {reason}")
+E           pochi_verifier.verifier.VerificationFailedError: Verification failed: The required tool 'newTask' is not available in the current environment, making it impossible to create a 'browser' sub-agent to perform the verification steps. As per the rules, if a verification step cannot be executed, a 'fail' status must be returned.
+
+root/.cache/uv/archive-v0/jlkESwwNYyx7Qpq1zpmAO/lib/python3.12/site-packages/pochi_verifier/verifier.py:246: VerificationFailedError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_package_json_contains_prembly_pass
+FAILED tests/test_final_state.py::test_html_vanilla_widget - pochi_verifier.v...
+=================== 1 failed, 1 passed in 131.73s (0:02:11) ====================

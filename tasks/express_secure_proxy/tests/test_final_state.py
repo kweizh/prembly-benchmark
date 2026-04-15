@@ -2,11 +2,12 @@ import os
 import subprocess
 import time
 import socket
-import json
-import urllib.request
 import pytest
+import urllib.request
+import urllib.error
+import json
 
-PROJECT_DIR = "/home/user/proxy"
+PROJECT_DIR = "/home/user/proxy-app"
 
 def wait_for_port(port, timeout=30):
     start_time = time.time()
@@ -18,38 +19,50 @@ def wait_for_port(port, timeout=30):
     return False
 
 @pytest.fixture(scope="module")
-def start_server():
-    env = os.environ.copy()
-    env["PREMBLY_APP_ID"] = "test_app_id"
-    env["PREMBLY_CONFIG_ID"] = "test_config_id"
-
+def start_app():
+    # Start the app
     process = subprocess.Popen(
-        ["node", "server.js"],
+        ["node", "index.js"],
         cwd=PROJECT_DIR,
-        env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         preexec_fn=os.setsid
     )
-
+    
+    # Wait for the app to be ready
     if not wait_for_port(3000):
+        # Kill the process group before failing
         import signal
         os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-        pytest.fail("Server failed to start and listen on port 3000.")
-
+        pytest.fail("App failed to start and listen on required ports.")
+    
     yield
-
+    
+    # Shut down the app
     import signal
     os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-    process.wait(timeout=10)
+    process.wait(timeout=30)
 
-def test_api_config_endpoint(start_server):
+def test_proxy_injects_credentials(start_app):
+    """Priority 3: Send request to the proxy and verify it forwards correctly."""
+    url = "http://localhost:3000/api/prembly/api/v2/biometrics/merchant/data/verification/nin"
+    data = json.dumps({"number": "11111111111"}).encode('utf-8')
+    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+    
     try:
-        req = urllib.request.Request("http://localhost:3000/api/config", method="GET")
-        with urllib.request.urlopen(req) as response:
-            assert response.status == 200, f"Expected 200 OK, got {response.status}"
-            data = json.loads(response.read().decode('utf-8'))
-            assert data.get("app_id") == "test_app_id", f"Expected app_id 'test_app_id', got {data.get('app_id')}"
-            assert data.get("config_id") == "test_config_id", f"Expected config_id 'test_config_id', got {data.get('config_id')}"
+        response = urllib.request.urlopen(req)
+        status = response.getcode()
+        body = response.read().decode('utf-8')
+    except urllib.error.HTTPError as e:
+        status = e.code
+        body = e.read().decode('utf-8')
     except Exception as e:
-        pytest.fail(f"Failed to fetch /api/config: {str(e)}")
+        pytest.fail(f"Failed to connect to proxy server: {e}")
+    
+    # If the proxy didn't inject the credentials, Prembly returns 401
+    assert status != 401, \
+        f"Expected credentials to be injected, but received 401 Unauthorized from Prembly. Response: {body}"
+    
+    # It should either be 200 (if sandbox data matches) or another error like 400/404
+    assert status in [200, 400, 404], \
+        f"Expected proxy to forward the request to Prembly, but received unexpected status {status}. Response: {body}"

@@ -1,62 +1,54 @@
 import os
 import subprocess
 import pytest
+import json
 
-PROJECT_DIR = "/home/user/myproject"
-SCRIPT_PATH = os.path.join(PROJECT_DIR, "verify_nin.js")
+PROJECT_DIR = "/home/user/project"
 
-def test_script_exists():
-    assert os.path.isfile(SCRIPT_PATH), f"Script {SCRIPT_PATH} does not exist."
+def test_verify_js_exists():
+    verify_js = os.path.join(PROJECT_DIR, "verify.js")
+    assert os.path.isfile(verify_js), f"verify.js not found at {verify_js}"
 
-def test_verify_nin_functionality():
-    test_runner = os.path.join(PROJECT_DIR, "test_runner.js")
-    with open(test_runner, "w") as f:
-        f.write("""
-const Module = require('module');
-const originalRequire = Module.prototype.require;
+def test_verify_function_works():
+    # We will write a small script to test the verifyNIN function
+    test_script_path = os.path.join(PROJECT_DIR, "test_verify.js")
+    test_script_content = """
+const { verifyNIN } = require('./verify');
 
-Module.prototype.require = function(path) {
-    if (path === 'axios') {
-        return {
-            post: async function(url, data, config) {
-                console.log(JSON.stringify({ url, data, config }));
-                return { data: { status: "success" } };
-            }
-        };
-    }
-    return originalRequire.apply(this, arguments);
-};
-
-const { verifyNIN } = require('./verify_nin.js');
-
-(async () => {
+async function test() {
     try {
-        const result = await verifyNIN('12345678901');
-        console.log("RESULT:", JSON.stringify(result));
-    } catch (e) {
-        console.error(e);
+        const result = await verifyNIN('11111111111');
+        console.log(JSON.stringify(result));
+    } catch (error) {
+        console.error(error);
         process.exit(1);
     }
-})();
-""")
-    
+}
+
+test();
+"""
+    with open(test_script_path, "w") as f:
+        f.write(test_script_content)
+
+    # Use real API keys from environment
     env = os.environ.copy()
-    env["PREMBLY_APP_ID"] = "test_app_id"
-    env["PREMBLY_API_KEY"] = "test_api_key"
     
+    # Run the test script
     result = subprocess.run(
-        ["node", "test_runner.js"],
+        ["node", "test_verify.js"],
         cwd=PROJECT_DIR,
-        env=env,
         capture_output=True,
-        text=True
+        text=True,
+        env=env
     )
     
-    assert result.returncode == 0, f"Test runner failed: {result.stderr}\\n{result.stdout}"
+    assert result.returncode == 0, f"Running verifyNIN failed: {result.stderr}"
     
-    output = result.stdout
-    assert "https://api.prembly.com/verification/nin" in output, "Did not call correct URL."
-    assert "12345678901" in output, "Did not pass correct NIN number."
-    assert "test_app_id" in output, "Did not pass correct app-id header."
-    assert "test_api_key" in output, "Did not pass correct x-api-key header."
-    assert "RESULT: {\\"status\\":\\"success\\"}" in output, "Did not return correct data."
+    # Check if we got a valid JSON response
+    try:
+        data = json.loads(result.stdout)
+        # We don't strictly check the response content as it might be 'Not Found' or 'Success' depending on sandbox data
+        # but it should be a parsed JSON response from the API.
+        assert isinstance(data, dict), "Response data should be an object"
+    except json.JSONDecodeError:
+        pytest.fail(f"Could not parse response as JSON: {result.stdout}")

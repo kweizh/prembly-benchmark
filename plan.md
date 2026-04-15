@@ -7,7 +7,7 @@ Prembly (formerly Identitypass) is a leading compliance and security infrastruct
     1.  **Dashboard**: Create an account at [Prembly Dashboard](https://dashboard.prembly.com/) to obtain an `app-id` and `x-api-key`.
     2.  **SDK Installation (React/Web)**: `npm install prembly-pass`
     3.  **SDK Configuration**: Create a "New SDK" on the dashboard to generate a `config_id` for the widget/browser-based validation.
-    4.  **Environment**: Use `https://sandbox.myidentitypay.com` for testing and `https://api.prembly.com` for production.
+    4.  **Environment**: Use `https://api.prembly.com` for api calls.
 ### 2. Core Primitives & APIs
 *   **Data Verification**: Direct lookup of government IDs (NIN, BVN, Drivers License, etc.).
 *   **Document Verification**: OCR and authenticity checks on uploaded ID images.

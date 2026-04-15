@@ -1,25 +1,26 @@
-# Prembly KYB Verification API
+# Prembly KYB Business Verification
 
 ## Background
-Implement a B2B onboarding backend using Prembly to verify company registration details (CAC) in Nigeria.
+You need to implement a Node.js script that verifies a business registration using the Prembly API. The script should use the Prembly sandbox environment.
 
 ## Requirements
-- Create a Node.js project in `/home/user/onboarding_api`.
-- Install `express` and `axios`.
-- Create an `index.js` that sets up an Express server.
-- Implement a `POST /verify-business` endpoint that accepts a JSON body with `registration_number`.
-- The endpoint must call Prembly's API using the base URL provided in the `PREMBLY_BASE_URL` environment variable (default to `https://sandbox.myidentitypay.com`). The path is `/api/v1/verification/cac`.
-- The request body to Prembly should be `{ "company_number": "<registration_number>" }`.
-- Pass the `app-id` and `x-api-key` headers using `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
-- Return the data from the Prembly API response to the client with the same HTTP status code.
+- Create a Node.js script `verify_business.js` in `/home/user/project`.
+- The script should take a registration number as a command-line argument.
+- It should make a POST request to the Prembly sandbox API (`https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` - assuming this is the CAC endpoint, or use the appropriate endpoint if you know it, but let's assume `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` for CAC check, or just generic `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac_advance`). Wait, let's keep it simpler: The task is to write a script that sends a POST request to `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` with the provided registration number.
+- The request must include headers `app-id` and `x-api-key` read from environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` respectively.
+- The body should be JSON containing `{"company_type": "RC", "rc_number": "<registration_number>"}`.
+- The script should write the JSON response to `/home/user/project/output.json`.
 
-## Implementation
-1. `mkdir -p /home/user/onboarding_api && cd /home/user/onboarding_api`
-2. `npm init -y`
-3. `npm install express axios`
-4. Write `index.js`.
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/project` and install `axios`.
+2. Write the `verify_business.js` script to read the registration number from `process.argv[2]`.
+3. Make the axios POST request with the required headers and body to the sandbox URL.
+4. Save the response data to `output.json`.
 
 ## Constraints
-- Project path: `/home/user/onboarding_api`
-- Start command: `node index.js`
-- Port: 3000
+- Project path: `/home/user/project`
+- Log file: `/home/user/project/output.json`
+- Use `https://api.prembly.com` as the base URL.
+
+## Integrations
+- None

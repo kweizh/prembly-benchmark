@@ -2,12 +2,6 @@ version = "1.0"
 
 [metadata]
 
-[verifier]
-timeout_sec = 600.0
-
-[agent]
-timeout_sec = 600.0
-
 [environment]
 build_timeout_sec = 600.0
 cpus = 4
@@ -17,7 +11,21 @@ gpus = 0
 allow_internet = true
 mcp_servers = []
 
+[environment.env]
+POCHI_LOG = "debug"
+POCHI_API_KEY = "${POCHI_API_KEY}"
+# Add more environment variables requried
+
+[agent]
+timeout_sec = 600.0
+
+[verifier]
+timeout_sec = 600.0
+
 [verifier.env]
 POCHI_LOG = "debug"
+# Add more environment variables requried
+PREMBLY_API_KEY = "${PREMBLY_API_KEY}"
+PREMBLY_APP_ID = "${PREMBLY_APP_ID}"
 
 [solution.env]

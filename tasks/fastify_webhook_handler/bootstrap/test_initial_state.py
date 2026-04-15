@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import pytest
 
-PROJECT_DIR = "/home/user/prembly-webhook"
+PROJECT_DIR = "/home/user/app"
 
 def test_node_binary_available():
     assert shutil.which("node") is not None, "node binary not found in PATH."

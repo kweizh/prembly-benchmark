@@ -1,0 +1,38 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776327008.27659,
+            "stop": 1776327009.2345226
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_log_file_exists",
+                "status": "passed",
+                "duration": 0.9478494226932526,
+                "start": 1776327008.2853482,
+                "stop": 1776327009.2334611,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_log_file_format",
+                "status": "passed",
+                "duration": 0.0005027148872613907,
+                "start": 1776327009.2337112,
+                "stop": 1776327009.2343569,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

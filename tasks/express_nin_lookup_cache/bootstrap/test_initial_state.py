@@ -3,6 +3,8 @@ import shutil
 import subprocess
 import pytest
 
+PROJECT_DIR = "/home/user/nin-cache"
+
 def test_node_binary_available():
     assert shutil.which("node") is not None, "node binary not found in PATH."
 

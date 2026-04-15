@@ -3,56 +3,10 @@ import subprocess
 import time
 import socket
 import pytest
-import json
-import urllib.request
-import urllib.error
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import threading
+import requests
+import signal
 
-PROJECT_DIR = "/home/user/prembly_bvn"
-
-class MockPremblyHandler(BaseHTTPRequestHandler):
-    request_data = None
-    request_headers = None
-    request_path = None
-
-    def do_POST(self):
-        MockPremblyHandler.request_path = self.path
-        content_length = int(self.headers.get('Content-Length', 0))
-        post_data = self.rfile.read(content_length)
-        
-        if post_data:
-            try:
-                MockPremblyHandler.request_data = json.loads(post_data.decode('utf-8'))
-            except:
-                MockPremblyHandler.request_data = post_data.decode('utf-8')
-                
-        MockPremblyHandler.request_headers = self.headers
-
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        
-        response = {
-            "status": True,
-            "detail": "Verification Successfull",
-            "response_code": "00",
-            "data": {
-                "firstName": "John",
-                "lastName": "Doe"
-            }
-        }
-        self.wfile.write(json.dumps(response).encode('utf-8'))
-        
-    def log_message(self, format, *args):
-        pass
-
-def start_mock_server():
-    server = HTTPServer(('localhost', 4000), MockPremblyHandler)
-    thread = threading.Thread(target=server.serve_forever)
-    thread.daemon = True
-    thread.start()
-    return server
+PROJECT_DIR = "/home/user/app"
 
 def wait_for_port(port, timeout=60):
     start_time = time.time()
@@ -60,70 +14,57 @@ def wait_for_port(port, timeout=60):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             if sock.connect_ex(('localhost', port)) == 0:
                 return True
-        time.sleep(1)
+        time.sleep(5)
     return False
 
 @pytest.fixture(scope="module")
-def setup_environment():
-    mock_server = start_mock_server()
-    
-    env = os.environ.copy()
-    env["PREMBLY_BASE_URL"] = "http://localhost:4000"
-    env["PREMBLY_APP_ID"] = "test_app"
-    env["PREMBLY_API_KEY"] = "test_key"
-    
+def start_app():
+    # Start the app
     process = subprocess.Popen(
-        ["node", "index.js"],
+        ["npm", "start"],
         cwd=PROJECT_DIR,
-        env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         preexec_fn=os.setsid
     )
-
+    
+    # Wait for the app to be ready
     if not wait_for_port(3000):
-        import signal
         os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-        pytest.fail("Express app failed to start and listen on port 3000.")
-
+        pytest.fail("App failed to start and listen on port 3000.")
+    
     yield
-
-    import signal
+    
+    # Shut down the app
     os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-    process.wait(timeout=5)
-    mock_server.shutdown()
+    process.wait(timeout=30)
 
-def test_verify_bvn_endpoint(setup_environment):
+def test_verify_bvn_endpoint(start_app):
+    """Priority 3 fallback: HTTP API verification."""
+    # Send a request to the locally running Express app
     url = "http://localhost:3000/verify-bvn"
-    data = json.dumps({"bvn": "12345678901"}).encode('utf-8')
-    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+    payload = {"bvn": "12345678901"}
     
     try:
-        response = urllib.request.urlopen(req, timeout=10)
-        response_body = response.read().decode('utf-8')
-        response_json = json.loads(response_body)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode('utf-8')
-        pytest.fail(f"Request to {url} failed with status {e.code}: {body}")
-    except Exception as e:
-        pytest.fail(f"Request to {url} failed: {e}")
-
-    # Verify mock server received the correct request
-    assert MockPremblyHandler.request_path == "/verification/bvn_validation", \
-        f"Expected Prembly request path to be '/verification/bvn_validation', got {MockPremblyHandler.request_path}"
+        response = requests.post(url, json=payload, timeout=10)
+    except requests.exceptions.RequestException as e:
+        pytest.fail(f"Failed to connect to /verify-bvn: {e}")
         
-    assert MockPremblyHandler.request_data is not None, "Mock Prembly server did not receive any request."
-    assert isinstance(MockPremblyHandler.request_data, dict), "Expected request data to be JSON."
-    assert MockPremblyHandler.request_data.get("number") == "12345678901", \
-        f"Expected Prembly request body to contain 'number': '12345678901', got {MockPremblyHandler.request_data}"
+    # Prembly sandbox should return a response, even if it's an error due to mock data
+    assert response.status_code in [200, 400], f"Expected status 200 or 400 from proxy, got {response.status_code}"
+    assert response.headers.get("content-type", "").startswith("application/json"), "Expected JSON response from proxy"
     
-    assert MockPremblyHandler.request_headers.get("app-id") == "test_app", \
-        "Expected 'app-id' header to be 'test_app' in request to Prembly."
-    assert MockPremblyHandler.request_headers.get("x-api-key") == "test_key", \
-        "Expected 'x-api-key' header to be 'test_key' in request to Prembly."
+    data = response.json()
+    assert isinstance(data, dict), "Expected a JSON object from the response"
 
-    # Verify Express app returned the correct response
-    assert response_json.get("status") is True, \
-        f"Expected Express app to return the proxy response from Prembly, got {response_json}"
-    assert response_json.get("data", {}).get("firstName") == "John", \
-        "Expected Express app to return the Prembly data containing 'firstName': 'John'."
+def test_index_js_exists_and_contains_headers():
+    """Verify that the implementation file correctly uses the required headers."""
+    index_path = os.path.join(PROJECT_DIR, "index.js")
+    assert os.path.isfile(index_path), "index.js not found in project directory."
+    
+    with open(index_path, "r") as f:
+        content = f.read()
+        
+    assert "PREMBLY_APP_ID" in content, "Expected to find PREMBLY_APP_ID in index.js"
+    assert "PREMBLY_API_KEY" in content, "Expected to find PREMBLY_API_KEY in index.js"
+    assert "api.prembly.com" in content, "Expected to find api.prembly.com in index.js"

@@ -11,11 +11,12 @@ RUN apt-get update -y && \
 RUN mkdir -p /home/user && chmod 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="Node.js v24 environment for building an Express server with Prembly API cache."
+LABEL Description="Node.js environment for building an Express.js server with Prembly API integration."
+
+RUN mkdir -p /home/user/nin-cache && chmod 0755 /home/user/nin-cache
 
 # Container contents:
-#   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
-#   - Node.js v24 for the Express task environment
-#   - /home/user: base directory for the user to create their project
+#   - Node.js v24 installed.
+#   - /home/user/nin-cache created for the project.
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

@@ -8,14 +8,18 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /home/user/proxy && chmod 0755 /home/user /home/user/proxy
+RUN mkdir -p /home/user && chmod 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="Node.js environment for building a Prembly secure proxy backend."
+LABEL Description="Node.js environment for building a backend proxy."
+
+RUN mkdir -p /home/user/proxy-app && \
+    cd /home/user/proxy-app && \
+    npm init -y
 
 # Container contents:
 #   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
-#   - Node.js v24
-#   - /home/user/proxy: base directory for the proxy project
+#   - Node.js v24 for the Express server
+#   - /home/user/proxy-app: base directory for the proxy project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

@@ -13,10 +13,10 @@ RUN mkdir -p /home/user && chmod 0755 /home/user
 LABEL Author="any-task-builder"
 LABEL Description="Node.js environment for Prembly NIN verification task."
 
-RUN mkdir -p /home/user/myproject
+RUN mkdir -p /home/user/project
 
 # Container contents:
 #   - Node.js v24 installed
-#   - /home/user/myproject directory created
+#   - /home/user/project - base directory for the project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

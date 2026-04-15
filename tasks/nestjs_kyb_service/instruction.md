@@ -1,24 +1,29 @@
-# Prembly KYB Service with NestJS
+# NestJS KYB Verification Service with Prembly
 
 ## Background
-Prembly provides identity verification APIs, including Business Verification (CAC) for Nigerian companies. You need to build a NestJS service that integrates with Prembly's API to verify company details.
+Create a NestJS service that implements a Know Your Business (KYB) verification flow using Prembly's API. The service needs to verify business registration details (e.g., CAC in Nigeria) and handle asynchronous verification results via webhooks.
 
 ## Requirements
-- Create a NestJS application in `/home/user/prembly-kyb`.
-- Create a `PremblyService` in a `prembly` module.
-- Implement a method `verifyCAC(rcNumber: string, companyName: string)` in `PremblyService`.
-- The method should make a POST request to `https://sandbox.myidentitypay.com/api/v2/biometrics/merchant/data/verification/cac` with the payload `{"rc_number": rcNumber, "company_name": companyName}`.
-- It must include `app-id` and `x-api-key` headers, reading from `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
-- Expose a GET endpoint `/verify-cac` in `PremblyController` that accepts `rcNumber` and `companyName` as query parameters and returns the verification result.
+- POST `/kyb/verify`: Accept business registration number and company type, then call Prembly's Business Verification API.
+- POST `/webhook/prembly`: Receive and process Prembly webhooks for verification status updates.
+- Securely verify the signature of incoming webhooks to ensure they are genuinely from Prembly.
+- Use the `PREMBLY_API_KEY` environment variable for authentication.
+- Use the sandbox environment: `https://api.prembly.com`.
 
 ## Implementation Guide
-1. Initialize a NestJS project in `/home/user/prembly-kyb` using `@nestjs/cli`.
-2. Install `@nestjs/axios` and `axios` for making HTTP requests.
-3. Generate a module, service, and controller for `prembly`.
-4. Inject `HttpService` into `PremblyService` and implement the API call.
-5. Use `process.env.PREMBLY_APP_ID` and `process.env.PREMBLY_API_KEY` for headers.
+1. Initialize a NestJS project in `/home/user/nestjs-kyb`.
+2. Install required dependencies like `@nestjs/axios`, `axios`, and any crypto libraries for webhook signature verification.
+3. Implement a `KybService` that calls the Prembly API endpoint for business verification.
+4. Implement a `WebhookController` that listens for POST requests on `/webhook/prembly`.
+5. Implement webhook signature verification using the `x-prembly-signature` header and your webhook secret (which in sandbox is often the same as the API key or a specific webhook secret).
 
 ## Constraints
-- **Project path**: `/home/user/prembly-kyb`
-- **Start command**: `npm run start`
-- **Port**: 3000
+- Project path: /home/user/nestjs-kyb
+- Start command: npm run start
+- Port: 3000
+- The API key should be read from the `PREMBLY_API_KEY` environment variable.
+- The Prembly App ID should be read from the `PREMBLY_APP_ID` environment variable.
+- The webhook secret should be read from the `PREMBLY_WEBHOOK_SECRET` environment variable (if not set, fallback to `PREMBLY_API_KEY`).
+
+## Integrations
+- Prembly

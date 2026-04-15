@@ -1,25 +1,26 @@
-# Prembly SDK Session Polling
+# Prembly Background Job Polling
 
 ## Background
-Prembly handles identity verifications. Sometimes, webhooks for the widget verification might not be received or processed correctly. To ensure no verification is missed, you need to implement a background job that polls the SDK Session Retrieval endpoint to find pending verifications.
+You need to build a Node.js background job that polls the Prembly SDK Session Retrieval endpoint for pending verifications that haven't sent a webhook.
 
 ## Requirements
-- Create a Node.js script `poll.js` in `/home/user/project`.
-- The script should fetch data from the Prembly SDK Session Retrieval endpoint: `https://api.prembly.com/api/v1/checker-widget/sdk/sessions/`.
-- It must use the `PREMBLY_APP_ID` environment variable for the `app-id` header and `PREMBLY_API_KEY` for the `x-api-key` header.
-- The script should fetch the first page of sessions.
-- For every session where `status` is `"in_progress"`, write the `session_id` to a file named `/home/user/project/pending_sessions.txt`, one per line.
-- The script should run once and exit (no need for `setInterval` for this evaluation).
+- Create a Node.js script `poll.js` that fetches the SDK sessions.
+- Use the Prembly sandbox URL: `https://api.prembly.com/api/v1/checker-widget/sdk/sessions/`
+- Pass the `PREMBLY_API_KEY` environment variable as the `x-api-key` header.
+- The script should parse the response and count the total number of sessions returned (or those with a specific status if you prefer, but counting total sessions is sufficient for this task to prove the API call works).
+- Write the output to a log file in the format: `Total sessions: <count>`.
 
 ## Implementation Guide
-1. Initialize a Node.js project in `/home/user/project` if not already done.
-2. Install `axios` or use the native `fetch` API.
-3. Write the `poll.js` script to make a GET request to the endpoint.
-4. Parse the JSON response (`response.data.data.sessions`).
-5. Filter the sessions where `status === 'in_progress'`.
-6. Append each matching `session_id` to `/home/user/project/pending_sessions.txt`.
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `axios` or use the built-in `fetch`.
+3. Create `poll.js` to make the GET request to the SDK Session Retrieval endpoint.
+4. Handle pagination if necessary, or just fetch the first page.
+5. Write the result to `/home/user/app/output.log`.
 
 ## Constraints
-- Project path: `/home/user/project`
-- Start command: `node poll.js`
-- Do not hardcode the API keys; read them from `process.env`.
+- Project path: `/home/user/app`
+- Log file: `/home/user/app/output.log`
+- Use the environment variable `PREMBLY_API_KEY` for authentication.
+
+## Integrations
+- Prembly

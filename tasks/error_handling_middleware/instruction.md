@@ -1,24 +1,29 @@
-# Prembly Webhook Signature Verification Middleware
+# Prembly API Error Handling Middleware
 
 ## Background
-Prembly (Identitypass) sends asynchronous webhook events when verifications complete. To ensure these webhooks are legitimately from Prembly and haven't been tampered with, you need to verify the webhook signature.
+When calling the Prembly API (e.g., for NIN verification), the sandbox environment can return various errors such as 404 (Not Found) for invalid test data or 401 (Unauthorized) for bad credentials. You need to build an Express.js server with a global error handling middleware that intercepts these errors and normalizes the response.
 
 ## Requirements
-Create an Express.js middleware function that verifies incoming Prembly webhooks.
-- The middleware should check for the `x-identitypass-signature` header.
-- It must compute the HMAC SHA256 hash of the raw request body using the `PREMBLY_SECRET_KEY` environment variable.
-- The computed hash must be compared against the `x-identitypass-signature` header.
-- If the signature matches, call `next()` to proceed to the route handler.
-- If the signature is missing or does not match, return a `401 Unauthorized` status with a JSON response `{"error": "Invalid signature"}`.
+- Create an Express.js server with a `POST /verify-nin` endpoint.
+- The endpoint should expect a JSON body with a `number` field (the NIN).
+- It should call the Prembly NIN verification API at `https://api.prembly.com/api/v1/verification/nin` (or the correct sandbox endpoint, usually `https://api.prembly.com/api/v1/verification/nin` or just `https://api.prembly.com/verification/nin` depending on the exact path, assume `/api/v1/verification/nin` for this task, wait, plan.md says `https://api.prembly.com/verification/nin` so sandbox is `https://api.prembly.com/verification/nin`).
+- Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the headers `app-id` and `x-api-key`.
+- Implement a global Express error handling middleware (`app.use((err, req, res, next) => {...})`).
+- If the Prembly API returns an error (e.g. using axios), pass it to the error handler via `next(err)`.
+- The error handler must respond with a 400 HTTP status code and a JSON payload: `{"error": true, "message": "Verification failed", "details": "<error_message_from_prembly>"}`.
 
 ## Implementation Guide
-1. Project path: `/home/user/app`
-2. The project already has `express` installed and a basic server setup in `index.js`.
-3. Create the middleware in a file named `middleware.js` and export it.
-4. Apply the middleware to a POST endpoint `/webhook` in `index.js` that responds with `200 OK` and `{"status": "received"}` if successful.
-5. Start command: `npm start`
-6. Port: 3000
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `express` and `axios`.
+3. Create an `index.js` that sets up the server, the `/verify-nin` route, and the error handling middleware.
+4. Ensure the server starts on port 3000.
+5. The `package.json` must have a `start` script: `node index.js`.
 
 ## Constraints
-- Ensure you capture the raw body for HMAC computation. If using `express.json()`, you may need to configure it to preserve the raw body or compute the hash before JSON parsing alters it.
-- Use the `crypto` module built into Node.js.
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: 3000
+- Log file: none
+
+## Integrations
+- Prembly

@@ -3,15 +3,11 @@ import subprocess
 import time
 import socket
 import json
-import hmac
-import hashlib
-import urllib.request
-from urllib.error import HTTPError
 import pytest
+import urllib.request
+import urllib.error
 
 PROJECT_DIR = "/home/user/app"
-PORT = 3000
-SECRET = "test_secret"
 
 def wait_for_port(port, timeout=60):
     start_time = time.time()
@@ -19,82 +15,58 @@ def wait_for_port(port, timeout=60):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             if sock.connect_ex(('localhost', port)) == 0:
                 return True
-        time.sleep(5)
+        time.sleep(1)
     return False
 
 @pytest.fixture(scope="module")
 def start_app():
-    # Start the app with the secret key environment variable
-    env = os.environ.copy()
-    env["PREMBLY_SECRET_KEY"] = SECRET
-    
+    # Start the app
     process = subprocess.Popen(
         ["npm", "start"],
         cwd=PROJECT_DIR,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        preexec_fn=os.setsid,
-        env=env
+        preexec_fn=os.setsid
     )
-
+    
     # Wait for the app to be ready
-    if not wait_for_port(PORT):
-        # Kill the process group before failing
+    if not wait_for_port(3000):
         import signal
         os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-        pytest.fail("App failed to start and listen on required port.")
-
+        pytest.fail("App failed to start and listen on port 3000.")
+    
     yield
-
+    
     # Shut down the app
     import signal
     os.killpg(os.getpgid(process.pid), signal.SIGTERM)
     process.wait(timeout=30)
 
-def test_missing_signature(start_app):
-    data = json.dumps({"event":"test"}).encode('utf-8')
-    req = urllib.request.Request(f"http://localhost:{PORT}/webhook", data=data, method="POST")
-    req.add_header("Content-Type", "application/json")
-    
-    try:
-        urllib.request.urlopen(req)
-        pytest.fail("Expected 401 HTTPError but request succeeded.")
-    except HTTPError as e:
-        assert e.code == 401, f"Expected status code 401, got {e.code}"
-        response_body = e.read().decode('utf-8')
-        assert "Invalid signature" in response_body, f"Expected 'Invalid signature' in response, got {response_body}"
+def test_error_handling_middleware(start_app):
+    """Test that the Express server correctly intercepts Prembly API errors and formats them using the global error handling middleware."""
+    url = "http://localhost:3000/verify-nin"
+    data = json.dumps({"number": "invalid_nin_123"}).encode('utf-8')
+    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'}, method='POST')
 
-def test_invalid_signature(start_app):
-    data = json.dumps({"event":"test"}).encode('utf-8')
-    req = urllib.request.Request(f"http://localhost:{PORT}/webhook", data=data, method="POST")
-    req.add_header("Content-Type", "application/json")
-    req.add_header("x-identitypass-signature", "invalid_hash")
-    
-    try:
-        urllib.request.urlopen(req)
-        pytest.fail("Expected 401 HTTPError but request succeeded.")
-    except HTTPError as e:
-        assert e.code == 401, f"Expected status code 401, got {e.code}"
-        response_body = e.read().decode('utf-8')
-        assert "Invalid signature" in response_body, f"Expected 'Invalid signature' in response, got {response_body}"
-
-def test_valid_signature(start_app):
-    data = json.dumps({"event":"test"}).encode('utf-8')
-    # Compute valid signature
-    signature = hmac.new(SECRET.encode('utf-8'), data, hashlib.sha256).hexdigest()
-    
-    req = urllib.request.Request(f"http://localhost:{PORT}/webhook", data=data, method="POST")
-    req.add_header("Content-Type", "application/json")
-    req.add_header("x-identitypass-signature", signature)
-    
     try:
         response = urllib.request.urlopen(req)
-        assert response.code == 200, f"Expected status code 200, got {response.code}"
-        response_body = response.read().decode('utf-8')
-        assert "received" in response_body, f"Expected 'received' in response, got {response_body}"
-    except HTTPError as e:
-        pytest.fail(f"Expected 200 OK, got HTTPError {e.code}: {e.read().decode('utf-8')}")
+        pytest.fail("Expected a 400 error response, but request succeeded.")
+    except urllib.error.HTTPError as e:
+        assert e.code == 400, f"Expected status code 400, got {e.code}"
+        body = e.read().decode('utf-8')
+        try:
+            res_json = json.loads(body)
+        except json.JSONDecodeError:
+            pytest.fail(f"Expected JSON response, got: {body}")
+        
+        assert res_json.get("error") is True, f"Expected 'error': true in response, got: {res_json}"
+        assert res_json.get("message") == "Verification failed", f"Expected 'message': 'Verification failed' in response, got: {res_json}"
+        assert "details" in res_json, f"Expected 'details' in response, got: {res_json}"
 
-def test_middleware_file_exists():
-    middleware_path = os.path.join(PROJECT_DIR, "middleware.js")
-    assert os.path.isfile(middleware_path), f"File {middleware_path} does not exist."
+def test_package_json_exists():
+    """Priority 3 fallback: basic file existence check."""
+    assert os.path.isfile(os.path.join(PROJECT_DIR, "package.json")), "package.json not found in /home/user/app"
+
+def test_index_js_exists():
+    """Priority 3 fallback: basic file existence check."""
+    assert os.path.isfile(os.path.join(PROJECT_DIR, "index.js")), "index.js not found in /home/user/app"

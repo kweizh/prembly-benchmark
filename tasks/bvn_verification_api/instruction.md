@@ -1,25 +1,29 @@
-# Prembly BVN Verification API
+# BVN Verification API with Prembly
 
 ## Background
-Prembly provides identity verification APIs. You need to create an Express.js REST API that acts as a proxy to Prembly's BVN (Bank Verification Number) validation endpoint.
+You need to build a Node.js Express server that verifies a Bank Verification Number (BVN) using Prembly's API.
 
 ## Requirements
-- Create an Express server listening on port 3000.
-- Implement a `POST /verify-bvn` endpoint that accepts a JSON body: `{"bvn": "string"}`.
-- The endpoint must call Prembly's BVN verification API: `POST {PREMBLY_BASE_URL}/verification/bvn_validation`
-- The request to Prembly must include the following headers:
-  - `app-id`: value from the `PREMBLY_APP_ID` environment variable.
-  - `x-api-key`: value from the `PREMBLY_API_KEY` environment variable.
-- The request body to Prembly must be: `{"number": "<the_bvn_from_client>"}`.
-- Return the exact JSON response received from Prembly back to the client.
-- If `PREMBLY_BASE_URL` is not set in the environment, default it to `https://api.prembly.com`.
+- Initialize a Node.js project in `/home/user/app`.
+- Create an Express server with a POST endpoint at `/verify-bvn`.
+- The endpoint should accept a JSON body with a `bvn` field.
+- It must call Prembly's BVN verification API using the sandbox environment (`https://api.prembly.com/verification/bvn`).
+- Provide the `app-id` and `x-api-key` headers using the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY`.
+- The endpoint should return the data received from Prembly.
+- Implement proper error handling.
 
-## Implementation
-1. Initialize a Node.js project in `/home/user/prembly_bvn`.
+## Implementation Guide
+1. `cd /home/user/app` and run `npm init -y`.
 2. Install `express` and `axios`.
-3. Create `index.js` implementing the server and endpoint.
+3. Create an `index.js` file that sets up the Express server.
+4. Implement the POST `/verify-bvn` endpoint to forward requests to the Prembly BVN verification API.
+5. Ensure the server listens on port 3000.
 
 ## Constraints
-- **Project path**: `/home/user/prembly_bvn`
-- **Start command**: `node index.js`
-- **Port**: 3000
+- Project path: /home/user/app
+- Start command: `npm start` (ensure this is defined in package.json to run `node index.js`)
+- Port: 3000
+- Use `https://api.prembly.com` as the base URL.
+
+## Integrations
+- None

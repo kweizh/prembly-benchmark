@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776327983.4785368,
+            "stop": 1776327992.6883407
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_project_exists",
+                "status": "passed",
+                "duration": 0.0006552301347255707,
+                "start": 1776327983.4916446,
+                "stop": 1776327983.4925885,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_build_succeeds",
+                "status": "passed",
+                "duration": 6.1848904974758625,
+                "start": 1776327983.4929667,
+                "stop": 1776327989.678117,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_api_route_proxy",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 2.991259059868753,
+                "start": 1776327989.6784492,
+                "stop": 1776327992.688013,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_app = None\n\n    def test_api_route_proxy(start_app):\n        \"\"\"Test the /api/verify-nin endpoint using curl.\"\"\"\n        result = subprocess.run(\n            [\n                \"curl\", \"-s\", \"-X\", \"POST\",\n                \"http://localhost:3000/api/verify-nin\",\n                \"-H\", \"Content-Type: application/json\",\n                \"-d\", '{\"number\": \"12345678901\"}'\n            ],\n            capture_output=True,\n            text=True\n        )\n    \n        assert result.returncode == 0, f\"curl request failed: {result.stderr}\"\n    \n        try:\n            data = json.loads(result.stdout)\n        except json.JSONDecodeError:\n            pytest.fail(f\"API did not return valid JSON. Output: {result.stdout}\")\n    \n        # The Prembly API might return success or error, but the proxy should forward it\n        # We check if the response contains keys typical of Prembly responses\n>       assert \"status\" in data or \"message\" in data or \"code\" in data, \\\n            f\"Response JSON does not look like a Prembly API response: {data}\"\nE       AssertionError: Response JSON does not look like a Prembly API response: {'error': 'Internal server error'}\nE       assert ('status' in {'error': 'Internal server error'} or 'message' in {'error': 'Internal server error'} or 'code' in {'error': 'Internal server error'})\n\ntests/test_final_state.py:78: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

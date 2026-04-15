@@ -8,18 +8,14 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /home/user && chmod 0755 /home/user
+RUN mkdir -p /home/user/prembly-webhook && chmod -R 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="Node.js environment for implementing a Prembly webhook verification server."
-
-RUN mkdir -p /home/user/prembly-webhook && \
-    cd /home/user/prembly-webhook && \
-    npm init -y
+LABEL Description="Node.js environment for Prembly webhook signature verification task."
 
 # Container contents:
-#   - curl, python3, pytest, git
-#   - Node.js v24 installed
-#   - /home/user/prembly-webhook initialized with package.json
+#   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
+#   - Node.js v24 for the Express.js task environment
+#   - /home/user/prembly-webhook: empty project directory
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

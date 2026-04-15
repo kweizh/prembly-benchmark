@@ -11,11 +11,13 @@ RUN apt-get update -y && \
 RUN mkdir -p /home/user && chmod 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="Node.js environment for building an Express REST API."
+LABEL Description="Node.js environment for building a Prembly driver license verification API."
+
+RUN mkdir -p /home/user/app && \
+    cd /home/user/app
 
 # Container contents:
-#   - curl ca-certificates git python3 python3-pip python3-pytest bash
-#   - Node.js v24 and npm
-#   - /home/user: base directory for the project
+#   - Node.js v24 installed
+#   - /home/user/app: base directory for the project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

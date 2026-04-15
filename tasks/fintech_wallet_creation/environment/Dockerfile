@@ -13,10 +13,12 @@ RUN mkdir -p /home/user && chmod 0755 /home/user
 LABEL Author="any-task-builder"
 LABEL Description="Node.js environment for Fintech Wallet Creation task."
 
-RUN mkdir -p /home/user/project
+RUN mkdir -p /home/user/fintech-app && \
+    cd /home/user/fintech-app && \
+    npm init -y
 
 # Container contents:
-#   - Node.js v24 installed
-#   - /home/user/project directory for the task
+#   - Node.js v24 installed.
+#   - /home/user/fintech-app  — Initialized Node.js project.
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

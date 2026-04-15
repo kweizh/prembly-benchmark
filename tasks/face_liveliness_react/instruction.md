@@ -1,31 +1,22 @@
-# Prembly Face Liveliness Integration in React
+# Prembly Face Liveliness with React
 
 ## Background
-Prembly (formerly Identitypass) provides identity verification APIs and SDKs. You need to integrate their Face Liveliness widget into a React application.
+You have a basic React application initialized at `/home/user/app`. You need to integrate the Prembly Pass widget to perform a Face Liveliness check.
 
 ## Requirements
-- You have a React application at `/home/user/prembly-app`.
 - Install the `prembly-pass` library.
-- Add a button with the text `Verify Identity` to the main component (`App.jsx`).
-- When the button is clicked, it should initialize and launch the `PremblyPass` widget.
-- The widget should be configured with:
-  - `app_id`: `test_app_id`
-  - `x_api_key`: `test_public_key`
-  - `environment`: `test`
-- The launch configuration should use:
-  - `config_id`: `test_config_id`
-  - `user_ref`: `user_123`
-- When the `success` event is fired, the application should display a success message containing the text `Verification successful: ` followed by the verification reference.
-- When the `error` event is fired, the application should display an error message containing the text `Verification failed: ` followed by the error.
-
-## Implementation Guide
-1. Go to `/home/user/prembly-app`.
-2. Install the `prembly-pass` package.
-3. Edit `src/App.jsx` to include the button and the `PremblyPass` logic.
-4. Ensure the component renders correctly and listens to `success` and `error` events from `PremblyPass`.
-5. Start the application on port 3000.
+- Create a `FaceLiveliness` React component in `src/FaceLiveliness.js`.
+- The component should have a button with the id `verify-btn` that, when clicked, launches the Prembly Pass widget.
+- Initialize `PremblyPass` with `app_id` from the environment variable `PREMBLY_APP_ID`, `x_api_key` from `PREMBLY_API_KEY`, and set `environment` to `'test'` (or the sandbox URL `https://api.prembly.com` if required by the SDK).
+- Launch the widget with `config_id` from `PREMBLY_CONFIG_ID` and `user_ref` as `'user_123'`.
+- On successful verification, the component should render a `div` with the id `success-message` containing the text 'Verification successful'.
+- Update `src/App.js` to render the `FaceLiveliness` component.
+- Ensure the environment variables are correctly passed to your React app (e.g., by creating a `.env` file with `REACT_APP_PREMBLY_APP_ID`, etc., if using Create React App).
 
 ## Constraints
-- Project path: `/home/user/prembly-app`
-- Start command: `npm run dev -- --port 3000 --host`
+- Project path: `/home/user/app`
+- Start command: `npm start`
 - Port: 3000
+
+## Integrations
+- Prembly

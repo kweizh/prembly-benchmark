@@ -1,22 +1,28 @@
-# Prembly Pass Widget in Vanilla JS
+# Prembly Pass Vanilla HTML Widget
 
 ## Background
-Implement the Prembly Pass widget in a plain HTML/Vanilla JS file, handling success and error callbacks.
+You need to integrate the Prembly Pass widget into a vanilla web application to handle identity verification.
 
 ## Requirements
-- Create an `index.html` file that includes a button with id `verify-btn`.
-- Import and initialize the `PremblyPass` widget (e.g., via CDN like `https://esm.sh/prembly-pass` or a bundler if you prefer).
-- Initialize it with `app_id: "YOUR_APP_ID"`, `x_api_key: "YOUR_PUBLIC_KEY"`, and `environment: "test"`.
-- Add an event listener to the `verify-btn` to call `prembly.launch()` with `config_id: "YOUR_CONFIG_ID_FROM_DASHBOARD"` and `user_ref: "unique_user_id_123"`.
-- Handle the `success` callback by setting the innerText of a div with id `result` to "Verification successful".
-- Handle the `error` callback by setting the innerText of the same div to "Verification failed".
+- Initialize a vanilla JS project using Vite in `/home/user/app`.
+- Install `prembly-pass`.
+- Create a simple UI with a button to launch the Prembly verification widget.
+- Initialize `PremblyPass` with `app_id` as `test_app_id` and `x_api_key` from the `PREMBLY_API_KEY` environment variable. Ensure the environment is set to `test` and uses the Prembly sandbox URL (`https://api.prembly.com`).
+- Configure it with `config_id` as `test_config_id` and a unique `user_ref`.
+- Listen for `success` and `error` events, and log the results to the console or display them on the screen.
 
 ## Implementation Guide
-1. Work in `/home/user/prembly-widget`.
-2. Create `index.html`.
-3. Make sure to serve the directory on port 3000.
+1. Run `npm create vite@latest /home/user/app -- --template vanilla`.
+2. `cd /home/user/app` and `npm install`.
+3. Install the SDK: `npm install prembly-pass`.
+4. Edit `main.js` to import and configure `PremblyPass`.
+5. Add a button in `index.html` to trigger the widget launch.
 
 ## Constraints
-- Project path: `/home/user/prembly-widget`
-- Start command: `python3 -m http.server 3000`
+- Project path: `/home/user/app`
+- Start command: `npm run dev -- --host 0.0.0.0 --port 3000`
 - Port: 3000
+- Read the API key from the environment variable `PREMBLY_API_KEY`.
+
+## Integrations
+- None

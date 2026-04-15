@@ -1,94 +1,106 @@
 import os
 import subprocess
 import time
-import urllib.request
+import socket
 import json
-import base64
-from urllib.error import HTTPError
+import urllib.request
+import urllib.error
+import pytest
 
-PROJECT_DIR = "/home/user/prembly-webhook"
-PORT = 3000
+PROJECT_DIR = "/home/user/app"
 
-def test_fastify_server_webhook_handling():
-    # Set up environment
+def wait_for_port(port, timeout=30):
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            if sock.connect_ex(('localhost', port)) == 0:
+                return True
+        time.sleep(1)
+    return False
+
+@pytest.fixture(scope="module")
+def start_app():
+    # Start the app
     env = os.environ.copy()
-    env["WEBHOOK_SECRET"] = "my_super_secret"
+    # Use real API key if available, otherwise fallback to test key
+    api_key = env.get("PREMBLY_API_KEY", "test_api_key")
+    env["PREMBLY_API_KEY"] = api_key
     
-    # Start the server
     process = subprocess.Popen(
-        ["node", "index.js"],
+        ["npm", "start"],
         cwd=PROJECT_DIR,
-        env=env,
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
+        stderr=subprocess.PIPE,
+        env=env,
+        preexec_fn=os.setsid
     )
     
+    # Wait for the app to be ready
+    if not wait_for_port(3000):
+        # Kill the process group before failing
+        import signal
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        pytest.fail("App failed to start and listen on port 3000.")
+    
+    yield
+    
+    # Shut down the app
+    import signal
+    os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+    process.wait(timeout=10)
+
+def test_missing_signature(start_app):
+    url = "http://localhost:3000/webhook"
+    data = json.dumps({"status": True, "response_code": "00"}).encode('utf-8')
+    req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+    
     try:
-        # Wait for server to start
-        time.sleep(3)
+        urllib.request.urlopen(req)
+        pytest.fail("Expected 401 Unauthorized, but request succeeded.")
+    except urllib.error.HTTPError as e:
+        assert e.code == 401, f"Expected HTTP 401, got {e.code}"
+
+def test_invalid_signature(start_app):
+    url = "http://localhost:3000/webhook"
+    data = json.dumps({"status": True, "response_code": "00"}).encode('utf-8')
+    headers = {
+        'Content-Type': 'application/json',
+        'x-prembly-signature': 'invalid_signature_base64='
+    }
+    req = urllib.request.Request(url, data=data, headers=headers)
+    
+    try:
+        urllib.request.urlopen(req)
+        pytest.fail("Expected 401 Unauthorized, but request succeeded.")
+    except urllib.error.HTTPError as e:
+        assert e.code == 401, f"Expected HTTP 401, got {e.code}"
+
+def test_valid_signature(start_app):
+    url = "http://localhost:3000/webhook"
+    data = b'{"status":true,"response_code":"00"}'
+    
+    import hmac
+    import hashlib
+    import base64
+    
+    api_key = os.environ.get("PREMBLY_API_KEY", "test_api_key")
+    
+    # Compute the signature dynamically using the actual key
+    sig = hmac.new(api_key.encode('utf-8'), data, hashlib.sha256).digest()
+    valid_signature = base64.b64encode(sig).decode('utf-8')
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'x-prembly-signature': valid_signature
+    }
+    req = urllib.request.Request(url, data=data, headers=headers)
+    
+    try:
+        response = urllib.request.urlopen(req)
+        assert response.getcode() == 200, f"Expected HTTP 200, got {response.getcode()}"
         
-        # Test 1: Missing Signature
-        req = urllib.request.Request(
-            f"http://localhost:{PORT}/webhook",
-            data=b"{}",
-            headers={"Content-Type": "application/json"},
-            method="POST"
-        )
-        try:
-            urllib.request.urlopen(req)
-            assert False, "Expected 401 Unauthorized for missing signature"
-        except HTTPError as e:
-            assert e.code == 401, f"Expected 401, got {e.code}"
-            
-        # Test 2: Invalid Signature
-        req = urllib.request.Request(
-            f"http://localhost:{PORT}/webhook",
-            data=b"{}",
-            headers={
-                "Content-Type": "application/json",
-                "x-identitypass-signature": "invalid_base64"
-            },
-            method="POST"
-        )
-        try:
-            urllib.request.urlopen(req)
-            assert False, "Expected 401 Unauthorized for invalid signature"
-        except HTTPError as e:
-            assert e.code == 401, f"Expected 401, got {e.code}"
-            
-        # Test 3: Valid Signature
-        valid_signature = base64.b64encode(b"my_super_secret").decode("utf-8")
-        payload = json.dumps({"data": {"verification_id": "12345"}}).encode("utf-8")
-        
-        req = urllib.request.Request(
-            f"http://localhost:{PORT}/webhook",
-            data=payload,
-            headers={
-                "Content-Type": "application/json",
-                "x-identitypass-signature": valid_signature
-            },
-            method="POST"
-        )
-        try:
-            response = urllib.request.urlopen(req)
-            assert response.getcode() == 200, f"Expected 200 OK, got {response.getcode()}"
-        except HTTPError as e:
-            assert False, f"Expected 200 OK for valid signature, got {e.code}"
-            
-        # Test 4: Check Database Update
-        req = urllib.request.Request(
-            f"http://localhost:{PORT}/status/12345",
-            method="GET"
-        )
-        try:
-            response = urllib.request.urlopen(req)
-            assert response.getcode() == 200, f"Expected 200 OK, got {response.getcode()}"
-            
-            data = json.loads(response.read().decode("utf-8"))
-            assert data.get("verified") is True, "Expected verified status to be true"
-        except HTTPError as e:
-            assert False, f"Expected 200 OK for status check, got {e.code}"
-            
-    finally:
-        process.terminate()
-        process.wait(timeout=5)
+        response_body = response.read().decode('utf-8')
+        response_json = json.loads(response_body)
+        assert response_json.get("status") == "received", f"Expected {{'status': 'received'}}, got {response_json}"
+    except urllib.error.HTTPError as e:
+        pytest.fail(f"Expected HTTP 200, but got {e.code}: {e.read().decode('utf-8')}")

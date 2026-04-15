@@ -11,14 +11,11 @@ RUN apt-get update -y && \
 RUN mkdir -p /home/user && chmod 0755 /home/user
 
 LABEL Author="any-task-builder"
-LABEL Description="Next.js environment for Prembly API route proxy task."
-
-RUN cd /home/user && \
-    npx create-next-app@14 prembly-app --javascript --no-eslint --no-tailwind --app --no-src-dir --import-alias "@/*" --use-npm
+LABEL Description="Next.js API route proxy task environment with Node.js v24 installed."
 
 # Container contents:
 #   - always required libs: curl ca-certificates git python3 python3-pip python3-pytest bash
-#   - Node.js v24 installed
-#   - /home/user/prembly-app: initialized Next.js application
+#   - Node.js v24 for the Next.js task environment
+#   - /home/user: base directory for the project
 
 CMD ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]

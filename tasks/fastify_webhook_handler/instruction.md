@@ -1,25 +1,27 @@
-# Prembly Webhook Handler with Fastify
+# Fastify Webhook Handler for Prembly
 
 ## Background
-Prembly (Identitypass) sends asynchronous webhooks to notify your backend when an identity verification completes. You need to create a Fastify server that receives these webhooks securely and updates a mock database.
+Prembly sends asynchronous webhook notifications when verifications are completed. To ensure the security of your endpoint, you must verify the `x-prembly-signature` header included in every webhook request. This signature is an HMAC-SHA256 hash of the raw request payload, generated using your Prembly Public Key.
 
 ## Requirements
-- Create a Fastify server in `/home/user/prembly-webhook`.
-- Implement a `POST /webhook` endpoint.
-- **Signature Verification**: Prembly sends an `x-identitypass-signature` header with each webhook. This header contains the base64 encoded value of your webhook secret. You must verify that this header exactly matches the base64 encoded value of the `WEBHOOK_SECRET` environment variable. If the header is missing or invalid, return HTTP 401 Unauthorized.
-- **Webhook Processing**: If the signature is valid, parse the JSON body. The body will have a `data.verification_id` field. You must update an in-memory mock database (a simple JavaScript object) to mark that `verification_id` as `{ verified: true }`.
-- Return HTTP 200 OK after successful processing.
+- Create a Fastify server that listens on `POST /webhook`.
+- The server must read the raw request body to compute the HMAC-SHA256 signature using the secret key provided in the `PREMBLY_API_KEY` environment variable.
+- Compare the computed signature (base64 encoded) with the `x-prembly-signature` header.
+- If the signature is missing, invalid, or does not match, respond with HTTP status `401 Unauthorized` and `{"error": "Invalid signature"}`.
+- If the signature is valid, process the webhook (you can just respond with HTTP status `200 OK` and `{"status": "received"}`).
 
 ## Implementation Guide
-1. Initialize a Node.js project in `/home/user/prembly-webhook`.
-2. Install `fastify`.
-3. Create an `index.js` file that sets up the Fastify server on port 3000.
-4. Define the mock database variable in memory: `const db = {};`
-5. Implement the `POST /webhook` route.
-6. Add a `GET /status/:id` route to retrieve the verification status from the mock database, returning `{ verified: true }` or `{ verified: false }`.
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `fastify` and `fastify-raw-body` (or handle raw body manually) to ensure you have the exact raw payload for signature verification.
+3. Create `server.js` that sets up the Fastify server and the `/webhook` route.
+4. Implement the HMAC-SHA256 verification logic using Node's built-in `crypto` module.
 
 ## Constraints
-- Project path: `/home/user/prembly-webhook`
-- Start command: `node index.js`
-- Port: 3000
-- The environment variable `WEBHOOK_SECRET` will be provided.
+- **Project path**: `/home/user/app`
+- **Start command**: `npm start`
+- **Port**: 3000
+- You must use `fastify`.
+- The signature must be computed as a Base64 encoded HMAC-SHA256 string of the raw payload using `PREMBLY_API_KEY`.
+
+## Integrations
+- None required for this specific webhook receiver task.

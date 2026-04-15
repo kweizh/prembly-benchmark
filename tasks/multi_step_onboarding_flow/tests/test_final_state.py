@@ -1,53 +1,86 @@
 import os
 import subprocess
 import time
-import requests
-import json
+import socket
 import pytest
+import urllib.request
+import json
+from pochi_verifier import PochiVerifier
 
-PROJECT_DIR = "/home/user/onboarding_app"
+PROJECT_DIR = "/home/user/onboarding"
 
-@pytest.fixture(scope="session", autouse=True)
-def setup_server():
-    env = os.environ.copy()
-    env["PREMBLY_APP_ID"] = "test_app"
-    env["PREMBLY_SECRET_KEY"] = "test_sec"
-    env["PREMBLY_PUBLIC_KEY"] = "test_pub"
-    env["PREMBLY_CONFIG_ID"] = "test_conf"
+def wait_for_port(port, timeout=60):
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            if sock.connect_ex(('localhost', port)) == 0:
+                return True
+        time.sleep(5)
+    return False
+
+@pytest.fixture(scope="module")
+def start_app():
+    # Install dependencies
+    subprocess.run(["npm", "install"], cwd=PROJECT_DIR, check=True)
     
-    server_process = subprocess.Popen(
+    # Start the app
+    process = subprocess.Popen(
         ["node", "server.js"],
         cwd=PROJECT_DIR,
-        env=env,
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
+        stderr=subprocess.PIPE,
+        preexec_fn=os.setsid
     )
-    time.sleep(3)
+    
+    # Wait for the app to be ready
+    if not wait_for_port(3000):
+        # Kill the process group before failing
+        import signal
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        pytest.fail("App failed to start and listen on required ports.")
+    
     yield
-    server_process.terminate()
+    
+    # Shut down the app
+    import signal
+    os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+    process.wait(timeout=30)
 
-def test_server_running():
-    response = requests.get("http://localhost:3000")
-    assert response.status_code == 200, "Server did not return 200 OK on root"
+def test_api_verify_phone(start_app):
+    """Test the backend API endpoint for phone verification."""
+    data = json.dumps({"phone": "08012345678"}).encode('utf-8')
+    req = urllib.request.Request(
+        "http://localhost:3000/api/verify-phone",
+        data=data,
+        headers={'Content-Type': 'application/json'}
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            assert response.status == 200, f"Expected 200 OK, got {response.status}"
+    except urllib.error.URLError as e:
+        pytest.fail(f"Failed to call API: {e}")
 
-def test_verify_phone_endpoint():
-    # We just check if the endpoint exists, it might fail to call Prembly API if no mock is provided
-    # but we can check if it returns a response (even a 4xx/5xx from Prembly)
-    response = requests.post("http://localhost:3000/api/verify-phone", json={"phone": "1234567890"})
-    assert response.status_code in [200, 400, 401, 404, 500], f"Unexpected status code: {response.status_code}"
+def test_frontend_loads(start_app):
+    """Test that the frontend HTML page loads."""
+    try:
+        with urllib.request.urlopen("http://localhost:3000", timeout=10) as response:
+            assert response.status == 200, f"Expected 200 OK, got {response.status}"
+            html = response.read().decode('utf-8')
+            assert "form" in html.lower(), "Expected a form on the HTML page"
+            assert "prembly" in html.lower() or "identitypass" in html.lower(), "Expected Prembly widget script on the HTML page"
+    except urllib.error.URLError as e:
+        pytest.fail(f"Failed to load frontend: {e}")
 
-def test_frontend_code_contains_prembly():
-    index_path = os.path.join(PROJECT_DIR, "public", "index.html")
-    assert os.path.isfile(index_path), "public/index.html does not exist"
-    with open(index_path, "r") as f:
-        content = f.read()
-    assert "PremblyPass" in content, "PremblyPass not found in index.html"
-    assert "PREMBLY_CONFIG_ID" in content or "test_conf" in content or "config_id" in content.lower(), "config_id not found in index.html"
-
-def test_server_code_contains_api_call():
-    server_path = os.path.join(PROJECT_DIR, "server.js")
-    assert os.path.isfile(server_path), "server.js does not exist"
-    with open(server_path, "r") as f:
-        content = f.read()
-    assert "sandbox.myidentitypay.com" in content or "api.prembly.com" in content, "Prembly API URL not found in server.js"
-    assert "x-api-key" in content.lower(), "x-api-key not found in server.js"
+def test_browser_verification(start_app):
+    """Test browser interaction using PochiVerifier."""
+    reason = "The application should display a form for phone number input and load the Prembly widget."
+    truth = "Navigate to http://localhost:3000. Verify that the page contains a form for phone number input and can load the Prembly widget."
+    
+    verifier = PochiVerifier()
+    result = verifier.verify(
+        reason=reason,
+        truth=truth,
+        use_browser_agent=True,
+        trajectory_dir="/logs/verifier/pochi/test_browser_verification"
+    )
+    assert result.status == "pass", f"Browser verification failed: {result.reason}"

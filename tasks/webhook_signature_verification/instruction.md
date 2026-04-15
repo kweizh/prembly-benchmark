@@ -1,25 +1,32 @@
-# Secure Prembly Webhook Verification
+# Prembly Webhook Signature Verification
 
 ## Background
-Prembly sends webhooks to notify your application of asynchronous verification results. Because Prembly webhooks do not currently include a cryptographic signature header, developers must securely verify the authenticity of the webhook payload to prevent spoofing attacks.
+Create an Express.js server that receives Prembly webhooks and securely verifies their signature. Prembly sends webhooks with an `x-prembly-signature` header containing a Base64 encoded HMAC-SHA256 hash of the request body, using your API key as the secret. Verifying this signature is critical to ensure the webhook is legitimately from Prembly and hasn't been tampered with.
 
 ## Requirements
-Create an Express.js server that:
-1. Exposes a `POST /webhook` endpoint to receive Prembly webhooks.
-2. Extracts the `verification.reference` from the incoming webhook payload.
-3. Makes a secure server-to-server `GET` request to Prembly's `Get Verification Status` API (`<PREMBLY_API_URL>/verification/{reference}/status`) using the `x-api-key` header to confirm the webhook is legitimate.
-4. If the API returns `status: true` and the `verification_status` matches the webhook's `verification.status`, respond with `200 OK` and write the verified data to `verified_webhooks.json`.
-5. If the API call fails or the status does not match, respond with `403 Forbidden`.
+- Initialize a Node.js project and install `express`.
+- Create a POST `/webhook` endpoint that accepts JSON payloads.
+- The endpoint must capture the raw request body to verify the signature.
+- Compute the HMAC-SHA256 hash of the raw request body using the `PREMBLY_API_KEY` environment variable as the secret key.
+- Base64 encode the computed hash.
+- Compare the computed signature with the `x-prembly-signature` header.
+- If the signatures match, respond with `200 OK` and `{"status": "success"}`.
+- If the signatures do NOT match or the header is missing, respond with `401 Unauthorized` and `{"error": "Invalid signature"}`.
 
 ## Implementation Guide
-1. The project is located at `/home/user/prembly-webhook`.
-2. Install `express` and `axios`.
-3. Create `server.js` with the Express app listening on port 3000.
-4. Read the Prembly API key from the `PREMBLY_SECRET_KEY` environment variable.
-5. Read the Prembly API URL from the `PREMBLY_API_URL` environment variable (default to `https://api.prembly.com`).
-6. Implement the `/webhook` endpoint as described.
+1. Initialize a Node.js project in `/home/user/prembly-webhook`.
+2. Install `express`.
+3. Create an `index.js` file.
+4. Use `express.raw({ type: 'application/json' })` middleware for the `/webhook` route to ensure you have the exact raw body for signature verification.
+5. Implement the signature computation using Node's built-in `crypto` module (`crypto.createHmac('sha256', process.env.PREMBLY_API_KEY).update(req.body).digest('base64')`).
+6. Compare the signatures securely.
+7. Start the server on port 3000.
 
 ## Constraints
 - Project path: `/home/user/prembly-webhook`
-- Start command: `node server.js`
-- Port: 3000
+- Start command: `npm start` (ensure this is defined in package.json)
+- Port: `3000`
+- The server must read the secret key from the `PREMBLY_API_KEY` environment variable.
+
+## Integrations
+- None required for this specific task.

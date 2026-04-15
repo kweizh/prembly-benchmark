@@ -2,10 +2,13 @@ import os
 import subprocess
 import time
 import socket
+import json
 import pytest
+import hmac
+import hashlib
 
-PROJECT_DIR = "/home/user/prembly-kyb"
-SERVICE_FILE = os.path.join(PROJECT_DIR, "src/prembly/prembly.service.ts")
+PROJECT_DIR = "/home/user/nestjs-kyb"
+PORT = 3000
 
 def wait_for_port(port, timeout=60):
     start_time = time.time()
@@ -16,28 +19,10 @@ def wait_for_port(port, timeout=60):
         time.sleep(5)
     return False
 
-def test_service_file_exists():
-    assert os.path.isfile(SERVICE_FILE), f"Service file not found at {SERVICE_FILE}"
-
-def test_service_url():
-    with open(SERVICE_FILE) as f:
-        content = f.read()
-    assert "https://sandbox.myidentitypay.com/api/v2/biometrics/merchant/data/verification/cac" in content or "myidentitypay.com" in content or "prembly.com" in content, "Expected Prembly sandbox URL in prembly.service.ts"
-
-def test_service_headers():
-    with open(SERVICE_FILE) as f:
-        content = f.read()
-    assert "PREMBLY_APP_ID" in content, "Expected PREMBLY_APP_ID in prembly.service.ts"
-    assert "PREMBLY_API_KEY" in content, "Expected PREMBLY_API_KEY in prembly.service.ts"
-    assert "app-id" in content or "app_id" in content.lower(), "Expected app-id header in prembly.service.ts"
-    assert "x-api-key" in content or "x_api_key" in content.lower(), "Expected x-api-key header in prembly.service.ts"
-
 @pytest.fixture(scope="module")
 def start_app():
     env = os.environ.copy()
-    env["PREMBLY_APP_ID"] = "test_app_id"
-    env["PREMBLY_API_KEY"] = "test_api_key"
-
+    
     process = subprocess.Popen(
         ["npm", "run", "start"],
         cwd=PROJECT_DIR,
@@ -46,22 +31,65 @@ def start_app():
         stderr=subprocess.PIPE,
         preexec_fn=os.setsid
     )
-
-    if not wait_for_port(3000):
+    
+    if not wait_for_port(PORT):
         import signal
         os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-        pytest.fail("App failed to start and listen on port 3000.")
-
-    yield process
-
+        pytest.fail("App failed to start and listen on required ports.")
+    
+    yield
+    
     import signal
     os.killpg(os.getpgid(process.pid), signal.SIGTERM)
     process.wait(timeout=30)
 
-def test_api_endpoint(start_app):
+def test_kyb_verify_endpoint(start_app):
+    """Test POST /kyb/verify endpoint"""
+    payload = json.dumps({"rc_number": "123456", "company_type": "RC"})
     result = subprocess.run(
-        ["curl", "-s", "-i", "http://localhost:3000/verify-cac?rcNumber=123456&companyName=TEST"],
+        [
+            "curl", "-s", "-X", "POST", f"http://localhost:{PORT}/kyb/verify",
+            "-H", "Content-Type: application/json",
+            "-d", payload
+        ],
         capture_output=True, text=True
     )
-    assert result.returncode == 0, f"curl request failed: {result.stderr}"
-    assert "HTTP/1.1 200" in result.stdout or "HTTP/1.1 201" in result.stdout or "HTTP/1.1 500" in result.stdout or "HTTP/1.1 400" in result.stdout, f"Expected HTTP response, got: {result.stdout}"
+    assert result.returncode == 0, f"curl failed: {result.stderr}"
+    assert "404 Not Found" not in result.stdout, "Endpoint /kyb/verify not found"
+
+def test_webhook_valid_signature(start_app):
+    """Test POST /webhook/prembly with valid signature"""
+    payload = json.dumps({"event": "verification.completed", "status": "success"})
+    secret = os.environ.get("PREMBLY_WEBHOOK_SECRET", os.environ.get("PREMBLY_API_KEY", "test_secret"))
+    signature = hmac.new(secret.encode(), payload.encode(), hashlib.sha512).hexdigest()
+    
+    result = subprocess.run(
+        [
+            "curl", "-s", "-w", "%{http_code}", "-o", "/dev/null", "-X", "POST", f"http://localhost:{PORT}/webhook/prembly",
+            "-H", "Content-Type: application/json",
+            "-H", f"x-prembly-signature: {signature}",
+            "-d", payload
+        ],
+        capture_output=True, text=True
+    )
+    assert result.returncode == 0, f"curl failed: {result.stderr}"
+    http_code = result.stdout.strip()
+    assert http_code in ["200", "201"], f"Expected 200 or 201 for valid webhook, got {http_code}"
+
+def test_webhook_invalid_signature(start_app):
+    """Test POST /webhook/prembly with invalid signature"""
+    payload = json.dumps({"event": "verification.completed", "status": "success"})
+    signature = "invalid_signature"
+    
+    result = subprocess.run(
+        [
+            "curl", "-s", "-w", "%{http_code}", "-o", "/dev/null", "-X", "POST", f"http://localhost:{PORT}/webhook/prembly",
+            "-H", "Content-Type: application/json",
+            "-H", f"x-prembly-signature: {signature}",
+            "-d", payload
+        ],
+        capture_output=True, text=True
+    )
+    assert result.returncode == 0, f"curl failed: {result.stderr}"
+    http_code = result.stdout.strip()
+    assert http_code in ["400", "401", "403"], f"Expected 400, 401 or 403 for invalid webhook signature, got {http_code}"

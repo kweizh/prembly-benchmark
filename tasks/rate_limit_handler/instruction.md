@@ -1,23 +1,27 @@
-# Prembly Rate Limit Handler
+# Prembly API Rate Limit Handler
 
 ## Background
-Prembly provides identity verification APIs. To prevent abuse and manage costs, you need to implement a rate limit handler for a Node.js Express application that calls the Prembly NIN verification API.
+You are building a Node.js backend that integrates with Prembly (Identitypass) to verify National Identity Numbers (NIN). The Prembly API may occasionally return a `429 Too Many Requests` status code when rate limits are exceeded. You need to implement an exponential backoff retry mechanism to handle this gracefully.
 
 ## Requirements
-- Build an Express.js server that exposes a `POST /api/verify` endpoint.
-- The endpoint accepts a JSON body with `user_id` and `nin` (e.g., `{ "user_id": "user123", "nin": "12345678901" }`).
-- Implement a rate limiter that allows a maximum of 3 verification attempts per `user_id` within a 15-minute window.
-- If the limit is exceeded, the endpoint must return an HTTP 429 Too Many Requests status code with a JSON response `{"error": "Too many verification attempts"}`.
-- If the limit is not exceeded, the endpoint should call the Prembly API at `http://localhost:3001/verification/nin` (a local mock server provided in the environment) using a POST request with the `number` field in the body (`{"number": "..."}`) and the headers `app-id: test-app` and `x-api-key: test-key`. It should then return the Prembly API response to the client.
+- Initialize a Node.js Express application in `/home/user/app`.
+- Create a `POST /verify-nin` endpoint that accepts a JSON body with a `nin` string (e.g., `{"nin": "12345678901"}`).
+- The endpoint must call the Prembly NIN API using the base URL from the `PREMBLY_BASE_URL` environment variable (defaulting to `https://api.prembly.com`) and the path `/verification/nin`.
+- Pass the `app-id` and `x-api-key` headers using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
+- Implement an exponential backoff retry mechanism for the Prembly API call: if the API returns a 429 status code, retry the request up to 3 times. Wait 100ms before the first retry, 200ms before the second, and 400ms before the third.
+- If the request succeeds, return the Prembly API response with a 200 status code.
+- If the request still fails with a 429 after 3 retries, return a 429 status code to the client with the message `"Rate limit exceeded, please try again later"`.
 
-## Implementation
-1. The project is located at `/home/user/prembly-app`.
-2. The project has already been initialized with `package.json` and dependencies (`express`, `axios`).
-3. Create or modify `server.js` to implement the requirements.
-4. The Express server must listen on port 3000.
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `express` and `axios`.
+3. Create an `index.js` that sets up the Express server on `process.env.PORT` or port 3000.
+4. Implement the `POST /verify-nin` endpoint with the retry logic.
+5. Ensure the server parses JSON request bodies.
 
 ## Constraints
-- Project path: `/home/user/prembly-app`
-- Start command: `node server.js`
-- Port: 3000
-- Mock Prembly API URL: `http://localhost:3001`
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: `process.env.PORT` or 3000
+- Log file: `/home/user/app/output.log`
+- Use `axios` for HTTP requests.

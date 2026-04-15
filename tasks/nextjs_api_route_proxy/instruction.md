@@ -1,16 +1,28 @@
-# Secure Prembly API Proxy in Next.js
+# Next.js API Route Proxy for Prembly
 
 ## Background
-You are building a frontend application that needs to verify Nigerian National Identity Numbers (NIN) using the Prembly API. To avoid exposing your `app-id` and `x-api-key` to the client, you need to create a Next.js API route that proxies the request to Prembly.
+Create a Next.js API route that acts as a secure proxy to the Prembly NIN verification API, hiding the API key from the frontend.
 
 ## Requirements
-- Create a Next.js API route at `app/api/verify-nin/route.js` (using App Router) that accepts a POST request with a JSON body containing `{ "number": "<NIN>" }`.
-- The API route must forward this request to the Prembly NIN endpoint (`https://api.prembly.com/verification/nin`).
-- The API route must attach the `app-id` and `x-api-key` headers to the Prembly request. These values must be read from the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY`.
-- The API route must return the exact JSON response received from Prembly to the client.
-- If `PREMBLY_BASE_URL` is set in the environment, use it instead of `https://api.prembly.com` for the base URL. This is useful for testing with a mock server.
+- Initialize a Next.js project in `/home/user/app`.
+- Create an API route `POST /api/verify-nin` that accepts a JSON body with a `number` field.
+- The route should call the Prembly NIN verification API (`https://api.prembly.com/api/v1/verification/nin` or `https://api.prembly.com/verification/nin` according to the documentation) using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
+- Set the headers `app-id` and `x-api-key` appropriately.
+- Return the JSON response from Prembly to the client.
+- The API route must handle errors appropriately.
+
+## Implementation Guide
+1. Initialize a Next.js project in `/home/user/app` using `npx create-next-app@latest app --javascript --eslint --tailwind --app --src-dir --use-npm`.
+2. Create the API route in `src/app/api/verify-nin/route.js`.
+3. Implement the POST handler to read the `number` from the request body.
+4. Make a POST request to the Prembly sandbox API using `fetch` or `axios`.
+5. Return the response to the client.
 
 ## Constraints
-- Project path: `/home/user/prembly-app`
-- Start command: `npm run dev`
+- Project path: `/home/user/app`
+- Start command: `npm run build && npm start`
 - Port: 3000
+- Use `https://api.prembly.com` as the base URL for the Prembly API.
+
+## Integrations
+- Prembly

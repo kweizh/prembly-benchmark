@@ -1,7 +1,0 @@
-{
-  "library_name": "Prembly (Identitypass)",
-  "complexity_level": "multi-step sequential commands sets",
-  "deep_research_path": "/home/kw/code/work/prembly-benchmark/plan.md",
-  "task_name": "secure_backend_proxy",
-  "output_dir": "/tmp/zealt-gen-8kYuk9"
-}
