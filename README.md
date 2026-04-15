@@ -1,8 +1,8 @@
-# Jujutsu Benchmark
+# Prembly Benchmark
 
-This repository contains benchmarks for [Jujutsu (jj)](https://github.com/martinvonz/jj), a next-generation version control system.
+This repository contains benchmarks for [Prembly](http://prembly.com), a authentication and authorization system.
 
-You can view the evaluation reports at [tabbyml.github.io/jj-benchmark](https://tabbyml.github.io/jj-benchmark/).
+You can view the evaluation reports at [kweizh.github.io/prembly-benchmark](https://kweizh.github.io/prembly-benchmark/).
 
 ## Project Structure
 
