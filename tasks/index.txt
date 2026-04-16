@@ -8,14 +8,14 @@
 20:I[9986,["/prembly-benchmark/_next/static/chunks/d2c13bb33c4fcd54.js","/prembly-benchmark/_next/static/chunks/c21188132e0e0d48.js"],"default"]
 :HL["/prembly-benchmark/_next/static/chunks/628400866fa0f205.css","style"]
 :HL["/prembly-benchmark/_next/static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-8:T4f6,# Prembly Background Job Polling
+8:T4ec,# Prembly Background Job Polling
 
 ## Background
 You need to build a Node.js background job that polls the Prembly SDK Session Retrieval endpoint for pending verifications that haven't sent a webhook.
 
 ## Requirements
 - Create a Node.js script `poll.js` that fetches the SDK sessions.
-- Use the Prembly sandbox URL: `https://sandbox.myidentitypay.com/api/v1/checker-widget/sdk/sessions/`
+- Use the Prembly sandbox URL: `https://api.prembly.com/api/v1/checker-widget/sdk/sessions/`
 - Pass the `PREMBLY_API_KEY` environment variable as the `x-api-key` header.
 - The script should parse the response and count the total number of sessions returned (or those with a specific status if you prefer, but counting total sessions is sufficient for this task to prove the API call works).
 - Write the output to a log file in the format: `Total sessions: <count>`.
@@ -33,7 +33,7 @@ You need to build a Node.js background job that polls the Prembly SDK Session Re
 - Use the environment variable `PREMBLY_API_KEY` for authentication.
 
 ## Integrations
-- Prembly9:T4e4,# BVN Verification API with Prembly
+- Prembly9:T4c2,# BVN Verification API with Prembly
 
 ## Background
 You need to build a Node.js Express server that verifies a Bank Verification Number (BVN) using Prembly's API.
@@ -42,7 +42,7 @@ You need to build a Node.js Express server that verifies a Bank Verification Num
 - Initialize a Node.js project in `/home/user/app`.
 - Create an Express server with a POST endpoint at `/verify-bvn`.
 - The endpoint should accept a JSON body with a `bvn` field.
-- It must call Prembly's BVN verification API using the sandbox environment (`https://sandbox.myidentitypay.com/verification/bvn`).
+- It must call Prembly's BVN verification API using the sandbox environment (`https://p/verification/bvn`).
 - Provide the `app-id` and `x-api-key` headers using the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY`.
 - The endpoint should return the data received from Prembly.
 - Implement proper error handling.
@@ -58,10 +58,10 @@ You need to build a Node.js Express server that verifies a Bank Verification Num
 - Project path: /home/user/app
 - Start command: `npm start` (ensure this is defined in package.json to run `node index.js`)
 - Port: 3000
-- Use `https://sandbox.myidentitypay.com` as the base URL.
+- Use `https://api.prembly.com` as the base URL.
 
 ## Integrations
-- Nonea:T68f,# Prembly Document Verification Retry Flow
+- Nonea:T685,# Prembly Document Verification Retry Flow
 
 ## Background
 You are building an onboarding flow for a fintech application using React and the `prembly-pass` SDK. You need to implement a document verification step that allows a maximum of 3 retries if the verification fails.
@@ -78,7 +78,7 @@ You are building an onboarding flow for a fintech application using React and th
 1. Initialize a React project in `/home/user/app` using Vite.
 2. Install the `prembly-pass` SDK (`npm install prembly-pass`).
 3. In `src/App.jsx`, implement the retry logic.
-4. Initialize `PremblyPass` with `app_id: import.meta.env.VITE_PREMBLY_APP_ID`, `x_api_key: import.meta.env.VITE_PREMBLY_API_KEY`, and `environment: "test"`. You can also configure the base URL to `https://sandbox.myidentitypay.com` if needed.
+4. Initialize `PremblyPass` with `app_id: import.meta.env.VITE_PREMBLY_APP_ID`, `x_api_key: import.meta.env.VITE_PREMBLY_API_KEY`, and `environment: "test"`. You can also configure the base URL to `https://api.prembly.com` if needed.
 5. Use `import.meta.env.VITE_PREMBLY_CONFIG_ID` for the `config_id` when calling `launch()`.
 
 ## Constraints
@@ -88,7 +88,7 @@ You are building an onboarding flow for a fintech application using React and th
 - The environment variables will be provided at runtime.
 
 ## Integrations
-- Noneb:T575,# Prembly Driver's License Verification API
+- Noneb:T56b,# Prembly Driver's License Verification API
 
 ## Background
 You need to implement a backend API endpoint that verifies a driver's license using the Prembly API. This is a common requirement for ride-hailing apps or gig economy platforms to ensure the driver's identity is legitimate.
@@ -104,7 +104,7 @@ You need to implement a backend API endpoint that verifies a driver's license us
 2. Install `express` and `axios`.
 3. Create an `index.js` file that sets up the Express server.
 4. Implement the `POST /verify-license` endpoint.
-5. In the endpoint, make a POST request to `https://sandbox.myidentitypay.com/verification/drivers_license` with the payload `{"number": license_number}`.
+5. In the endpoint, make a POST request to `https://api.prembly.com/verification/drivers_license` with the payload `{"number": license_number}`.
 6. Set the headers `app-id` and `x-api-key` for the Prembly API request using the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` respectively.
 7. Return the data received from Prembly back to the client.
 8. Start the server on port 3000.
@@ -113,7 +113,7 @@ You need to implement a backend API endpoint that verifies a driver's license us
 - Project path: `/home/user/app`
 - Start command: `npm start`
 - Port: 3000
-- The server must read `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from the environment.c:T7c6,# Prembly API Error Handling Middleware
+- The server must read `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from the environment.c:T79e,# Prembly API Error Handling Middleware
 
 ## Background
 When calling the Prembly API (e.g., for NIN verification), the sandbox environment can return various errors such as 404 (Not Found) for invalid test data or 401 (Unauthorized) for bad credentials. You need to build an Express.js server with a global error handling middleware that intercepts these errors and normalizes the response.
@@ -121,7 +121,7 @@ When calling the Prembly API (e.g., for NIN verification), the sandbox environme
 ## Requirements
 - Create an Express.js server with a `POST /verify-nin` endpoint.
 - The endpoint should expect a JSON body with a `number` field (the NIN).
-- It should call the Prembly NIN verification API at `https://sandbox.myidentitypay.com/api/v1/verification/nin` (or the correct sandbox endpoint, usually `https://sandbox.myidentitypay.com/api/v1/verification/nin` or just `https://sandbox.myidentitypay.com/verification/nin` depending on the exact path, assume `/api/v1/verification/nin` for this task, wait, plan.md says `https://api.prembly.com/verification/nin` so sandbox is `https://sandbox.myidentitypay.com/verification/nin`).
+- It should call the Prembly NIN verification API at `https://api.prembly.com/api/v1/verification/nin` (or the correct sandbox endpoint, usually `https://api.prembly.com/api/v1/verification/nin` or just `https://api.prembly.com/verification/nin` depending on the exact path, assume `/api/v1/verification/nin` for this task, wait, plan.md says `https://api.prembly.com/verification/nin` so sandbox is `https://api.prembly.com/verification/nin`).
 - Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the headers `app-id` and `x-api-key`.
 - Implement a global Express error handling middleware (`app.use((err, req, res, next) => {...})`).
 - If the Prembly API returns an error (e.g. using axios), pass it to the error handler via `next(err)`.
@@ -141,7 +141,7 @@ When calling the Prembly API (e.g., for NIN verification), the sandbox environme
 - Log file: none
 
 ## Integrations
-- Premblyd:T509,# Express NIN Lookup Cache
+- Premblyd:T4ff,# Express NIN Lookup Cache
 
 ## Background
 You need to build a simple Express.js API that verifies National Identity Numbers (NIN) using the Prembly API. To reduce API costs and improve response times, you must implement an in-memory cache for the verification results.
@@ -149,7 +149,7 @@ You need to build a simple Express.js API that verifies National Identity Number
 ## Requirements
 - Create an Express.js server with a POST endpoint at `/api/verify-nin`.
 - The endpoint should accept a JSON body with a `nin` field.
-- Make a POST request to the Prembly sandbox API: `https://sandbox.myidentitypay.com/verification/nin` with a JSON body `{"number": "<nin>"}`.
+- Make a POST request to the Prembly sandbox API: `https://api.prembly.com/verification/nin` with a JSON body `{"number": "<nin>"}`.
 - The Prembly API requires `app-id` and `x-api-key` headers. Use the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` for these.
 - If the `nin` has been verified previously, return the cached result immediately.
 - Cache the successful response data and return it to the client.
@@ -167,14 +167,14 @@ You need to build a simple Express.js API that verifies National Identity Number
 - Port: 3000
 
 ## Integrations
-- Premblye:T49c,# Secure Backend Proxy for Prembly
+- Premblye:T492,# Secure Backend Proxy for Prembly
 
 ## Background
 Prembly (Identitypass) provides APIs for identity verification. To secure our integration, we need to implement a backend proxy using Express.js that hides our API credentials (`app-id` and `x-api-key`) from the frontend while forwarding requests to the Prembly sandbox.
 
 ## Requirements
 - Create an Express server that acts as a proxy.
-- All requests to `/api/prembly/*` should be forwarded to `https://sandbox.myidentitypay.com/*`.
+- All requests to `/api/prembly/*` should be forwarded to `https://api.prembly.com/*`.
 - The proxy must automatically inject the `app-id` and `x-api-key` headers from the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
 - The proxy must forward the request method, body, and query parameters correctly.
 - The server must listen on port 3000.
@@ -191,7 +191,7 @@ Prembly (Identitypass) provides APIs for identity verification. To secure our in
 - Port: 3000
 
 ## Integrations
-- Nonef:T4fd,# Prembly Face Liveliness with React
+- Nonef:T4f3,# Prembly Face Liveliness with React
 
 ## Background
 You have a basic React application initialized at `/home/user/app`. You need to integrate the Prembly Pass widget to perform a Face Liveliness check.
@@ -200,7 +200,7 @@ You have a basic React application initialized at `/home/user/app`. You need to 
 - Install the `prembly-pass` library.
 - Create a `FaceLiveliness` React component in `src/FaceLiveliness.js`.
 - The component should have a button with the id `verify-btn` that, when clicked, launches the Prembly Pass widget.
-- Initialize `PremblyPass` with `app_id` from the environment variable `PREMBLY_APP_ID`, `x_api_key` from `PREMBLY_API_KEY`, and set `environment` to `'test'` (or the sandbox URL `https://sandbox.myidentitypay.com` if required by the SDK).
+- Initialize `PremblyPass` with `app_id` from the environment variable `PREMBLY_APP_ID`, `x_api_key` from `PREMBLY_API_KEY`, and set `environment` to `'test'` (or the sandbox URL `https://api.prembly.com` if required by the SDK).
 - Launch the widget with `config_id` from `PREMBLY_CONFIG_ID` and `user_ref` as `'user_123'`.
 - On successful verification, the component should render a `div` with the id `success-message` containing the text 'Verification successful'.
 - Update `src/App.js` to render the `FaceLiveliness` component.
@@ -238,7 +238,7 @@ Prembly sends asynchronous webhook notifications when verifications are complete
 - The signature must be computed as a Base64 encoded HMAC-SHA256 string of the raw payload using `PREMBLY_API_KEY`.
 
 ## Integrations
-- None required for this specific webhook receiver task.11:T71c,# Fintech Wallet Creation with Prembly
+- None required for this specific webhook receiver task.11:T708,# Fintech Wallet Creation with Prembly
 
 ## Background
 You are building a fintech onboarding flow. To create a wallet, a user must verify their identity using Prembly (Identitypass). The flow involves verifying a National Identity Number (NIN) and performing a face liveliness check before allowing wallet creation.
@@ -246,7 +246,7 @@ You are building a fintech onboarding flow. To create a wallet, a user must veri
 ## Requirements
 - Implement a Node.js backend to handle the wallet creation API.
 - Create an endpoint `POST /api/wallet/create` that accepts `ninNumber` and `faceLivelinessRef`.
-- The endpoint must first verify the NIN using Prembly's `POST https://api.prembly.com/verification/nin` (use `https://sandbox.myidentitypay.com/verification/nin` for testing).
+- The endpoint must first verify the NIN using Prembly's `POST https://api.prembly.com/verification/nin` (use `https://api.prembly.com/verification/nin` for testing).
 - If the NIN is valid, it should verify the face liveliness session using Prembly's SDK Session Retrieval or a mock endpoint if not available in sandbox, but let's assume the NIN verification is the primary backend check. For this task, only implement the NIN verification on the backend.
 - Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from environment variables.
 - If verification succeeds, return `201 Created` with `{"wallet_id": "new_wallet_123"}`. If it fails, return `400 Bad Request`.
@@ -256,7 +256,7 @@ You are building a fintech onboarding flow. To create a wallet, a user must veri
 2. Install `express` and `axios`.
 3. Create `index.js` that sets up the Express server on port 3000.
 4. Implement the `POST /api/wallet/create` endpoint.
-5. Call the Prembly sandbox API: `POST https://sandbox.myidentitypay.com/verification/nin` with the `number` from the request body. Pass `app-id` and `x-api-key` headers.
+5. Call the Prembly sandbox API: `POST https://api.prembly.com/verification/nin` with the `number` from the request body. Pass `app-id` and `x-api-key` headers.
 6. Start the server using `npm start`.
 
 ## Constraints
@@ -266,7 +266,7 @@ You are building a fintech onboarding flow. To create a wallet, a user must veri
 - The server must read `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from the environment.
 
 ## Integrations
-- Prembly12:T506,# Prembly Pass Vanilla HTML Widget
+- Prembly12:T4fc,# Prembly Pass Vanilla HTML Widget
 
 ## Background
 You need to integrate the Prembly Pass widget into a vanilla web application to handle identity verification.
@@ -275,7 +275,7 @@ You need to integrate the Prembly Pass widget into a vanilla web application to 
 - Initialize a vanilla JS project using Vite in `/home/user/app`.
 - Install `prembly-pass`.
 - Create a simple UI with a button to launch the Prembly verification widget.
-- Initialize `PremblyPass` with `app_id` as `test_app_id` and `x_api_key` from the `PREMBLY_API_KEY` environment variable. Ensure the environment is set to `test` and uses the Prembly sandbox URL (`https://sandbox.myidentitypay.com`).
+- Initialize `PremblyPass` with `app_id` as `test_app_id` and `x_api_key` from the `PREMBLY_API_KEY` environment variable. Ensure the environment is set to `test` and uses the Prembly sandbox URL (`https://api.prembly.com`).
 - Configure it with `config_id` as `test_config_id` and a unique `user_ref`.
 - Listen for `success` and `error` events, and log the results to the console or display them on the screen.
 
@@ -293,7 +293,7 @@ You need to integrate the Prembly Pass widget into a vanilla web application to 
 - Read the API key from the environment variable `PREMBLY_API_KEY`.
 
 ## Integrations
-- None13:T754,# Prembly KYB Business Verification
+- None13:T722,# Prembly KYB Business Verification
 
 ## Background
 You need to implement a Node.js script that verifies a business registration using the Prembly API. The script should use the Prembly sandbox environment.
@@ -301,7 +301,7 @@ You need to implement a Node.js script that verifies a business registration usi
 ## Requirements
 - Create a Node.js script `verify_business.js` in `/home/user/project`.
 - The script should take a registration number as a command-line argument.
-- It should make a POST request to the Prembly sandbox API (`https://sandbox.myidentitypay.com/api/v1/biometrics/merchant/data/verification/cac` - assuming this is the CAC endpoint, or use the appropriate endpoint if you know it, but let's assume `https://sandbox.myidentitypay.com/api/v1/biometrics/merchant/data/verification/cac` for CAC check, or just generic `https://sandbox.myidentitypay.com/api/v1/biometrics/merchant/data/verification/cac_advance`). Wait, let's keep it simpler: The task is to write a script that sends a POST request to `https://sandbox.myidentitypay.com/api/v1/biometrics/merchant/data/verification/cac` with the provided registration number.
+- It should make a POST request to the Prembly sandbox API (`https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` - assuming this is the CAC endpoint, or use the appropriate endpoint if you know it, but let's assume `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` for CAC check, or just generic `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac_advance`). Wait, let's keep it simpler: The task is to write a script that sends a POST request to `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` with the provided registration number.
 - The request must include headers `app-id` and `x-api-key` read from environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` respectively.
 - The body should be JSON containing `{"company_type": "RC", "rc_number": "<registration_number>"}`.
 - The script should write the JSON response to `/home/user/project/output.json`.
@@ -315,10 +315,10 @@ You need to implement a Node.js script that verifies a business registration usi
 ## Constraints
 - Project path: `/home/user/project`
 - Log file: `/home/user/project/output.json`
-- Use `https://sandbox.myidentitypay.com` as the base URL.
+- Use `https://api.prembly.com` as the base URL.
 
 ## Integrations
-- None14:T650,# Prembly Webhook Server
+- None14:T646,# Prembly Webhook Server
 
 ## Background
 You need to build a Node.js Express server that can securely receive webhooks from Prembly. Developers often struggle to securely verify that incoming webhooks are legitimately from Prembly, leading to security vulnerabilities.
@@ -342,14 +342,14 @@ You need to build a Node.js Express server that can securely receive webhooks fr
 - Start command: `node server.js`
 - Port: 3000
 - Use `PREMBLY_API_KEY` from the environment for signature verification.
-- Assume the Prembly sandbox URL is in `PREMBLY_SANDBOX_URL` (https://sandbox.myidentitypay.com) for any future API call needs.15:T662,# Multi-Step Onboarding with Prembly
+- Assume the Prembly sandbox URL is in `PREMBLY_SANDBOX_URL` (https://api.prembly.com) for any future API call needs.15:T658,# Multi-Step Onboarding with Prembly
 
 ## Background
 You need to implement a multi-step onboarding flow for a fintech application using Prembly (Identitypass). The flow consists of a phone number verification API call followed by a Face Liveliness check using the Prembly browser widget.
 
 ## Requirements
 - Create a Node.js Express server that serves a static HTML page.
-- **Step 1: Phone Verification API**: Implement a `POST /api/verify-phone` endpoint that accepts a phone number and uses the Prembly API (`https://sandbox.myidentitypay.com/verification/phone`) to verify it. Return the API response.
+- **Step 1: Phone Verification API**: Implement a `POST /api/verify-phone` endpoint that accepts a phone number and uses the Prembly API (`https://api.prembly.com/verification/phone`) to verify it. Return the API response.
 - **Step 2: Face Liveliness Widget**: On the frontend (HTML page), provide a form to input a phone number. After successful verification via the backend endpoint, display the Prembly Pass widget (`prembly-pass`) to perform a Face Liveliness check.
 - Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for backend API calls.
 - Use the provided `config_id` for the widget initialization on the frontend.
@@ -368,7 +368,7 @@ You need to implement a multi-step onboarding flow for a fintech application usi
 - The frontend should initialize the widget using a placeholder `config_id` if one is not provided.
 
 ## Integrations
-- Prembly API and Widget16:T6f2,# NestJS KYB Verification Service with Prembly
+- Prembly API and Widget16:T6e8,# NestJS KYB Verification Service with Prembly
 
 ## Background
 Create a NestJS service that implements a Know Your Business (KYB) verification flow using Prembly's API. The service needs to verify business registration details (e.g., CAC in Nigeria) and handle asynchronous verification results via webhooks.
@@ -378,7 +378,7 @@ Create a NestJS service that implements a Know Your Business (KYB) verification 
 - POST `/webhook/prembly`: Receive and process Prembly webhooks for verification status updates.
 - Securely verify the signature of incoming webhooks to ensure they are genuinely from Prembly.
 - Use the `PREMBLY_API_KEY` environment variable for authentication.
-- Use the sandbox environment: `https://sandbox.myidentitypay.com`.
+- Use the sandbox environment: `https://api.prembly.com`.
 
 ## Implementation Guide
 1. Initialize a NestJS project in `/home/user/nestjs-kyb`.
@@ -396,7 +396,7 @@ Create a NestJS service that implements a Know Your Business (KYB) verification 
 - The webhook secret should be read from the `PREMBLY_WEBHOOK_SECRET` environment variable (if not set, fallback to `PREMBLY_API_KEY`).
 
 ## Integrations
-- Prembly17:T591,# Next.js API Route Proxy for Prembly
+- Prembly17:T573,# Next.js API Route Proxy for Prembly
 
 ## Background
 Create a Next.js API route that acts as a secure proxy to the Prembly NIN verification API, hiding the API key from the frontend.
@@ -404,7 +404,7 @@ Create a Next.js API route that acts as a secure proxy to the Prembly NIN verifi
 ## Requirements
 - Initialize a Next.js project in `/home/user/app`.
 - Create an API route `POST /api/verify-nin` that accepts a JSON body with a `number` field.
-- The route should call the Prembly NIN verification API (`https://sandbox.myidentitypay.com/api/v1/verification/nin` or `https://sandbox.myidentitypay.com/verification/nin` according to the documentation) using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
+- The route should call the Prembly NIN verification API (`https://api.prembly.com/api/v1/verification/nin` or `https://api.prembly.com/verification/nin` according to the documentation) using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
 - Set the headers `app-id` and `x-api-key` appropriately.
 - Return the JSON response from Prembly to the client.
 - The API route must handle errors appropriately.
@@ -420,10 +420,10 @@ Create a Next.js API route that acts as a secure proxy to the Prembly NIN verifi
 - Project path: `/home/user/app`
 - Start command: `npm run build && npm start`
 - Port: 3000
-- Use `https://sandbox.myidentitypay.com` as the base URL for the Prembly API.
+- Use `https://api.prembly.com` as the base URL for the Prembly API.
 
 ## Integrations
-- Prembly18:T521,# Node.js Backend Verification for NIN
+- Prembly18:T503,# Node.js Backend Verification for NIN
 
 ## Background
 Prembly provides identity verification APIs. You need to implement a Node.js function that verifies a National Identity Number (NIN) using their API.
@@ -431,7 +431,7 @@ Prembly provides identity verification APIs. You need to implement a Node.js fun
 ## Requirements
 - Create a Node.js script `verify.js` in `/home/user/project`.
 - The script should export a function `verifyNIN(ninNumber)` that makes a POST request to the Prembly verification endpoint for NIN.
-- Use the sandbox URL: `https://sandbox.myidentitypay.com/api/v1/verification/nin` (or similar depending on the exact Prembly sandbox path, but for this task, use `https://sandbox.myidentitypay.com/api/api/v1/verification/nin` or just `https://sandbox.myidentitypay.com/verification/nin` as per documentation).
+- Use the sandbox URL: `https://api.prembly.com/api/v1/verification/nin` (or similar depending on the exact Prembly sandbox path, but for this task, use `https://api.prembly.com/api/api/v1/verification/nin` or just `https://api.prembly.com/verification/nin` as per documentation).
 - Use the `axios` library to make the request.
 - The function must use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the `app-id` and `x-api-key` headers respectively.
 - The function should return the `data` object from the API response.
@@ -444,7 +444,7 @@ Prembly provides identity verification APIs. You need to implement a Node.js fun
 
 ## Constraints
 - Project path: /home/user/project
-- Use `axios` for HTTP requests.19:T74b,# Prembly API Rate Limit Handler
+- Use `axios` for HTTP requests.19:T741,# Prembly API Rate Limit Handler
 
 ## Background
 You are building a Node.js backend that integrates with Prembly (Identitypass) to verify National Identity Numbers (NIN). The Prembly API may occasionally return a `429 Too Many Requests` status code when rate limits are exceeded. You need to implement an exponential backoff retry mechanism to handle this gracefully.
@@ -452,7 +452,7 @@ You are building a Node.js backend that integrates with Prembly (Identitypass) t
 ## Requirements
 - Initialize a Node.js Express application in `/home/user/app`.
 - Create a `POST /verify-nin` endpoint that accepts a JSON body with a `nin` string (e.g., `{"nin": "12345678901"}`).
-- The endpoint must call the Prembly NIN API using the base URL from the `PREMBLY_BASE_URL` environment variable (defaulting to `https://sandbox.myidentitypay.com`) and the path `/verification/nin`.
+- The endpoint must call the Prembly NIN API using the base URL from the `PREMBLY_BASE_URL` environment variable (defaulting to `https://api.prembly.com`) and the path `/verification/nin`.
 - Pass the `app-id` and `x-api-key` headers using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
 - Implement an exponential backoff retry mechanism for the Prembly API call: if the API returns a 429 status code, retry the request up to 3 times. Wait 100ms before the first retry, 200ms before the second, and 400ms before the third.
 - If the request succeeds, return the Prembly API response with a 200 status code.
@@ -470,7 +470,7 @@ You are building a Node.js backend that integrates with Prembly (Identitypass) t
 - Start command: `npm start`
 - Port: `process.env.PORT` or 3000
 - Log file: `/home/user/app/output.log`
-- Use `axios` for HTTP requests.1a:T5d7,# Prembly Widget Integration in Vue 3
+- Use `axios` for HTTP requests.1a:T5cd,# Prembly Widget Integration in Vue 3
 
 ## Background
 Prembly provides a browser-based widget for identity verification (e.g., Face Liveliness, Document Verification). You need to integrate the `prembly-pass` SDK into a Vue 3 application.
@@ -488,7 +488,7 @@ Prembly provides a browser-based widget for identity verification (e.g., Face Li
 3. In `src/App.vue`, import `PremblyPass` and initialize it with:
    - `app_id`: `'dummy_app_id'`
    - `x_api_key`: `import.meta.env.VITE_PREMBLY_API_KEY`
-   - `environment`: `'test'` (which connects to the sandbox URL https://sandbox.myidentitypay.com)
+   - `environment`: `'test'` (which connects to the sandbox URL https://api.prembly.com)
 4. Add a button `<button id="launch-widget">Launch Prembly</button>` that calls the `launch` method with `config_id: 'dummy_config_id'` and a random `user_ref`.
 5. Run the app on port 3000.
 
@@ -527,7 +527,7 @@ Create an Express.js server that receives Prembly webhooks and securely verifies
 - The server must read the secret key from the `PREMBLY_API_KEY` environment variable.
 
 ## Integrations
-- None required for this specific task.0:{"P":null,"b":"v-_kXhEYyVEoSSIKYG3C8","c":["","tasks",""],"q":"","i":false,"f":[[["",{"children":["tasks",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/prembly-benchmark/_next/static/chunks/628400866fa0f205.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/prembly-benchmark/_next/static/chunks/ca023ad85cd7aeee.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/prembly-benchmark/_next/static/chunks/2ad5122eae704b1a.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"inter_5972bc34-module__OU16Qa__className antialiased","children":["$","$L2",null,{"children":["$","$L3",null,{"defaultTheme":"dark","children":[["$","div",null,{"className":"fixed right-4 top-6 z-50 sm:top-8","children":["$","$L4",null,{}]}],["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]]}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","div",null,{"className":"min-h-screen bg-background text-foreground font-sans selection:bg-primary/20","children":[["$","div",null,{"className":"fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"}],["$","$L7",null,{"tasksData":[{"taskName":"background_job_polling","instruction":"$8","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"background_job_polling__D4HM5Wa","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":434.57,"latency_breakdown":{"env_setup":10.889,"agent_setup":25.143,"agent_exec":380.265,"verifier":4.526},"taskName":"background_job_polling","jobId":"D4HM5Wa","exec_duration":380.265}]},{"taskName":"bvn_verification_api","instruction":"$9","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"bvn_verification_api__JRbKFn7","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":316.276,"latency_breakdown":{"env_setup":10.777,"agent_setup":24.868,"agent_exec":262.593,"verifier":4.308},"taskName":"bvn_verification_api","jobId":"JRbKFn7","exec_duration":262.593}]},{"taskName":"document_verification_retry_flow","instruction":"$a","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"document_verification_retry_flow__iuCdBP7","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":714.529,"latency_breakdown":{"env_setup":10.882,"agent_setup":23.352,"agent_exec":600.199,"verifier":64.805},"taskName":"document_verification_retry_flow","jobId":"iuCdBP7","exec_duration":600.199}]},{"taskName":"driver_license_check","instruction":"$b","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"driver_license_check__ubzxX6A","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":112.619,"latency_breakdown":{"env_setup":10.835,"agent_setup":24.953,"agent_exec":51.764,"verifier":10.365},"taskName":"driver_license_check","jobId":"ubzxX6A","exec_duration":51.764}]},{"taskName":"error_handling_middleware","instruction":"$c","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"error_handling_middleware__etnmGVb","model":"gemini-3-flash","agent":"Pochi","passed":true,"reward":1,"error":false,"latency_sec":127.12,"latency_breakdown":{"env_setup":10.617,"agent_setup":23.994,"agent_exec":72.947,"verifier":4.798},"taskName":"error_handling_middleware","jobId":"etnmGVb","exec_duration":72.947}]},{"taskName":"express_nin_lookup_cache","instruction":"$d","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"express_nin_lookup_cache__LAXKvMU","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":87.362,"latency_breakdown":{"env_setup":4.17,"agent_setup":17.416,"agent_exec":41.551,"verifier":8.955},"taskName":"express_nin_lookup_cache","jobId":"LAXKvMU","exec_duration":41.551}]},{"taskName":"express_secure_proxy","instruction":"$e","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"express_secure_proxy__rxzXJgt","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":639.332,"latency_breakdown":{"env_setup":3.672,"agent_setup":17.058,"agent_exec":600.165,"verifier":4.807},"taskName":"express_secure_proxy","jobId":"rxzXJgt","exec_duration":600.165}]},{"taskName":"face_liveliness_react","instruction":"$f","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"face_liveliness_react__hEkab3D","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":768.958,"latency_breakdown":{"env_setup":6.66,"agent_setup":14.14,"agent_exec":600.118,"verifier":132.117},"taskName":"face_liveliness_react","jobId":"hEkab3D","exec_duration":600.118}]},{"taskName":"fastify_webhook_handler","instruction":"$10","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"fastify_webhook_handler__d6m7Ez2","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":641.219,"latency_breakdown":{"env_setup":4.29,"agent_setup":16.711,"agent_exec":600.115,"verifier":4.876},"taskName":"fastify_webhook_handler","jobId":"d6m7Ez2","exec_duration":600.115}]},{"taskName":"fintech_wallet_creation","instruction":"$11","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"fintech_wallet_creation__7EZxcEX","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":107.562,"latency_breakdown":{"env_setup":3.805,"agent_setup":14.977,"agent_exec":65.899,"verifier":8.983},"taskName":"fintech_wallet_creation","jobId":"7EZxcEX","exec_duration":65.899}]},{"taskName":"html_vanilla_widget","instruction":"$12","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"html_vanilla_widget__jKgoMT2","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":904.136,"latency_breakdown":{"env_setup":3.636,"agent_setup":16.064,"agent_exec":600.363,"verifier":270.44},"taskName":"html_vanilla_widget","jobId":"jKgoMT2","exec_duration":600.363}]},{"taskName":"kyb_business_verification","instruction":"$13","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"kyb_business_verification__sWeKDjL","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":474.066,"latency_breakdown":{"env_setup":3.598,"agent_setup":15.561,"agent_exec":434.677,"verifier":3.98},"taskName":"kyb_business_verification","jobId":"sWeKDjL","exec_duration":434.677}]},{"taskName":"mock_webhook_server","instruction":"$14","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"mock_webhook_server__iLTkMVK","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":63.025,"latency_breakdown":{"env_setup":3.843,"agent_setup":44.107,"agent_exec":null,"verifier":null},"taskName":"mock_webhook_server","jobId":"iLTkMVK","exec_duration":63.025}]},{"taskName":"multi_step_onboarding_flow","instruction":"$15","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"multi_step_onboarding_flow__dXobi3R","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":1021.729,"latency_breakdown":{"env_setup":3.911,"agent_setup":14.658,"agent_exec":600.161,"verifier":389.328},"taskName":"multi_step_onboarding_flow","jobId":"dXobi3R","exec_duration":600.161}]},{"taskName":"nestjs_kyb_service","instruction":"$16","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"nestjs_kyb_service__AgsXSRY","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":292.88,"latency_breakdown":{"env_setup":3.752,"agent_setup":16.232,"agent_exec":249.135,"verifier":8.587},"taskName":"nestjs_kyb_service","jobId":"AgsXSRY","exec_duration":249.135}]},{"taskName":"nextjs_api_route_proxy","instruction":"$17","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"nextjs_api_route_proxy__6nh974k","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":643.248,"latency_breakdown":{"env_setup":3.733,"agent_setup":14.815,"agent_exec":600.121,"verifier":10.071},"taskName":"nextjs_api_route_proxy","jobId":"6nh974k","exec_duration":600.121}]},{"taskName":"nodejs_backend_verify_nin","instruction":"$18","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"nodejs_backend_verify_nin__t6aZvuU","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":28.072,"latency_breakdown":{"env_setup":3.45,"agent_setup":10.943,"agent_exec":null,"verifier":null},"taskName":"nodejs_backend_verify_nin","jobId":"t6aZvuU","exec_duration":28.072}]},{"taskName":"rate_limit_handler","instruction":"$19","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"rate_limit_handler__fnP2JYa","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":27.236,"latency_breakdown":{"env_setup":3.837,"agent_setup":9.695,"agent_exec":null,"verifier":null},"taskName":"rate_limit_handler","jobId":"fnP2JYa","exec_duration":27.236}]},{"taskName":"vue_widget_setup","instruction":"$1a","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"vue_widget_setup__9G3cU89","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":67.656,"latency_breakdown":{"env_setup":4.644,"agent_setup":40.691,"agent_exec":null,"verifier":null},"taskName":"vue_widget_setup","jobId":"9G3cU89","exec_duration":67.656}]},{"taskName":"webhook_signature_verification","instruction":"$1b","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"webhook_signature_verification__3jJh2Fz","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":28.39,"latency_breakdown":{"env_setup":3.93,"agent_setup":10.067,"agent_exec":null,"verifier":null},"taskName":"webhook_signature_verification","jobId":"3jJh2Fz","exec_duration":28.39}]}]}]]}],["$L1c","$L1d"],"$L1e"]}],{},null,false,false]},null,false,false]},null,false,false],"$L1f",false]],"m":"$undefined","G":["$20",[]],"S":true}
+- None required for this specific task.0:{"P":null,"b":"tYNH4MJyagSR5XmxhG0Ei","c":["","tasks",""],"q":"","i":false,"f":[[["",{"children":["tasks",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/prembly-benchmark/_next/static/chunks/628400866fa0f205.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/prembly-benchmark/_next/static/chunks/ca023ad85cd7aeee.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/prembly-benchmark/_next/static/chunks/2ad5122eae704b1a.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"inter_5972bc34-module__OU16Qa__className antialiased","children":["$","$L2",null,{"children":["$","$L3",null,{"defaultTheme":"dark","children":[["$","div",null,{"className":"fixed right-4 top-6 z-50 sm:top-8","children":["$","$L4",null,{}]}],["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]]}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","div",null,{"className":"min-h-screen bg-background text-foreground font-sans selection:bg-primary/20","children":[["$","div",null,{"className":"fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"}],["$","$L7",null,{"tasksData":[{"taskName":"background_job_polling","instruction":"$8","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"background_job_polling__D4HM5Wa","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":434.57,"latency_breakdown":{"env_setup":10.889,"agent_setup":25.143,"agent_exec":380.265,"verifier":4.526},"taskName":"background_job_polling","jobId":"D4HM5Wa","exec_duration":380.265}]},{"taskName":"bvn_verification_api","instruction":"$9","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"bvn_verification_api__JRbKFn7","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":316.276,"latency_breakdown":{"env_setup":10.777,"agent_setup":24.868,"agent_exec":262.593,"verifier":4.308},"taskName":"bvn_verification_api","jobId":"JRbKFn7","exec_duration":262.593}]},{"taskName":"document_verification_retry_flow","instruction":"$a","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"document_verification_retry_flow__iuCdBP7","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":714.529,"latency_breakdown":{"env_setup":10.882,"agent_setup":23.352,"agent_exec":600.199,"verifier":64.805},"taskName":"document_verification_retry_flow","jobId":"iuCdBP7","exec_duration":600.199}]},{"taskName":"driver_license_check","instruction":"$b","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"driver_license_check__ubzxX6A","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":112.619,"latency_breakdown":{"env_setup":10.835,"agent_setup":24.953,"agent_exec":51.764,"verifier":10.365},"taskName":"driver_license_check","jobId":"ubzxX6A","exec_duration":51.764}]},{"taskName":"error_handling_middleware","instruction":"$c","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"error_handling_middleware__etnmGVb","model":"gemini-3-flash","agent":"Pochi","passed":true,"reward":1,"error":false,"latency_sec":127.12,"latency_breakdown":{"env_setup":10.617,"agent_setup":23.994,"agent_exec":72.947,"verifier":4.798},"taskName":"error_handling_middleware","jobId":"etnmGVb","exec_duration":72.947}]},{"taskName":"express_nin_lookup_cache","instruction":"$d","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"express_nin_lookup_cache__LAXKvMU","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":87.362,"latency_breakdown":{"env_setup":4.17,"agent_setup":17.416,"agent_exec":41.551,"verifier":8.955},"taskName":"express_nin_lookup_cache","jobId":"LAXKvMU","exec_duration":41.551}]},{"taskName":"express_secure_proxy","instruction":"$e","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"express_secure_proxy__rxzXJgt","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":639.332,"latency_breakdown":{"env_setup":3.672,"agent_setup":17.058,"agent_exec":600.165,"verifier":4.807},"taskName":"express_secure_proxy","jobId":"rxzXJgt","exec_duration":600.165}]},{"taskName":"face_liveliness_react","instruction":"$f","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"face_liveliness_react__hEkab3D","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":768.958,"latency_breakdown":{"env_setup":6.66,"agent_setup":14.14,"agent_exec":600.118,"verifier":132.117},"taskName":"face_liveliness_react","jobId":"hEkab3D","exec_duration":600.118}]},{"taskName":"fastify_webhook_handler","instruction":"$10","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"fastify_webhook_handler__d6m7Ez2","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":641.219,"latency_breakdown":{"env_setup":4.29,"agent_setup":16.711,"agent_exec":600.115,"verifier":4.876},"taskName":"fastify_webhook_handler","jobId":"d6m7Ez2","exec_duration":600.115}]},{"taskName":"fintech_wallet_creation","instruction":"$11","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"fintech_wallet_creation__7EZxcEX","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":107.562,"latency_breakdown":{"env_setup":3.805,"agent_setup":14.977,"agent_exec":65.899,"verifier":8.983},"taskName":"fintech_wallet_creation","jobId":"7EZxcEX","exec_duration":65.899}]},{"taskName":"html_vanilla_widget","instruction":"$12","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"html_vanilla_widget__jKgoMT2","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":904.136,"latency_breakdown":{"env_setup":3.636,"agent_setup":16.064,"agent_exec":600.363,"verifier":270.44},"taskName":"html_vanilla_widget","jobId":"jKgoMT2","exec_duration":600.363}]},{"taskName":"kyb_business_verification","instruction":"$13","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"kyb_business_verification__sWeKDjL","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":474.066,"latency_breakdown":{"env_setup":3.598,"agent_setup":15.561,"agent_exec":434.677,"verifier":3.98},"taskName":"kyb_business_verification","jobId":"sWeKDjL","exec_duration":434.677}]},{"taskName":"mock_webhook_server","instruction":"$14","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"mock_webhook_server__iLTkMVK","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":63.025,"latency_breakdown":{"env_setup":3.843,"agent_setup":44.107,"agent_exec":null,"verifier":null},"taskName":"mock_webhook_server","jobId":"iLTkMVK","exec_duration":63.025}]},{"taskName":"multi_step_onboarding_flow","instruction":"$15","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"multi_step_onboarding_flow__dXobi3R","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":1021.729,"latency_breakdown":{"env_setup":3.911,"agent_setup":14.658,"agent_exec":600.161,"verifier":389.328},"taskName":"multi_step_onboarding_flow","jobId":"dXobi3R","exec_duration":600.161}]},{"taskName":"nestjs_kyb_service","instruction":"$16","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"nestjs_kyb_service__AgsXSRY","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":false,"latency_sec":292.88,"latency_breakdown":{"env_setup":3.752,"agent_setup":16.232,"agent_exec":249.135,"verifier":8.587},"taskName":"nestjs_kyb_service","jobId":"AgsXSRY","exec_duration":249.135}]},{"taskName":"nextjs_api_route_proxy","instruction":"$17","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"nextjs_api_route_proxy__6nh974k","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":0,"error":true,"latency_sec":643.248,"latency_breakdown":{"env_setup":3.733,"agent_setup":14.815,"agent_exec":600.121,"verifier":10.071},"taskName":"nextjs_api_route_proxy","jobId":"6nh974k","exec_duration":600.121}]},{"taskName":"nodejs_backend_verify_nin","instruction":"$18","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"nodejs_backend_verify_nin__t6aZvuU","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":28.072,"latency_breakdown":{"env_setup":3.45,"agent_setup":10.943,"agent_exec":null,"verifier":null},"taskName":"nodejs_backend_verify_nin","jobId":"t6aZvuU","exec_duration":28.072}]},{"taskName":"rate_limit_handler","instruction":"$19","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"rate_limit_handler__fnP2JYa","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":27.236,"latency_breakdown":{"env_setup":3.837,"agent_setup":9.695,"agent_exec":null,"verifier":null},"taskName":"rate_limit_handler","jobId":"fnP2JYa","exec_duration":27.236}]},{"taskName":"vue_widget_setup","instruction":"$1a","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"vue_widget_setup__9G3cU89","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":67.656,"latency_breakdown":{"env_setup":4.644,"agent_setup":40.691,"agent_exec":null,"verifier":null},"taskName":"vue_widget_setup","jobId":"9G3cU89","exec_duration":67.656}]},{"taskName":"webhook_signature_verification","instruction":"$1b","trials":[{"job_name":"2026-04-16__09-06-29","trial_name":"webhook_signature_verification__3jJh2Fz","model":"gemini-3-flash","agent":"Pochi","passed":false,"reward":null,"error":true,"latency_sec":28.39,"latency_breakdown":{"env_setup":3.93,"agent_setup":10.067,"agent_exec":null,"verifier":null},"taskName":"webhook_signature_verification","jobId":"3jJh2Fz","exec_duration":28.39}]}]}]]}],["$L1c","$L1d"],"$L1e"]}],{},null,false,false]},null,false,false]},null,false,false],"$L1f",false]],"m":"$undefined","G":["$20",[]],"S":true}
 21:I[75049,["/prembly-benchmark/_next/static/chunks/d2c13bb33c4fcd54.js","/prembly-benchmark/_next/static/chunks/c21188132e0e0d48.js"],"OutletBoundary"]
 22:"$Sreact.suspense"
 24:I[75049,["/prembly-benchmark/_next/static/chunks/d2c13bb33c4fcd54.js","/prembly-benchmark/_next/static/chunks/c21188132e0e0d48.js"],"ViewportBoundary"]
