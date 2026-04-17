@@ -1,0 +1,38 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776433400.8942118,
+            "stop": 1776433404.5174506
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_verify_bvn_endpoint",
+                "status": "passed",
+                "duration": 3.377806233984302,
+                "start": 1776433401.1371067,
+                "stop": 1776433404.5155935,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_index_js_exists_and_contains_headers",
+                "status": "passed",
+                "duration": 0.000842698005726561,
+                "start": 1776433404.5161,
+                "stop": 1776433404.5171516,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}
