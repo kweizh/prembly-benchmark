@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776429376.578377,
+            "stop": 1776429381.4369879
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_verify_license_endpoint",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4.710740087000886,
+                "start": 1776429376.5999362,
+                "stop": 1776429381.4355726,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_app = None\n\n    def test_verify_license_endpoint(start_app):\n        url = \"http://localhost:3000/verify-license\"\n        data = json.dumps({\"license_number\": \"123456789\"}).encode('utf-8')\n        req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})\n    \n        try:\n>           with urllib.request.urlopen(req) as response:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_final_state.py:53: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nusr/lib/python3.12/urllib/request.py:215: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:521: in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:630: in http_response\n    response = self.parent.error(\nusr/lib/python3.12/urllib/request.py:559: in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:492: in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib.request.HTTPDefaultErrorHandler object at 0x715ac99549e0>\nreq = <urllib.request.Request object at 0x715ac97b2180>\nfp = <http.client.HTTPResponse object at 0x715ac9638df0>, code = 502\nmsg = 'Bad Gateway', hdrs = <http.client.HTTPMessage object at 0x715ac950f440>\n\n    def http_error_default(self, req, fp, code, msg, hdrs):\n>       raise HTTPError(req.full_url, code, msg, hdrs, fp)\nE       urllib.error.HTTPError: HTTP Error 502: Bad Gateway\n\nusr/lib/python3.12/urllib/request.py:639: HTTPError\n\nDuring handling of the above exception, another exception occurred:\n\nstart_app = None\n\n    def test_verify_license_endpoint(start_app):\n        url = \"http://localhost:3000/verify-license\"\n        data = json.dumps({\"license_number\": \"123456789\"}).encode('utf-8')\n        req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})\n    \n        try:\n            with urllib.request.urlopen(req) as response:\n                assert response.status == 200, f\"Expected status 200, got {response.status}\"\n                body = response.read().decode('utf-8')\n                json_response = json.loads(body)\n                # We don't know the exact structure of the sandbox response, but it should be a valid JSON object\n                assert isinstance(json_response, dict), \"Response should be a JSON object\"\n        except urllib.error.HTTPError as e:\n>           pytest.fail(f\"HTTPError: {e.code} - {e.read().decode('utf-8')}\")\nE           Failed: HTTPError: 502 - \"<html>\\r\\n<head><title>502 Bad Gateway</title></head>\\r\\n<body>\\r\\n<center><h1>502 Bad Gateway</h1></center>\\r\\n</body>\\r\\n</html>\\r\\n\"\n\ntests/test_final_state.py:60: Failed",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_app_files_exist",
+                "status": "passed",
+                "duration": 0.000646927990601398,
+                "start": 1776429381.4359508,
+                "stop": 1776429381.4367816,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

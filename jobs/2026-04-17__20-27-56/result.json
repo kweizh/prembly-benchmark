@@ -1,0 +1,56 @@
+{
+    "id": "efeb71c4-689a-4edc-92f3-af714311b3ae",
+    "started_at": "2026-04-17T20:28:04.404267",
+    "finished_at": "2026-04-17T21:06:57.809517",
+    "n_total_trials": 20,
+    "stats": {
+        "n_trials": 20,
+        "n_errors": 3,
+        "evals": {
+            "pochi__gemini-3-flash__tasks": {
+                "n_trials": 20,
+                "n_errors": 3,
+                "metrics": [
+                    {
+                        "mean": 0.2
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "0.0": [
+                            "background_job_polling__JhwXBkQ",
+                            "bvn_verification_api__eKCbVH5",
+                            "document_verification_retry_flow__UCkTYQV",
+                            "driver_license_check__ADFpcw3",
+                            "express_nin_lookup_cache__QnEeVcz",
+                            "face_liveliness_react__kRw5BwT",
+                            "fastify_webhook_handler__t9Vp3ce",
+                            "fintech_wallet_creation__pWKdTta",
+                            "html_vanilla_widget__DpveWZT",
+                            "kyb_business_verification__2Xn3MDh",
+                            "mock_webhook_server__BuNPa5x",
+                            "multi_step_onboarding_flow__LKTHjpg",
+                            "nestjs_kyb_service__ubKg3gZ",
+                            "nextjs_api_route_proxy__erXC8q2",
+                            "rate_limit_handler__QHnaQ2p",
+                            "vue_widget_setup__et2i4Pe"
+                        ],
+                        "1.0": [
+                            "error_handling_middleware__Dc4j6Nt",
+                            "express_secure_proxy__MLZun56",
+                            "nodejs_backend_verify_nin__VHpBfFj",
+                            "webhook_signature_verification__piG9cjg"
+                        ]
+                    }
+                },
+                "exception_stats": {
+                    "AgentTimeoutError": [
+                        "document_verification_retry_flow__UCkTYQV",
+                        "face_liveliness_react__kRw5BwT",
+                        "fastify_webhook_handler__t9Vp3ce"
+                    ]
+                }
+            }
+        }
+    }
+}

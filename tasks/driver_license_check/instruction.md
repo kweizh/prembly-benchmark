@@ -14,7 +14,7 @@ You need to implement a backend API endpoint that verifies a driver's license us
 2. Install `express` and `axios`.
 3. Create an `index.js` file that sets up the Express server.
 4. Implement the `POST /verify-license` endpoint.
-5. In the endpoint, make a POST request to `https://api.prembly.com/verification/drivers_license` with the payload `{"number": license_number}`.
+5. In the endpoint, make a POST request to `https://api.prembly.com/verification/drivers_license` with the payload `{"number": "DXG100"}`.
 6. Set the headers `app-id` and `x-api-key` for the Prembly API request using the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` respectively.
 7. Return the data received from Prembly back to the client.
 8. Start the server on port 3000.

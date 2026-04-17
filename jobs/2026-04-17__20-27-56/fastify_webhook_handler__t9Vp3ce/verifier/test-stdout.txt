@@ -1,0 +1,192 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 14ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py .FF                                            [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_invalid_signature ____________________________
+
+start_app = None
+
+    def test_invalid_signature(start_app):
+        url = "http://localhost:3000/webhook"
+        data = json.dumps({"status": True, "response_code": "00"}).encode('utf-8')
+        headers = {
+            'Content-Type': 'application/json',
+            'x-prembly-signature': 'invalid_signature_base64='
+        }
+        req = urllib.request.Request(url, data=data, headers=headers)
+    
+        try:
+>           urllib.request.urlopen(req)
+
+tests/test_final_state.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+usr/lib/python3.12/urllib/request.py:215: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:521: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:630: in http_response
+    response = self.parent.error(
+usr/lib/python3.12/urllib/request.py:559: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:492: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <urllib.request.HTTPDefaultErrorHandler object at 0x76beedb00f50>
+req = <urllib.request.Request object at 0x76beedce82f0>
+fp = <http.client.HTTPResponse object at 0x76beed94fb80>, code = 500
+msg = 'Internal Server Error'
+hdrs = <http.client.HTTPMessage object at 0x76beed94fc80>
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+>       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 500: Internal Server Error
+
+usr/lib/python3.12/urllib/request.py:639: HTTPError
+
+During handling of the above exception, another exception occurred:
+
+start_app = None
+
+    def test_invalid_signature(start_app):
+        url = "http://localhost:3000/webhook"
+        data = json.dumps({"status": True, "response_code": "00"}).encode('utf-8')
+        headers = {
+            'Content-Type': 'application/json',
+            'x-prembly-signature': 'invalid_signature_base64='
+        }
+        req = urllib.request.Request(url, data=data, headers=headers)
+    
+        try:
+            urllib.request.urlopen(req)
+            pytest.fail("Expected 401 Unauthorized, but request succeeded.")
+        except urllib.error.HTTPError as e:
+>           assert e.code == 401, f"Expected HTTP 401, got {e.code}"
+E           AssertionError: Expected HTTP 401, got 500
+E           assert 500 == 401
+E            +  where 500 = <HTTPError 500: 'Internal Server Error'>.code
+
+tests/test_final_state.py:76: AssertionError
+_____________________________ test_valid_signature _____________________________
+
+start_app = None
+
+    def test_valid_signature(start_app):
+        url = "http://localhost:3000/webhook"
+        data = b'{"status":true,"response_code":"00"}'
+    
+        import hmac
+        import hashlib
+        import base64
+    
+        api_key = os.environ.get("PREMBLY_API_KEY", "test_api_key")
+    
+        # Compute the signature dynamically using the actual key
+        sig = hmac.new(api_key.encode('utf-8'), data, hashlib.sha256).digest()
+        valid_signature = base64.b64encode(sig).decode('utf-8')
+    
+        headers = {
+            'Content-Type': 'application/json',
+            'x-prembly-signature': valid_signature
+        }
+        req = urllib.request.Request(url, data=data, headers=headers)
+    
+        try:
+>           response = urllib.request.urlopen(req)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_state.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+usr/lib/python3.12/urllib/request.py:215: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:521: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:630: in http_response
+    response = self.parent.error(
+usr/lib/python3.12/urllib/request.py:559: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:492: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <urllib.request.HTTPDefaultErrorHandler object at 0x76beedb00f50>
+req = <urllib.request.Request object at 0x76beedce9e20>
+fp = <http.client.HTTPResponse object at 0x76beedbe5930>, code = 500
+msg = 'Internal Server Error'
+hdrs = <http.client.HTTPMessage object at 0x76beedbe4350>
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+>       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 500: Internal Server Error
+
+usr/lib/python3.12/urllib/request.py:639: HTTPError
+
+During handling of the above exception, another exception occurred:
+
+start_app = None
+
+    def test_valid_signature(start_app):
+        url = "http://localhost:3000/webhook"
+        data = b'{"status":true,"response_code":"00"}'
+    
+        import hmac
+        import hashlib
+        import base64
+    
+        api_key = os.environ.get("PREMBLY_API_KEY", "test_api_key")
+    
+        # Compute the signature dynamically using the actual key
+        sig = hmac.new(api_key.encode('utf-8'), data, hashlib.sha256).digest()
+        valid_signature = base64.b64encode(sig).decode('utf-8')
+    
+        headers = {
+            'Content-Type': 'application/json',
+            'x-prembly-signature': valid_signature
+        }
+        req = urllib.request.Request(url, data=data, headers=headers)
+    
+        try:
+            response = urllib.request.urlopen(req)
+            assert response.getcode() == 200, f"Expected HTTP 200, got {response.getcode()}"
+    
+            response_body = response.read().decode('utf-8')
+            response_json = json.loads(response_body)
+            assert response_json.get("status") == "received", f"Expected {{'status': 'received'}}, got {response_json}"
+        except urllib.error.HTTPError as e:
+>           pytest.fail(f"Expected HTTP 200, but got {e.code}: {e.read().decode('utf-8')}")
+E           Failed: Expected HTTP 200, but got 500: {"statusCode":500,"code":"ERR_INVALID_ARG_TYPE","error":"Internal Server Error","message":"The \"data\" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined"}
+
+tests/test_final_state.py:106: Failed
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_missing_signature
+FAILED tests/test_final_state.py::test_invalid_signature - AssertionError: Ex...
+FAILED tests/test_final_state.py::test_valid_signature - Failed: Expected HTT...
+========================= 2 failed, 1 passed in 1.30s ==========================

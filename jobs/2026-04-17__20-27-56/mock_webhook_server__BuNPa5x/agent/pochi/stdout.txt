@@ -1,0 +1,70 @@
+- Initializing MCP connections...
+You
+# Prembly Webhook Server ## Background You need to build a Node.js Express server that can securely receive webhooks from Prembly. Developers often struggle to securely verify that incoming webhooks are legitimately from Prembly, leading to security vulnerabilities. ## Requirements - Create an Express.js server that listens for POST requests on `/webhook`. - The server must verify the webhook signature using the `x-prembly-signature` header. - Prembly generates the signature by computing the HMAC-SHA256 of the raw request payload using your API key, and then Base64 encodes it. - Implement a middleware that computes the HMAC-SHA256 (Base64 encoded) of the raw request body using the API key from the `PREMBLY_API_KEY` environment variable and compares it to the `x-prembly-signature` header. - If the signature is valid, respond with HTTP status 200 and a JSON body `{"status": "success"}`. - If the signature is invalid or missing, respond with HTTP status 401 and a JSON body `{"error": "Invalid signature"}`. ## Implementation Guide 1. You have a directory at `/home/user/prembly-webhook`. Initialize a Node.js project in it. 2. Install `express`. 3. Create `server.js` that sets up the Express app and the `/webhook` endpoint. 4. Ensure the raw request body is used for signature verification. ## Constraints - Project path: `/home/user/prembly-webhook` - Start command: `node server.js` - Port: 3000 - Use `PREMBLY_API_KEY` from the environment for signature verification. - Assume the Prembly sandbox URL is in `PREMBLY_SANDBOX_URL` (https://api.prembly.com) for any future API call needs.   
+
+Pochi
+💭 Thinking for 647 characters   
+📂 Listing files in /home/user ✔ 
+💭 Thinking for 252 characters   
+📂 Listing files in /home/user/prembly-webhook ✔ 
+💭 Thinking for 267 characters   
+📋 Updating todo list (4 items) ✔ 
+💭 Thinking for 281 characters   
+💫 Executing npm init -y && npm install express ✔ 
+💭 Thinking for 564 characters   
+📋 Updating todo list (4 items) ✔ 
+💭 Thinking for 228 characters   
+✏️  Writing /home/user/prembly-webhook/server.js ✔ 
+💭 Thinking for 304 characters   
+📋 Updating todo list (4 items) ✔ 
+💭 Thinking for 249 characters   
+✏️  Writing /home/user/prembly-webhook/test-sig.js ✔ 
+💭 Thinking for 251 characters   
+💫 Executing node test-sig.js ✔ 
+💭 Thinking for 296 characters   
+🛠️ Tool startBackgroundJob ✔ 
+💭 Thinking for 185 characters   
+💫 Executing sleep 2 && curl -X POST http://localhost:3000/webhook \
+  -H "Content-Type: application/json" \
+  -H "x-prembly-signature: odddSgRAmx8f12ObAFmLjAMEC/Ws/l8fp4eR63doCzA=" \
+  -d '{"event":"test.event","data":{"id":123}}' && \
+curl -X POST http://localhost:3000/webhook \
+  -H "Content-Type: application/json" \
+  -H "x-prembly-signature: wrong-signature" \
+  -d '{"event":"test.event","data":{"id":123}}' ✔ 
+💭 Thinking for 247 characters   
+🛠️ Tool killBackgroundJob ✔ 
+💭 Thinking for 202 characters   
+💫 Executing rm test-sig.js ✔ 
+💭 Thinking for 293 characters   
+📋 Updating todo list (4 items) ✔ 
+💭 Thinking for 267 characters   
+🎉 Task Completed
+I have successfully built the Prembly webhook server in Node.js.
+
+### Accomplishments:
+- **Project Initialization**: Initialized a Node.js project in `/home/user/prembly-webhook` and installed `express`.
+- **Server Implementation**: Created `server.js` which:
+    - Sets up an Express server on port 3000.
+    - Uses a custom middleware to capture the **raw request body**, which is critical for accurate HMAC verification.
+    - Implements signature verification using `crypto.createHmac('sha256', PREMBLY_API_KEY)` and compares it against the `x-prembly-signature` header.
+    - Responds with `200 OK` and `{"status": "success"}` for valid signatures.
+    - Responds with `401 Unauthorized` and `{"error": "Invalid signature"}` for missing or incorrect signatures.
+- **Verification**: Verified the implementation with a test script and simulated webhook requests using `curl`.
+
+### How to Start the Server:
+1. Navigate to the project directory:
+   ```bash
+   cd /home/user/prembly-webhook
+   ```
+2. Set the `PREMBLY_API_KEY` environment variable and start the server:
+   ```bash
+   export PREMBLY_API_KEY=your_actual_api_key_here
+   node server.js
+   ```
+
+### Project Structure:
+- `/home/user/prembly-webhook/server.js`: The main server file.
+- `/home/user/prembly-webhook/package.json`: Project dependencies and configuration.
+- `/home/user/prembly-webhook/node_modules`: Installed packages.   
+  

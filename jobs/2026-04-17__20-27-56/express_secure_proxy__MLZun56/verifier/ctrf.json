@@ -1,0 +1,29 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 1,
+            "passed": 1,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776429729.0470605,
+            "stop": 1776429731.880367
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_proxy_injects_credentials",
+                "status": "passed",
+                "duration": 2.8106493209925247,
+                "start": 1776429729.066452,
+                "stop": 1776429731.8791156,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776430656.6422777,
+            "stop": 1776431204.0282512
+        },
+        "tests": [
+            {
+                "name": "tests/test_final_state.py::test_face_liveliness_react",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 547.3479481120157,
+                "start": 1776430656.6587934,
+                "stop": 1776431204.0279057,
+                "retries": 0,
+                "file_path": "tests/test_final_state.py",
+                "trace": "start_app = None\n\n    def test_face_liveliness_react(start_app):\n        reason = \"The React application should have a button that launches the Prembly Pass widget.\"\n        truth = \"Navigate to http://localhost:3000. Verify that a button with id `verify-btn` is visible. Click the `verify-btn` button. Verify that the Prembly Pass widget iframe or modal is added to the document.\"\n    \n        verifier = PochiVerifier()\n>       result = verifier.verify(\n            reason=reason,\n            truth=truth,\n            use_browser_agent=True,\n            trajectory_dir=\"/logs/verifier/pochi/test_face_liveliness_react\"\n        )\n\ntests/test_final_state.py:57: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nroot/.cache/uv/archive-v0/WNDkrFKysNcokD_wCRK28/lib/python3.12/site-packages/pochi_verifier/verifier.py:195: in verify\n    return self._parse_result(proc.stdout, proc.stderr)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <pochi_verifier.verifier.PochiVerifier object at 0x7a6bf3a91af0>\nstdout = '- Initializing MCP connections...\\nYou\\n## Reason for this test The React application should have a button that launc...le tool \\'listFiles\\'. Available tools: attemptCompletion, useSkill, todoWrite.\"\\n\ud83d\udcad Thinking for 16151 characters   \\n'\nstderr = '\\x1b[37m2026-04-17 12:57:43.935\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[32m\\x1b[1mDEBUG\\x1b[22m\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[37mna...ve:7\\x1b[39m\\x1b[0m\\x1b[0m\\x1b[0m\\x1b[0m\\nThe DOMException.name getter can only be used on instances of DOMException\\n'\n\n    def _parse_result(self, stdout: str, stderr: str) -> VerificationResult:\n        \"\"\"Parses the stdout from pochi to extract the verification result.\"\"\"\n        # Find the JSON object that follows the `Task Completed` marker (with possible whitespace)\n        match = re.search(r\"Task Completed.*?(\\{.*)\", stdout, re.DOTALL)\n        if not match:\n>           raise PochiOutputError(\"Cannot extract the JSON from the output message.\")\nE           pochi_verifier.verifier.PochiOutputError: Cannot extract the JSON from the output message.\n\nroot/.cache/uv/archive-v0/WNDkrFKysNcokD_wCRK28/lib/python3.12/site-packages/pochi_verifier/verifier.py:211: PochiOutputError",
+                "message": "The test failed in the call phase due to an exception"
+            }
+        ]
+    }
+}

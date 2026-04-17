@@ -1,0 +1,83 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly API Error Handling Middleware
+
+## Background
+When calling the Prembly API (e.g., for NIN verification), the sandbox environment can return various errors such as 404 (Not Found) for invalid test data or 401 (Unauthorized) for bad credentials. You need to build an Express.js server with a global error handling middleware that intercepts these errors and normalizes the response.
+
+## Requirements
+- Create an Express.js server with a `POST /verify-nin` endpoint.
+- The endpoint should expect a JSON body with a `number` field (the NIN).
+- It should call the Prembly NIN verification API at `https://api.prembly.com/api/v1/verification/nin` (or the correct sandbox endpoint, usually `https://api.prembly.com/api/v1/verification/nin` or just `https://api.prembly.com/verification/nin` depending on the exact path, assume `/api/v1/verification/nin` for this task, wait, plan.md says `https://api.prembly.com/verification/nin` so sandbox is `https://api.prembly.com/verification/nin`).
+- Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the headers `app-id` and `x-api-key`.
+- Implement a global Express error handling middleware (`app.use((err, req, res, next) => {...})`).
+- If the Prembly API returns an error (e.g. using axios), pass it to the error handler via `next(err)`.
+- The error handler must respond with a 400 HTTP status code and a JSON payload: `{"error": true, "message": "Verification failed", "details": "<error_message_from_prembly>"}`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `express` and `axios`.
+3. Create an `index.js` that sets up the server, the `/verify-nin` route, and the error handling middleware.
+4. Ensure the server starts on port 3000.
+5. The `package.json` must have a `start` script: `node index.js`.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: 3000
+- Log file: none
+
+## Integrations
+- Prembly
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

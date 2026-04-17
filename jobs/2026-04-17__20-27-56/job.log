@@ -1,0 +1,1644 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Document Verification Retry Flow
+
+## Background
+You are building an onboarding flow for a fintech application using React and the `prembly-pass` SDK. You need to implement a document verification step that allows a maximum of 3 retries if the verification fails.
+
+## Requirements
+- Create a simple React application that integrates the `prembly-pass` SDK.
+- The application should have a button "Start Verification" that launches the Prembly widget.
+- If the verification fails (the `error` event is triggered), the user should be allowed to retry up to 3 times.
+- Keep track of the retry count. Display the current number of attempts remaining on the screen (e.g., "Attempts remaining: 3").
+- If the verification succeeds (`success` event), display a success message: "Verification successful!".
+- If the user fails 3 times, disable the "Start Verification" button and display an error message: "Maximum retries exceeded. Please contact support.".
+
+## Implementation Guide
+1. Initialize a React project in `/home/user/app` using Vite.
+2. Install the `prembly-pass` SDK (`npm install prembly-pass`).
+3. In `src/App.jsx`, implement the retry logic.
+4. Initialize `PremblyPass` with `app_id: import.meta.env.VITE_PREMBLY_APP_ID`, `x_api_key: import.meta.env.VITE_PREMBLY_API_KEY`, and `environment: "test"`. You can also configure the base URL to `https://api.prembly.com` if needed.
+5. Use `import.meta.env.VITE_PREMBLY_CONFIG_ID` for the `config_id` when calling `launch()`.
+
+## Constraints
+- Project path: /home/user/app
+- Start command: npm run dev -- --port 3000
+- Port: 3000
+- The environment variables will be provided at runtime.
+
+## Integrations
+- None
+EOF
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# BVN Verification API with Prembly
+
+## Background
+You need to build a Node.js Express server that verifies a Bank Verification Number (BVN) using Prembly's API.
+
+## Requirements
+- Initialize a Node.js project in `/home/user/app`.
+- Create an Express server with a POST endpoint at `/verify-bvn`.
+- The endpoint should accept a JSON body with a `bvn` field.
+- It must call Prembly's BVN verification API using the sandbox environment (`https://api.prembly.com/verification/bvn`).
+- Provide the `app-id` and `x-api-key` headers using the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY`.
+- The endpoint should return the data received from Prembly.
+- Implement proper error handling.
+
+## Implementation Guide
+1. `cd /home/user/app` and run `npm init -y`.
+2. Install `express` and `axios`.
+3. Create an `index.js` file that sets up the Express server.
+4. Implement the POST `/verify-bvn` endpoint to forward requests to the Prembly BVN verification API.
+5. Ensure the server listens on port 3000.
+
+## Constraints
+- Project path: /home/user/app
+- Start command: `npm start` (ensure this is defined in package.json to run `node index.js`)
+- Port: 3000
+- Use `https://api.prembly.com` as the base URL.
+
+## Integrations
+- None
+EOF
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Driver's License Verification API
+
+## Background
+You need to implement a backend API endpoint that verifies a driver's license using the Prembly API. This is a common requirement for ride-hailing apps or gig economy platforms to ensure the driver's identity is legitimate.
+
+## Requirements
+- Create an Express.js server that exposes a `POST /verify-license` endpoint.
+- The endpoint should accept a JSON body with a `license_number` field.
+- The endpoint must call the Prembly Driver's License verification API to verify the license.
+- Return the verification result to the client.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `express` and `axios`.
+3. Create an `index.js` file that sets up the Express server.
+4. Implement the `POST /verify-license` endpoint.
+5. In the endpoint, make a POST request to `https://api.prembly.com/verification/drivers_license` with the payload `{"number": "DXG100"}`.
+6. Set the headers `app-id` and `x-api-key` for the Prembly API request using the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` respectively.
+7. Return the data received from Prembly back to the client.
+8. Start the server on port 3000.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: 3000
+- The server must read `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from the environment.
+
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Background Job Polling
+
+## Background
+You need to build a Node.js background job that polls the Prembly SDK Session Retrieval endpoint for pending verifications that haven't sent a webhook.
+
+## Requirements
+- Create a Node.js script `poll.js` that fetches the SDK sessions.
+- Use the Prembly sandbox URL: `https://api.prembly.com/api/v1/checker-widget/sdk/sessions/`
+- Pass the `PREMBLY_API_KEY` environment variable as the `x-api-key` header.
+- The script should parse the response and count the total number of sessions returned (or those with a specific status if you prefer, but counting total sessions is sufficient for this task to prove the API call works).
+- Write the output to a log file in the format: `Total sessions: <count>`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `axios` or use the built-in `fetch`.
+3. Create `poll.js` to make the GET request to the SDK Session Retrieval endpoint.
+4. Handle pagination if necessary, or just fetch the first page.
+5. Write the result to `/home/user/app/output.log`.
+
+## Constraints
+- Project path: `/home/user/app`
+- Log file: `/home/user/app/output.log`
+- Use the environment variable `PREMBLY_API_KEY` for authentication.
+
+## Integrations
+- Prembly
+EOF
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly API Error Handling Middleware
+
+## Background
+When calling the Prembly API (e.g., for NIN verification), the sandbox environment can return various errors such as 404 (Not Found) for invalid test data or 401 (Unauthorized) for bad credentials. You need to build an Express.js server with a global error handling middleware that intercepts these errors and normalizes the response.
+
+## Requirements
+- Create an Express.js server with a `POST /verify-nin` endpoint.
+- The endpoint should expect a JSON body with a `number` field (the NIN).
+- It should call the Prembly NIN verification API at `https://api.prembly.com/api/v1/verification/nin` (or the correct sandbox endpoint, usually `https://api.prembly.com/api/v1/verification/nin` or just `https://api.prembly.com/verification/nin` depending on the exact path, assume `/api/v1/verification/nin` for this task, wait, plan.md says `https://api.prembly.com/verification/nin` so sandbox is `https://api.prembly.com/verification/nin`).
+- Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the headers `app-id` and `x-api-key`.
+- Implement a global Express error handling middleware (`app.use((err, req, res, next) => {...})`).
+- If the Prembly API returns an error (e.g. using axios), pass it to the error handler via `next(err)`.
+- The error handler must respond with a 400 HTTP status code and a JSON payload: `{"error": true, "message": "Verification failed", "details": "<error_message_from_prembly>"}`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `express` and `axios`.
+3. Create an `index.js` that sets up the server, the `/verify-nin` route, and the error handling middleware.
+4. Ensure the server starts on port 3000.
+5. The `package.json` must have a `start` script: `node index.js`.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: 3000
+- Log file: none
+
+## Integrations
+- Prembly
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Secure Backend Proxy for Prembly
+
+## Background
+Prembly (Identitypass) provides APIs for identity verification. To secure our integration, we need to implement a backend proxy using Express.js that hides our API credentials (`app-id` and `x-api-key`) from the frontend while forwarding requests to the Prembly sandbox.
+
+## Requirements
+- Create an Express server that acts as a proxy.
+- All requests to `/api/prembly/*` should be forwarded to `https://api.prembly.com/*`.
+- The proxy must automatically inject the `app-id` and `x-api-key` headers from the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
+- The proxy must forward the request method, body, and query parameters correctly.
+- The server must listen on port 3000.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/proxy-app`.
+2. Install `express` and any necessary proxy middleware (like `http-proxy-middleware` or `axios`).
+3. Create an `index.js` file that sets up the Express server.
+4. Implement the proxy logic for the `/api/prembly/*` route.
+
+## Constraints
+- Project path: /home/user/proxy-app
+- Start command: `node index.js`
+- Port: 3000
+
+## Integrations
+- None
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Express NIN Lookup Cache
+
+## Background
+You need to build a simple Express.js API that verifies National Identity Numbers (NIN) using the Prembly API. To reduce API costs and improve response times, you must implement an in-memory cache for the verification results.
+
+## Requirements
+- Create an Express.js server with a POST endpoint at `/api/verify-nin`.
+- The endpoint should accept a JSON body with a `nin` field.
+- Make a POST request to the Prembly sandbox API: `https://api.prembly.com/verification/nin` with a JSON body `{"number": "<nin>"}`.
+- The Prembly API requires `app-id` and `x-api-key` headers. Use the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` for these.
+- If the `nin` has been verified previously, return the cached result immediately.
+- Cache the successful response data and return it to the client.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/nin-cache`.
+2. Install `express` and `axios`.
+3. Create an `index.js` that sets up the Express server.
+4. Implement the `/api/verify-nin` endpoint with the caching logic and Prembly API integration.
+5. The server should listen on port 3000.
+
+## Constraints
+- Project path: /home/user/nin-cache
+- Start command: node index.js
+- Port: 3000
+
+## Integrations
+- Prembly
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Face Liveliness with React
+
+## Background
+You have a basic React application initialized at `/home/user/app`. You need to integrate the Prembly Pass widget to perform a Face Liveliness check.
+
+## Requirements
+- Install the `prembly-pass` library.
+- Create a `FaceLiveliness` React component in `src/FaceLiveliness.js`.
+- The component should have a button with the id `verify-btn` that, when clicked, launches the Prembly Pass widget.
+- Initialize `PremblyPass` with `app_id` from the environment variable `PREMBLY_APP_ID`, `x_api_key` from `PREMBLY_API_KEY`, and set `environment` to `'test'` (or the sandbox URL `https://api.prembly.com` if required by the SDK).
+- Launch the widget with `config_id` from `PREMBLY_CONFIG_ID` and `user_ref` as `'user_123'`.
+- On successful verification, the component should render a `div` with the id `success-message` containing the text 'Verification successful'.
+- Update `src/App.js` to render the `FaceLiveliness` component.
+- Ensure the environment variables are correctly passed to your React app (e.g., by creating a `.env` file with `REACT_APP_PREMBLY_APP_ID`, etc., if using Create React App).
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: 3000
+
+## Integrations
+- Prembly
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Fastify Webhook Handler for Prembly
+
+## Background
+Prembly sends asynchronous webhook notifications when verifications are completed. To ensure the security of your endpoint, you must verify the `x-prembly-signature` header included in every webhook request. This signature is an HMAC-SHA256 hash of the raw request payload, generated using your Prembly Public Key.
+
+## Requirements
+- Create a Fastify server that listens on `POST /webhook`.
+- The server must read the raw request body to compute the HMAC-SHA256 signature using the secret key provided in the `PREMBLY_API_KEY` environment variable.
+- Compare the computed signature (base64 encoded) with the `x-prembly-signature` header.
+- If the signature is missing, invalid, or does not match, respond with HTTP status `401 Unauthorized` and `{"error": "Invalid signature"}`.
+- If the signature is valid, process the webhook (you can just respond with HTTP status `200 OK` and `{"status": "received"}`).
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `fastify` and `fastify-raw-body` (or handle raw body manually) to ensure you have the exact raw payload for signature verification.
+3. Create `server.js` that sets up the Fastify server and the `/webhook` route.
+4. Implement the HMAC-SHA256 verification logic using Node's built-in `crypto` module.
+
+## Constraints
+- **Project path**: `/home/user/app`
+- **Start command**: `npm start`
+- **Port**: 3000
+- You must use `fastify`.
+- The signature must be computed as a Base64 encoded HMAC-SHA256 string of the raw payload using `PREMBLY_API_KEY`.
+
+## Integrations
+- None required for this specific webhook receiver task.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Fintech Wallet Creation with Prembly
+
+## Background
+You are building a fintech onboarding flow. To create a wallet, a user must verify their identity using Prembly (Identitypass). The flow involves verifying a National Identity Number (NIN) and performing a face liveliness check before allowing wallet creation.
+
+## Requirements
+- Implement a Node.js backend to handle the wallet creation API.
+- Create an endpoint `POST /api/wallet/create` that accepts `ninNumber` and `faceLivelinessRef`.
+- The endpoint must first verify the NIN using Prembly's `POST https://api.prembly.com/verification/nin` (use `https://api.prembly.com/verification/nin` for testing).
+- If the NIN is valid, it should verify the face liveliness session using Prembly's SDK Session Retrieval or a mock endpoint if not available in sandbox, but let's assume the NIN verification is the primary backend check. For this task, only implement the NIN verification on the backend.
+- Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from environment variables.
+- If verification succeeds, return `201 Created` with `{"wallet_id": "new_wallet_123"}`. If it fails, return `400 Bad Request`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/fintech-app`.
+2. Install `express` and `axios`.
+3. Create `index.js` that sets up the Express server on port 3000.
+4. Implement the `POST /api/wallet/create` endpoint.
+5. Call the Prembly sandbox API: `POST https://api.prembly.com/verification/nin` with the `number` from the request body. Pass `app-id` and `x-api-key` headers.
+6. Start the server using `npm start`.
+
+## Constraints
+- Project path: /home/user/fintech-app
+- Start command: npm start
+- Port: 3000
+- The server must read `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from the environment.
+
+## Integrations
+- Prembly
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Pass Vanilla HTML Widget
+
+## Background
+You need to integrate the Prembly Pass widget into a vanilla web application to handle identity verification.
+
+## Requirements
+- Initialize a vanilla JS project using Vite in `/home/user/app`.
+- Install `prembly-pass`.
+- Create a simple UI with a button to launch the Prembly verification widget.
+- Initialize `PremblyPass` with `app_id` as `test_app_id` and `x_api_key` from the `PREMBLY_API_KEY` environment variable. Ensure the environment is set to `test` and uses the Prembly sandbox URL (`https://api.prembly.com`).
+- Configure it with `config_id` as `test_config_id` and a unique `user_ref`.
+- Listen for `success` and `error` events, and log the results to the console or display them on the screen.
+
+## Implementation Guide
+1. Run `npm create vite@latest /home/user/app -- --template vanilla`.
+2. `cd /home/user/app` and `npm install`.
+3. Install the SDK: `npm install prembly-pass`.
+4. Edit `main.js` to import and configure `PremblyPass`.
+5. Add a button in `index.html` to trigger the widget launch.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm run dev -- --host 0.0.0.0 --port 3000`
+- Port: 3000
+- Read the API key from the environment variable `PREMBLY_API_KEY`.
+
+## Integrations
+- None
+EOF
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly KYB Business Verification
+
+## Background
+You need to implement a Node.js script that verifies a business registration using the Prembly API. The script should use the Prembly sandbox environment.
+
+## Requirements
+- Create a Node.js script `verify_business.js` in `/home/user/project`.
+- The script should take a registration number as a command-line argument.
+- It should make a POST request to the Prembly sandbox API (`https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` - assuming this is the CAC endpoint, or use the appropriate endpoint if you know it, but let's assume `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` for CAC check, or just generic `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac_advance`). Wait, let's keep it simpler: The task is to write a script that sends a POST request to `https://api.prembly.com/api/v1/biometrics/merchant/data/verification/cac` with the provided registration number.
+- The request must include headers `app-id` and `x-api-key` read from environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY` respectively.
+- The body should be JSON containing `{"company_type": "RC", "rc_number": "<registration_number>"}`.
+- The script should write the JSON response to `/home/user/project/output.json`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/project` and install `axios`.
+2. Write the `verify_business.js` script to read the registration number from `process.argv[2]`.
+3. Make the axios POST request with the required headers and body to the sandbox URL.
+4. Save the response data to `output.json`.
+
+## Constraints
+- Project path: `/home/user/project`
+- Log file: `/home/user/project/output.json`
+- Use `https://api.prembly.com` as the base URL.
+
+## Integrations
+- None
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Webhook Server
+
+## Background
+You need to build a Node.js Express server that can securely receive webhooks from Prembly. Developers often struggle to securely verify that incoming webhooks are legitimately from Prembly, leading to security vulnerabilities.
+
+## Requirements
+- Create an Express.js server that listens for POST requests on `/webhook`.
+- The server must verify the webhook signature using the `x-prembly-signature` header.
+- Prembly generates the signature by computing the HMAC-SHA256 of the raw request payload using your API key, and then Base64 encodes it.
+- Implement a middleware that computes the HMAC-SHA256 (Base64 encoded) of the raw request body using the API key from the `PREMBLY_API_KEY` environment variable and compares it to the `x-prembly-signature` header.
+- If the signature is valid, respond with HTTP status 200 and a JSON body `{"status": "success"}`.
+- If the signature is invalid or missing, respond with HTTP status 401 and a JSON body `{"error": "Invalid signature"}`.
+
+## Implementation Guide
+1. You have a directory at `/home/user/prembly-webhook`. Initialize a Node.js project in it.
+2. Install `express`.
+3. Create `server.js` that sets up the Express app and the `/webhook` endpoint.
+4. Ensure the raw request body is used for signature verification.
+
+## Constraints
+- Project path: `/home/user/prembly-webhook`
+- Start command: `node server.js`
+- Port: 3000
+- Use `PREMBLY_API_KEY` from the environment for signature verification.
+- Assume the Prembly sandbox URL is in `PREMBLY_SANDBOX_URL` (https://api.prembly.com) for any future API call needs.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Multi-Step Onboarding with Prembly
+
+## Background
+You need to implement a multi-step onboarding flow for a fintech application using Prembly (Identitypass). The flow consists of a phone number verification API call followed by a Face Liveliness check using the Prembly browser widget.
+
+## Requirements
+- Create a Node.js Express server that serves a static HTML page.
+- **Step 1: Phone Verification API**: Implement a `POST /api/verify-phone` endpoint that accepts a phone number and uses the Prembly API (`https://api.prembly.com/verification/phone`) to verify it. Return the API response.
+- **Step 2: Face Liveliness Widget**: On the frontend (HTML page), provide a form to input a phone number. After successful verification via the backend endpoint, display the Prembly Pass widget (`prembly-pass`) to perform a Face Liveliness check.
+- Use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for backend API calls.
+- Use the provided `config_id` for the widget initialization on the frontend.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/onboarding`.
+2. Install `express`, `axios`, and `prembly-pass`.
+3. Create an `server.js` that sets up the Express server on port 3000 and serves static files from a `public` directory.
+4. Create `public/index.html` with the onboarding UI.
+5. Implement the backend route to call the Prembly API.
+
+## Constraints
+- Project path: `/home/user/onboarding`
+- Start command: `node server.js`
+- Port: 3000
+- The frontend should initialize the widget using a placeholder `config_id` if one is not provided.
+
+## Integrations
+- Prembly API and Widget
+EOF
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# NestJS KYB Verification Service with Prembly
+
+## Background
+Create a NestJS service that implements a Know Your Business (KYB) verification flow using Prembly's API. The service needs to verify business registration details (e.g., CAC in Nigeria) and handle asynchronous verification results via webhooks.
+
+## Requirements
+- POST `/kyb/verify`: Accept business registration number and company type, then call Prembly's Business Verification API.
+- POST `/webhook/prembly`: Receive and process Prembly webhooks for verification status updates.
+- Securely verify the signature of incoming webhooks to ensure they are genuinely from Prembly.
+- Use the `PREMBLY_API_KEY` environment variable for authentication.
+- Use the sandbox environment: `https://api.prembly.com`.
+
+## Implementation Guide
+1. Initialize a NestJS project in `/home/user/nestjs-kyb`.
+2. Install required dependencies like `@nestjs/axios`, `axios`, and any crypto libraries for webhook signature verification.
+3. Implement a `KybService` that calls the Prembly API endpoint for business verification.
+4. Implement a `WebhookController` that listens for POST requests on `/webhook/prembly`.
+5. Implement webhook signature verification using the `x-prembly-signature` header and your webhook secret (which in sandbox is often the same as the API key or a specific webhook secret).
+
+## Constraints
+- Project path: /home/user/nestjs-kyb
+- Start command: npm run start
+- Port: 3000
+- The API key should be read from the `PREMBLY_API_KEY` environment variable.
+- The Prembly App ID should be read from the `PREMBLY_APP_ID` environment variable.
+- The webhook secret should be read from the `PREMBLY_WEBHOOK_SECRET` environment variable (if not set, fallback to `PREMBLY_API_KEY`).
+
+## Integrations
+- Prembly
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Next.js API Route Proxy for Prembly
+
+## Background
+Create a Next.js API route that acts as a secure proxy to the Prembly NIN verification API, hiding the API key from the frontend.
+
+## Requirements
+- Initialize a Next.js project in `/home/user/app`.
+- Create an API route `POST /api/verify-nin` that accepts a JSON body with a `number` field.
+- The route should call the Prembly NIN verification API (`https://api.prembly.com/api/v1/verification/nin` or `https://api.prembly.com/verification/nin` according to the documentation) using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
+- Set the headers `app-id` and `x-api-key` appropriately.
+- Return the JSON response from Prembly to the client.
+- The API route must handle errors appropriately.
+
+## Implementation Guide
+1. Initialize a Next.js project in `/home/user/app` using `npx create-next-app@latest app --javascript --eslint --tailwind --app --src-dir --use-npm`.
+2. Create the API route in `src/app/api/verify-nin/route.js`.
+3. Implement the POST handler to read the `number` from the request body.
+4. Make a POST request to the Prembly sandbox API using `fetch` or `axios`.
+5. Return the response to the client.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm run build && npm start`
+- Port: 3000
+- Use `https://api.prembly.com` as the base URL for the Prembly API.
+
+## Integrations
+- Prembly
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Node.js Backend Verification for NIN
+
+## Background
+Prembly provides identity verification APIs. You need to implement a Node.js function that verifies a National Identity Number (NIN) using their API.
+
+## Requirements
+- Create a Node.js script `verify.js` in `/home/user/project`.
+- The script should export a function `verifyNIN(ninNumber)` that makes a POST request to the Prembly verification endpoint for NIN.
+- Use the sandbox URL: `https://api.prembly.com/api/v1/verification/nin` (or similar depending on the exact Prembly sandbox path, but for this task, use `https://api.prembly.com/verification/vnin` as per documentation).
+- Use the `axios` library to make the request.
+- The function must use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the `app-id` and `x-api-key` headers respectively.
+- The function should return the `data` object from the API response.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/project`.
+2. Install `axios`.
+3. Create `verify.js` and implement the `verifyNIN` function as described.
+4. Export the function using `module.exports = { verifyNIN };`.
+
+## Constraints
+- Project path: /home/user/project
+- Use `axios` for HTTP requests.
+
+EOF
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Widget Integration in Vue 3
+
+## Background
+Prembly provides a browser-based widget for identity verification (e.g., Face Liveliness, Document Verification). You need to integrate the `prembly-pass` SDK into a Vue 3 application.
+
+## Requirements
+- Initialize a Vue 3 project using Vite.
+- Install the `prembly-pass` SDK.
+- Create a Vue component that initializes `PremblyPass` with the provided credentials and environment.
+- Add a button with the id `launch-widget` that triggers `prembly.launch()`.
+- The component should listen for `success` and `error` events and log the result to the console.
+
+## Implementation Guide
+1. Initialize a Vue 3 project in `/home/user/app` using Vite (e.g., `npm create vite@latest app -- --template vue` inside `/home/user`, or similar, but the project path must be exactly `/home/user/app`).
+2. Install `prembly-pass`.
+3. In `src/App.vue`, import `PremblyPass` and initialize it with:
+   - `app_id`: `'dummy_app_id'`
+   - `x_api_key`: `import.meta.env.VITE_PREMBLY_API_KEY`
+   - `environment`: `'test'` (which connects to the sandbox URL https://api.prembly.com)
+4. Add a button `<button id="launch-widget">Launch Prembly</button>` that calls the `launch` method with `config_id: 'dummy_config_id'` and a random `user_ref`.
+5. Run the app on port 3000.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm run dev -- --port 3000`
+- Port: 3000
+- You must use the `VITE_PREMBLY_API_KEY` environment variable for the API key.
+EOF
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Webhook Signature Verification
+
+## Background
+Create an Express.js server that receives Prembly webhooks and securely verifies their signature. Prembly sends webhooks with an `x-prembly-signature` header containing a Base64 encoded HMAC-SHA256 hash of the request body, using your API key as the secret. Verifying this signature is critical to ensure the webhook is legitimately from Prembly and hasn't been tampered with.
+
+## Requirements
+- Initialize a Node.js project and install `express`.
+- Create a POST `/webhook` endpoint that accepts JSON payloads.
+- The endpoint must capture the raw request body to verify the signature.
+- Compute the HMAC-SHA256 hash of the raw request body using the `PREMBLY_API_KEY` environment variable as the secret key.
+- Base64 encode the computed hash.
+- Compare the computed signature with the `x-prembly-signature` header.
+- If the signatures match, respond with `200 OK` and `{"status": "success"}`.
+- If the signatures do NOT match or the header is missing, respond with `401 Unauthorized` and `{"error": "Invalid signature"}`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/prembly-webhook`.
+2. Install `express`.
+3. Create an `index.js` file.
+4. Use `express.raw({ type: 'application/json' })` middleware for the `/webhook` route to ensure you have the exact raw body for signature verification.
+5. Implement the signature computation using Node's built-in `crypto` module (`crypto.createHmac('sha256', process.env.PREMBLY_API_KEY).update(req.body).digest('base64')`).
+6. Compare the signatures securely.
+7. Start the server on port 3000.
+
+## Constraints
+- Project path: `/home/user/prembly-webhook`
+- Start command: `npm start` (ensure this is defined in package.json)
+- Port: `3000`
+- The server must read the secret key from the `PREMBLY_API_KEY` environment variable.
+
+## Integrations
+- None required for this specific task.
+EOF
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly API Rate Limit Handler
+
+## Background
+You are building a Node.js backend that integrates with Prembly (Identitypass) to verify National Identity Numbers (NIN). The Prembly API may occasionally return a `429 Too Many Requests` status code when rate limits are exceeded. You need to implement an exponential backoff retry mechanism to handle this gracefully.
+
+## Requirements
+- Initialize a Node.js Express application in `/home/user/app`.
+- Create a `POST /verify-nin` endpoint that accepts a JSON body with a `nin` string (e.g., `{"nin": "12345678901"}`).
+- The endpoint must call the Prembly NIN API using the base URL from the `PREMBLY_BASE_URL` environment variable (defaulting to `https://api.prembly.com`) and the path `/verification/nin`.
+- Pass the `app-id` and `x-api-key` headers using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
+- Implement an exponential backoff retry mechanism for the Prembly API call: if the API returns a 429 status code, retry the request up to 3 times. Wait 100ms before the first retry, 200ms before the second, and 400ms before the third.
+- If the request succeeds, return the Prembly API response with a 200 status code.
+- If the request still fails with a 429 after 3 retries, return a 429 status code to the client with the message `"Rate limit exceeded, please try again later"`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `express` and `axios`.
+3. Create an `index.js` that sets up the Express server on `process.env.PORT` or port 3000.
+4. Implement the `POST /verify-nin` endpoint with the retry logic.
+5. Ensure the server parses JSON request bodies.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: `process.env.PORT` or 3000
+- Log file: `/home/user/app/output.log`
+- Use `axios` for HTTP requests.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+The verifier.env contains an API key (often the case for LLM-based verifiers). You will incur costs associated with the API calls.
+Exception AgentTimeoutError is in exclude_exceptions, not retrying
+Not retrying trial because the exception is not in include_exceptions or the maximum number of retries has been reached

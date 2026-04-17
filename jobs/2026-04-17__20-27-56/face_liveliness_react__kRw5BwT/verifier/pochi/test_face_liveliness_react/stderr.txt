@@ -1,0 +1,37 @@
+[37m2026-04-17 12:57:43.935[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37mnative:1[39m[0m[0m[1m[37m	Pochi[39m[22m[0m[0m	pochi v0.6.7
+[37m2026-04-17 12:57:44.438[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:503190[39m[0m[0m[1m[37m	loadAgents[39m[22m[0m[0m	Loaded 6 custom agents (6 valid, 0 invalid)
+[37m2026-04-17 12:57:44.439[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:503191[39m[0m[0m[1m[37m	loadSkills[39m[22m[0m[0m	Loaded 2 skills (2 valid, 0 invalid)
+[37m2026-04-17 12:57:44.776[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:415701[39m[0m[0m[1m[37m	MCPHub[39m[22m[0m[0m	MCP servers configuration changed via signal:
+[37m2026-04-17 12:57:44.777[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:415813[39m[0m[0m[1m[37m	MCPHub[39m[22m[0m[0m	Build MCPHub Status
+[37m2026-04-17 12:57:45.196[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:502612[39m[0m[0m[1m[37m	TaskRunner[39m[22m[0m[0m	Starting TaskRunner...
+[37m2026-04-17 12:57:45.305[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:496613[39m[0m[0m[1m[37m	generateTaskTitle[39m[22m[0m[0m	Generating task title, old: null, new: ## Reason for this test
+[37m2026-04-17 12:58:03.733[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:496613[39m[0m[0m[1m[37m	generateTaskTitle[39m[22m[0m[0m	Generating task title, old: ## Reason for this test, new: Verify Prembly Pass widget launch button functionality
+[37m2026-04-17 13:06:43.957[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m$bunfs/root/pochi:503300[39m[0m[0m[1m[37m	TaskRunner[39m[22m[0m[0m	Failed:
+
+[97m[101m[1m TypeError [22m[49m[39m[0m[0m The DOMException.name getter can only be used on instances of DOMException, 1107, 17, 1107, 17, internal:util/inspect[0m[0m
+error stack:
+  • [33mutilinspect[39m[0m[0m	formatError[0m[0m
+	[37mutilinspect:1107[39m[0m[0m
+  • [33mutilinspect[39m[0m[0m	formatRaw[0m[0m
+	[37mutilinspect:854[39m[0m[0m
+  • [33mutilinspect[39m[0m[0m	formatWithOptionsInternal[0m[0m
+	[37mutilinspect:1661[39m[0m[0m
+  • [33mpochi[39m[0m[0m	transportFormatted[0m[0m
+	[37m$bunfs/root/pochi:417727[39m[0m[0m
+  • [33mpochi[39m[0m[0m	log[0m[0m
+	[37m$bunfs/root/pochi:417843[39m[0m[0m
+  • [33mpochi[39m[0m[0m	onError[0m[0m
+	[37m$bunfs/root/pochi:500792[39m[0m[0m
+  • [33mpochi[39m[0m[0m	makeRequest[0m[0m
+	[37m$bunfs/root/pochi:432009[39m[0m[0m
+  • [33mpochi[39m[0m[0m	async <anonymous>[0m[0m
+	[37m$bunfs/root/pochi:431766[39m[0m[0m
+  • [33mpochi[39m[0m[0m	async step[0m[0m
+	[37m$bunfs/root/pochi:502741[39m[0m[0m
+  • [33mpochi[39m[0m[0m	async run[0m[0m
+	[37m$bunfs/root/pochi:502618[39m[0m[0m
+  • [33mpochi[39m[0m[0m	async <anonymous>[0m[0m
+	[37m$bunfs/root/pochi:503300[39m[0m[0m
+  • [33mnative[39m[0m[0m	processTicksAndRejections[0m[0m
+	[37mnative:7[39m[0m[0m[0m[0m
+The DOMException.name getter can only be used on instances of DOMException

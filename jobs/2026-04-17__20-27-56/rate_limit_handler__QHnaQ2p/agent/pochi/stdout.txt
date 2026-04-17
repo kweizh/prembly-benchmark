@@ -1,0 +1,50 @@
+- Initializing MCP connections...
+You
+# Prembly API Rate Limit Handler ## Background You are building a Node.js backend that integrates with Prembly (Identitypass) to verify National Identity Numbers (NIN). The Prembly API may occasionally return a `429 Too Many Requests` status code when rate limits are exceeded. You need to implement an exponential backoff retry mechanism to handle this gracefully. ## Requirements - Initialize a Node.js Express application in `/home/user/app`. - Create a `POST /verify-nin` endpoint that accepts a JSON body with a `nin` string (e.g., `{"nin": "12345678901"}`). - The endpoint must call the Prembly NIN API using the base URL from the `PREMBLY_BASE_URL` environment variable (defaulting to `https://api.prembly.com`) and the path `/verification/nin`. - Pass the `app-id` and `x-api-key` headers using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables. - Implement an exponential backoff retry mechanism for the Prembly API call: if the API returns a 429 status code, retry the request up to 3 times. Wait 100ms before the first retry, 200ms before the second, and 400ms before the third. - If the request succeeds, return the Prembly API response with a 200 status code. - If the request still fails with a 429 after 3 retries, return a 429 status code to the client with the message `"Rate limit exceeded, please try again later"`. ## Implementation Guide 1. Initialize a Node.js project in `/home/user/app`. 2. Install `express` and `axios`. 3. Create an `index.js` that sets up the Express server on `process.env.PORT` or port 3000. 4. Implement the `POST /verify-nin` endpoint with the retry logic. 5. Ensure the server parses JSON request bodies. ## Constraints - Project path: `/home/user/app` - Start command: `npm start` - Port: `process.env.PORT` or 3000 - Log file: `/home/user/app/output.log` - Use `axios` for HTTP requests.   
+
+Pochi
+💭 Thinking for 876 characters   
+📋 Updating todo list (5 items) ✔ 
+💭 Thinking for 241 characters   
+💫 Executing mkdir -p /home/user/app && cd /home/user/app && npm init -y ✔ 
+💭 Thinking for 229 characters   
+💫 Executing cd /home/user/app && npm install express axios ✔ 
+💭 Thinking for 239 characters   
+📋 Updating todo list (5 items) ✔ 
+💭 Thinking for 290 characters   
+✏️  Writing /home/user/app/index.js ✔ 
+💭 Thinking for 264 characters   
+🔧 Applying diff to /home/user/app/package.json ✔ 
+💭 Thinking for 203 characters   
+📋 Updating todo list (5 items) ✔ 
+💭 Thinking for 2646 characters   
+🎉 Task Completed
+I have implemented the Prembly API Rate Limit Handler in `/home/user/app`.
+
+### Key Features:
+- **Express Server**: Set up on `process.env.PORT` or port 3000.
+- **NIN Verification Endpoint**: `POST /verify-nin` accepts a JSON body with a `nin`.
+- **Exponential Backoff**: Implemented a retry mechanism for `429 Too Many Requests` responses.
+  - **1st Retry**: Waits 100ms.
+  - **2nd Retry**: Waits 200ms.
+  - **3rd Retry**: Waits 400ms.
+- **Error Handling**: If the request fails after 3 retries, it returns a 429 status with the message `"Rate limit exceeded, please try again later"`.
+- **Environment Variables**: Uses `PREMBLY_BASE_URL`, `PREMBLY_APP_ID`, and `PREMBLY_API_KEY`.
+
+### Files Created:
+- `/home/user/app/index.js`: Main application logic.
+- `/home/user/app/package.json`: Project configuration and dependencies.
+
+### How to Start:
+```bash
+cd /home/user/app
+npm start
+```
+
+### Example Request:
+```bash
+curl -X POST http://localhost:3000/verify-nin \
+     -H "Content-Type: application/json" \
+     -d '{"nin": "12345678901"}'
+```   
+  

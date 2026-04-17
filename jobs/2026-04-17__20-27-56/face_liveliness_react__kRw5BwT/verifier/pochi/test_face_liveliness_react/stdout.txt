@@ -1,0 +1,19 @@
+- Initializing MCP connections...
+You
+## Reason for this test The React application should have a button that launches the Prembly Pass widget. ## Verification Steps Follow these steps precisely and in order: Navigate to http://localhost:3000. Verify that a button with id `verify-btn` is visible. Click the `verify-btn` button. Verify that the Prembly Pass widget iframe or modal is added to the document.   
+
+Pochi
+💭 Thinking for 578 characters   
+📋 Updating todo list (1 items) ✔ 
+💭 Thinking for 1096 characters   
+🧩 Using skill find-skills ✔ 
+💭 Thinking for 667 characters   
+📋 Updating todo list (1 items) ✔ 
+💭 Thinking for 914 characters   
+💭 Thinking for 2386 characters   
+🧩 Using skill browser ✖ "Skill 'browser' not found. Available skills: find-skills, create-skill"
+💭 Thinking for 2903 characters   
+📋 Updating todo list (1 items) ✔ 
+💭 Thinking for 256 characters   
+📂 Listing files in . ✖ "Model tried to call unavailable tool 'listFiles'. Available tools: attemptCompletion, useSkill, todoWrite."
+💭 Thinking for 16151 characters   
