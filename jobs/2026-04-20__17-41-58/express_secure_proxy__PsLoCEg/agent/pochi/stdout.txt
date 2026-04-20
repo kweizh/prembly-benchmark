@@ -1,0 +1,64 @@
+- Initializing MCP connections...
+You
+# Secure Backend Proxy for Prembly ## Background Prembly (Identitypass) provides APIs for identity verification. To secure our integration, we need to implement a backend proxy using Express.js that hides our API credentials (`app-id` and `x-api-key`) from the frontend while forwarding requests to the Prembly sandbox. ## Requirements * Create an Express server that acts as a proxy. * All requests to `/api/prembly/*` should be forwarded to `https://api.prembly.com/*`. * The proxy must automatically inject the `app-id` and `x-api-key` headers from the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables. * The proxy must forward the request method, body, and query parameters correctly. * The server must listen on port 3000. ## Implementation Guide 1. Initialize a Node.js project in `/home/user/proxy-app`. 2. Install `express` and any necessary proxy middleware (like `http-proxy-middleware` or `axios`). 3. Create an `index.js` file that sets up the Express server. 4. Implement the proxy logic for the `/api/prembly/*` route. ## Constraints * Project path: /home/user/proxy-app * Start command: `node index.js` * Port: 3000 ## Integrations * None   
+
+Pochi
+💭 Thinking for 117 characters   
+📋 Updating todo list (3 items) ✔ 
+💫 Executing mkdir -p /home/user/proxy-app ✔ 
+📋 Updating todo list (3 items) ✔ 
+💫 Executing cd /home/user/proxy-app && npm init -y ✔ 
+📋 Updating todo list (3 items) ✔ 
+💫 Executing cd /home/user/proxy-app && npm install express axios ✔ 
+📋 Updating todo list (3 items) ✔ 
+✏️  Writing /home/user/proxy-app/index.js ✔ 
+Now verify the server starts correctly:   
+💫 Executing cd /home/user/proxy-app && PREMBLY_APP_ID=test-app-id PREMBLY_API_KEY=test-api-key timeout 3 node index.js; echo "Exit: $?" ✔ 
+Express 5 (bundled with newer `path-to-regexp`) no longer accepts bare `*` — it must use a named wildcard. I'll fix the route pattern:   
+🔧 Applying diff to /home/user/proxy-app/index.js ✔ 
+💫 Executing cd /home/user/proxy-app && PREMBLY_APP_ID=test-app-id PREMBLY_API_KEY=test-api-key timeout 3 node index.js; echo "Exit: $?" ✔ 
+Server starts cleanly (exit 124 = killed by timeout, meaning it ran successfully). Let's do a quick smoke test against the running server:   
+💫 Executing cd /home/user/proxy-app && PREMBLY_APP_ID=test-app-id PREMBLY_API_KEY=test-api-key node index.js &
+sleep 1
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/prembly/identitypass/verification/nin
+kill %1 2>/dev/null; wait 2>/dev/null; true ✔ 
+A `401` back from Prembly confirms the proxy is correctly routing requests all the way to the real API (test credentials are rejected by Prembly, not by our server). The proxy is working.   
+📋 Updating todo list (3 items) ✔ 
+🎉 Task Completed
+The Prembly secure backend proxy is set up at `/home/user/proxy-app`.
+
+## Project Structure
+```
+/home/user/proxy-app/
+├── index.js        ← Express proxy server
+├── package.json
+└── node_modules/
+```
+
+## How It Works
+
+**`index.js`** creates an Express server that:
+
+1. **Matches** any method on `/api/prembly/*path`
+2. **Strips** the `/api/prembly` prefix and forwards the remaining path to `https://api.prembly.com`
+3. **Injects** `app-id` and `x-api-key` headers from environment variables — credentials never touch the frontend
+4. **Forwards** the original HTTP method, request body, and query parameters via `axios`
+5. **Proxies error responses** from Prembly back to the caller with the original status code
+
+## Starting the Server
+```bash
+PREMBLY_APP_ID=your_app_id PREMBLY_API_KEY=your_api_key node index.js
+```
+Or export the variables in your environment / `.env` loader before running `node index.js`.
+
+## Example Frontend Usage
+Instead of calling Prembly directly (which would expose credentials), the frontend calls:
+```
+POST http://localhost:3000/api/prembly/identitypass/verification/nin
+```
+The proxy transparently forwards this to:
+```
+POST https://api.prembly.com/identitypass/verification/nin
+```
+with the secret headers injected server-side.   
+  

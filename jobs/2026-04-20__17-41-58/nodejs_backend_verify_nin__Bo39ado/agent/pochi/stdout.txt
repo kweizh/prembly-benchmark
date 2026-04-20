@@ -1,0 +1,45 @@
+- Initializing MCP connections...
+You
+# Node.js Backend Verification for NIN ## Background Prembly provides identity verification APIs. You need to implement a Node.js function that verifies a National Identity Number (NIN) using their API. ## Requirements * Create a Node.js script `verify.js` in `/home/user/project`. * The script should export a function `verifyNIN(ninNumber)` that makes a POST request to the Prembly verification endpoint for NIN. * Use the sandbox URL: `https://api.prembly.com/api/v1/verification/nin` (or similar depending on the exact Prembly sandbox path, but for this task, use `https://api.prembly.com/verification/vnin` as per documentation). * Use the `axios` library to make the request. * The function must use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the `app-id` and `x-api-key` headers respectively. * The function should return the `data` object from the API response. ## Implementation Guide 1. Initialize a Node.js project in `/home/user/project`. 2. Install `axios`. 3. Create `verify.js` and implement the `verifyNIN` function as described. 4. Export the function using `module.exports = { verifyNIN };`. ## Constraints * Project path: /home/user/project * Use `axios` for HTTP requests.   
+
+Pochi
+💭 Thinking for 224 characters   
+📂 Listing files in /home/user/project ✔ 
+📋 Updating todo list (3 items) ✔ 
+💫 Executing cd /home/user/project && npm init -y ✔ 
+📋 Updating todo list (3 items) ✔ 
+💫 Executing cd /home/user/project && npm install axios ✔ 
+📋 Updating todo list (3 items) ✔ 
+✏️  Writing /home/user/project/verify.js ✔ 
+📋 Updating todo list (3 items) ✔ 
+🎉 Task Completed
+The Node.js NIN verification project is set up at `/home/user/project` with the following structure:
+
+```
+/home/user/project/
+├── node_modules/
+├── package.json
+├── package-lock.json
+└── verify.js
+```
+
+**`verify.js`** exports a single `verifyNIN(ninNumber)` function that:
+
+- Makes a **POST** request to `https://api.prembly.com/verification/vnin`
+- Sends `{ number: ninNumber }` as the JSON body
+- Reads `PREMBLY_APP_ID` and `PREMBLY_API_KEY` from environment variables and passes them as `app-id` and `x-api-key` headers respectively
+- Returns `response.data` from the Axios response
+
+**Usage example:**
+```js
+const { verifyNIN } = require('./verify');
+
+// Set env vars before calling:
+// process.env.PREMBLY_APP_ID = 'your-app-id';
+// process.env.PREMBLY_API_KEY = 'your-api-key';
+
+verifyNIN('12345678901')
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+```   
+  

@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776678612.8686483,
+            "stop": 1776678613.2755454
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_missing_signature",
+                "status": "passed",
+                "duration": 0.04123077401891351,
+                "start": 1776678612.8887591,
+                "stop": 1776678612.9305875,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_invalid_signature",
+                "status": "passed",
+                "duration": 0.0023557240492664278,
+                "start": 1776678612.930961,
+                "stop": 1776678612.933584,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_valid_signature",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.21267522301059216,
+                "start": 1776678612.933834,
+                "stop": 1776678613.2753475,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_app = None\n\n    def test_valid_signature(start_app):\n        url = \"http://localhost:3000/webhook\"\n        data = b'{\"status\":true,\"response_code\":\"00\"}'\n    \n        import hmac\n        import hashlib\n        import base64\n    \n        api_key = os.environ.get(\"PREMBLY_API_KEY\", \"test_api_key\")\n    \n        # Compute the signature dynamically using the actual key\n        sig = hmac.new(api_key.encode('utf-8'), data, hashlib.sha256).digest()\n        valid_signature = base64.b64encode(sig).decode('utf-8')\n    \n        headers = {\n            'Content-Type': 'application/json',\n            'x-prembly-signature': valid_signature\n        }\n        req = urllib.request.Request(url, data=data, headers=headers)\n    \n        try:\n>           response = urllib.request.urlopen(req)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_final_state.py:99: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nusr/lib/python3.12/urllib/request.py:215: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:521: in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:630: in http_response\n    response = self.parent.error(\nusr/lib/python3.12/urllib/request.py:559: in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:492: in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib.request.HTTPDefaultErrorHandler object at 0x7faab5dd7bf0>\nreq = <urllib.request.Request object at 0x7faab593d820>\nfp = <http.client.HTTPResponse object at 0x7faab55a4d90>, code = 401\nmsg = 'Unauthorized', hdrs = <http.client.HTTPMessage object at 0x7faab55a4f80>\n\n    def http_error_default(self, req, fp, code, msg, hdrs):\n>       raise HTTPError(req.full_url, code, msg, hdrs, fp)\nE       urllib.error.HTTPError: HTTP Error 401: Unauthorized\n\nusr/lib/python3.12/urllib/request.py:639: HTTPError\n\nDuring handling of the above exception, another exception occurred:\n\nstart_app = None\n\n    def test_valid_signature(start_app):\n        url = \"http://localhost:3000/webhook\"\n        data = b'{\"status\":true,\"response_code\":\"00\"}'\n    \n        import hmac\n        import hashlib\n        import base64\n    \n        api_key = os.environ.get(\"PREMBLY_API_KEY\", \"test_api_key\")\n    \n        # Compute the signature dynamically using the actual key\n        sig = hmac.new(api_key.encode('utf-8'), data, hashlib.sha256).digest()\n        valid_signature = base64.b64encode(sig).decode('utf-8')\n    \n        headers = {\n            'Content-Type': 'application/json',\n            'x-prembly-signature': valid_signature\n        }\n        req = urllib.request.Request(url, data=data, headers=headers)\n    \n        try:\n            response = urllib.request.urlopen(req)\n            assert response.getcode() == 200, f\"Expected HTTP 200, got {response.getcode()}\"\n    \n            response_body = response.read().decode('utf-8')\n            response_json = json.loads(response_body)\n            assert response_json.get(\"status\") == \"received\", f\"Expected {{'status': 'received'}}, got {response_json}\"\n        except urllib.error.HTTPError as e:\n>           pytest.fail(f\"Expected HTTP 200, but got {e.code}: {e.read().decode('utf-8')}\")\nE           Failed: Expected HTTP 200, but got 401: {\"error\":\"Invalid signature\"}\n\ntests/test_final_state.py:106: Failed",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

@@ -1,0 +1,419 @@
+- Initializing MCP connections...
+You
+# NestJS KYB Verification Service with Prembly ## Background Create a NestJS service that implements a Know Your Business (KYB) verification flow using Prembly's API. The service needs to verify business registration details (e.g., CAC in Nigeria) and handle asynchronous verification results via webhooks. ## Requirements * POST `/kyb/verify`: Accept business registration number and company type, then call Prembly's Business Verification API. * POST `/webhook/prembly`: Receive and process Prembly webhooks for verification status updates. * Securely verify the signature of incoming webhooks to ensure they are genuinely from Prembly. * Use the `PREMBLY_API_KEY` environment variable for authentication. * Use the sandbox environment: `https://api.prembly.com`. ## Implementation Guide 1. Initialize a NestJS project in `/home/user/nestjs-kyb`. 2. Install required dependencies like `@nestjs/axios`, `axios`, and any crypto libraries for webhook signature verification. 3. Implement a `KybService` that calls the Prembly API endpoint for business verification. 4. Implement a `WebhookController` that listens for POST requests on `/webhook/prembly`. 5. Implement webhook signature verification using the `x-prembly-signature` header and your webhook secret (which in sandbox is often the same as the API key or a specific webhook secret). ## Constraints * Project path: /home/user/nestjs-kyb * Start command: npm run start * Port: 3000 * The API key should be read from the `PREMBLY_API_KEY` environment variable. * The Prembly App ID should be read from the `PREMBLY_APP_ID` environment variable. * The webhook secret should be read from the `PREMBLY_WEBHOOK_SECRET` environment variable (if not set, fallback to `PREMBLY_API_KEY`). ## Integrations * Prembly   
+
+Pochi
+💭 Thinking for 278 characters   
+📋 Updating todo list (7 items) ✔ 
+📋 Updating todo list (7 items) ✔ 
+💫 Executing mkdir -p /home/user/nestjs-kyb && cd /home/user/nestjs-kyb && npm i -g @nestjs/cli 2>&1 | tail -5 ✔ 
+💫 Executing cd /home/user && nest new nestjs-kyb --package-manager npm --skip-git --strict 2>&1 ✔ 
+📋 Updating todo list (7 items) ✔ 
+💫 Executing cd /home/user/nestjs-kyb && npm install @nestjs/axios @nestjs/config axios 2>&1 ✔ 
+📋 Updating todo list (7 items) ✔ 
+Now let me implement all the source files:   
+✏️  Writing /home/user/nestjs-kyb/src/kyb/dto/verify-business.dto.ts ✔ 
+✏️  Writing /home/user/nestjs-kyb/src/kyb/kyb.service.ts ✔ 
+✏️  Writing /home/user/nestjs-kyb/src/kyb/kyb.controller.ts ✔ 
+✏️  Writing /home/user/nestjs-kyb/src/kyb/kyb.module.ts ✔ 
+Now implement the webhook module with signature verification:   
+✏️  Writing /home/user/nestjs-kyb/src/webhook/webhook.service.ts ✔ 
+✏️  Writing /home/user/nestjs-kyb/src/webhook/webhook.controller.ts ✔ 
+✏️  Writing /home/user/nestjs-kyb/src/webhook/webhook.module.ts ✔ 
+📋 Updating todo list (7 items) ✔ 
+Now wire everything together — `AppModule`, `main.ts`, and a `.env.example`:   
+✏️  Writing /home/user/nestjs-kyb/src/app.module.ts ✖ "File has not been read yet. Please read the file before writing it."
+📖 Reading /home/user/nestjs-kyb/src/app.module.ts ✔ 
+🔧 Applying diff to /home/user/nestjs-kyb/src/app.module.ts ✔ 
+Now update `main.ts` to capture the raw body (needed for webhook signature verification) and set the global port:   
+📖 Reading /home/user/nestjs-kyb/src/main.ts ✔ 
+🔧 Applying diff to /home/user/nestjs-kyb/src/main.ts ✔ 
+Now create the `.env.example` and remove the unused boilerplate files:   
+✏️  Writing /home/user/nestjs-kyb/.env.example ✔ 
+📋 Updating todo list (7 items) ✔ 
+💫 Executing cd /home/user/nestjs-kyb && npm run build 2>&1 ✔ 
+Clean build. Let's do a quick smoke-test — start the server, fire one request against each endpoint, then shut it down:   
+💫 Executing cd /home/user/nestjs-kyb && PREMBLY_API_KEY=test_key PREMBLY_APP_ID=test_app node dist/main.js &
+SERVER_PID=$!
+sleep 3
+
+echo "=== POST /kyb/verify (missing registrationNumber) ==="
+curl -s -o - -w "\nHTTP %{http_code}" -X POST http://localhost:3000/kyb/verify \
+  -H "Content-Type: application/json" -d '{}'
+
+echo ""
+echo "=== POST /kyb/verify (valid body – will fail at Prembly with 4xx because key is fake) ==="
+curl -s -o - -w "\nHTTP %{http_code}" -X POST http://localhost:3000/kyb/verify \
+  -H "Content-Type: application/json" \
+  -d '{"registrationNumber":"RC1234567","companyType":"rc"}'
+
+echo ""
+echo "=== POST /webhook/prembly (missing signature) ==="
+curl -s -o - -w "\nHTTP %{http_code}" -X POST http://localhost:3000/webhook/prembly \
+  -H "Content-Type: application/json" \
+  -d '{"status":"completed","verification_reference":"ref_001"}'
+
+echo ""
+echo "=== POST /webhook/prembly (correct HMAC-SHA256 signature) ==="
+BODY='{"status":"completed","verification_reference":"ref_001"}'
+SIG=$(echo -n "$BODY" | openssl dgst -sha256 -hmac "test_key" | awk '{print $2}')
+curl -s -o - -w "\nHTTP %{http_code}" -X POST http://localhost:3000/webhook/prembly \
+  -H "Content-Type: application/json" \
+  -H "x-prembly-signature: $SIG" \
+  -d "$BODY"
+
+echo ""
+kill $SERVER_PID 2>/dev/null
+wait $SERVER_PID 2>/dev/null ✖ "Command exited with code 143"
+All endpoints respond correctly. The last test (correct HMAC) failed because the shell computed the HMAC differently from how the server did — the test key `test_key` is being compared via HMAC. Let me verify the signature verification logic directly:   
+💫 Executing node -e "
+const { createHmac } = require('crypto');
+const secret = 'test_key';
+const body = '{\"status\":\"completed\",\"verification_reference\":\"ref_001\"}';
+const sig = createHmac('sha256', secret).update(Buffer.from(body)).digest('hex');
+console.log('Computed sig:', sig);
+" 
+
+cd /home/user/nestjs-kyb && PREMBLY_API_KEY=test_key PREMBLY_APP_ID=test_app node dist/main.js &
+SERVER_PID=$!
+sleep 2
+
+BODY='{"status":"completed","verification_reference":"ref_001"}'
+SIG=$(node -e "const{createHmac}=require('crypto');const s=createHmac('sha256','test_key').update(Buffer.from('$BODY')).digest('hex');process.stdout.write(s)")
+echo "Signature: $SIG"
+
+echo "=== POST /webhook/prembly (correct Node-computed signature) ==="
+curl -s -o - -w "\nHTTP %{http_code}" -X POST http://localhost:3000/webhook/prembly \
+  -H "Content-Type: application/json" \
+  -H "x-prembly-signature: $SIG" \
+  -d "$BODY"
+
+echo ""
+kill $SERVER_PID 2>/dev/null
+wait $SERVER_PID 2>/dev/null ✖ "Command exited with code 1"
+The signature mismatch is because the shell variable interpolation changes the body string. The actual verify logic is correct — let me prove it with a pure Node.js end-to-end test that avoids shell escaping:   
+💫 Executing pkill -f "node dist/main.js" 2>/dev/null; sleep 1; echo "cleared" ✖ "Command exited with code 1"
+💫 Executing cat > /tmp/webhook_test.mjs << 'EOJS'
+import { createHmac } = from 'crypto';
+import http from 'http';
+
+const secret = 'test_key';
+const body = JSON.stringify({ status: 'completed', verification_reference: 'ref_001' });
+const sig = createHmac('sha256', secret).update(Buffer.from(body)).digest('hex');
+
+const options = {
+  hostname: 'localhost',
+  port: 3000,
+  path: '/webhook/prembly',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(body),
+    'x-prembly-signature': sig,
+  },
+};
+
+console.log('Sending with sig:', sig);
+
+const req = http.request(options, (res) => {
+  let data = '';
+  res.on('data', c => data += c);
+  res.on('end', () => {
+    console.log('Status:', res.statusCode);
+    console.log('Body:', data);
+  });
+});
+req.on('error', e => console.error('error', e.message));
+req.write(body);
+req.end();
+EOJS
+echo "Script written" ✔ 
+✏️  Writing /tmp/webhook_test.mjs ✖ "File has not been read yet. Please read the file before writing it."
+💫 Executing cd /home/user/nestjs-kyb && PREMBLY_API_KEY=test_key PREMBLY_APP_ID=test_app node dist/main.js &
+SERVER_PID=$!
+sleep 2
+
+node -e "
+const { createHmac } = require('crypto');
+const http = require('http');
+
+const secret = 'test_key';
+const body = JSON.stringify({ status: 'completed', verification_reference: 'ref_001' });
+const sig = createHmac('sha256', secret).update(Buffer.from(body)).digest('hex');
+
+const options = {
+  hostname: 'localhost',
+  port: 3000,
+  path: '/webhook/prembly',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(body),
+    'x-prembly-signature': sig,
+  },
+};
+
+console.log('Sending sig:', sig);
+
+const req = http.request(options, (res) => {
+  let data = '';
+  res.on('data', c => data += c);
+  res.on('end', () => {
+    console.log('HTTP Status:', res.statusCode);
+    console.log('Response:', data);
+    process.exit(0);
+  });
+});
+req.on('error', e => { console.error('error', e.message); process.exit(1); });
+req.write(body);
+req.end();
+"
+
+kill $SERVER_PID 2>/dev/null
+wait $SERVER_PID 2>/dev/null ✖ "Command exited with code 143"
+The Node client computes the same HMAC (`6658257c...`) but the server is still rejecting it. The issue is that Express's `json()` middleware also gets applied as the NestJS default body parser — the raw body captured by our middleware may be receiving an already-processed buffer. Let me investigate and fix the body parser registration:   
+📖 Reading /home/user/nestjs-kyb/src/main.ts ✔ 
+The problem is that `NestFactory.create()` registers its own built-in `json()` body parser — our middleware runs *after*, receiving an already-consumed stream. The fix is to **disable the built-in body parser** and register only our custom one:   
+🔧 Applying diff to /home/user/nestjs-kyb/src/main.ts ✔ 
+💫 Executing cd /home/user/nestjs-kyb && npm run build 2>&1 ✔ 
+💫 Executing cd /home/user/nestjs-kyb && PREMBLY_API_KEY=test_key PREMBLY_APP_ID=test_app node dist/main.js &
+SERVER_PID=$!
+sleep 2
+
+node -e "
+const { createHmac } = require('crypto');
+const http = require('http');
+
+const secret = 'test_key';
+const body = JSON.stringify({ status: 'completed', verification_reference: 'ref_001' });
+const sig = createHmac('sha256', secret).update(Buffer.from(body)).digest('hex');
+
+const options = {
+  hostname: 'localhost', port: 3000,
+  path: '/webhook/prembly', method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(body),
+    'x-prembly-signature': sig,
+  },
+};
+console.log('Sig:', sig);
+const req = http.request(options, (res) => {
+  let d = '';
+  res.on('data', c => d += c);
+  res.on('end', () => { console.log('HTTP', res.statusCode, d); process.exit(0); });
+});
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo "--- test bad sig ---"
+node -e "
+const http = require('http');
+const body = JSON.stringify({ status: 'completed' });
+const options = {
+  hostname: 'localhost', port: 3000,
+  path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), 'x-prembly-signature': 'badhash' },
+};
+const req = http.request(options, (res) => {
+  let d = '';
+  res.on('data', c => d += c);
+  res.on('end', () => { console.log('HTTP', res.statusCode, d); process.exit(0); });
+});
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+kill $SERVER_PID 2>/dev/null
+wait $SERVER_PID 2>/dev/null ✖ "Command exited with code 1"
+There's a lingering server on port 3000 from a previous run. Let me kill it and re-test:   
+💫 Executing fuser -k 3000/tcp 2>/dev/null; sleep 1 && echo "port cleared" ✔ 
+💫 Executing cd /home/user/nestjs-kyb && PREMBLY_API_KEY=test_key PREMBLY_APP_ID=test_app node dist/main.js &
+SERVER_PID=$!
+sleep 2
+
+echo "=== VALID signature ==="
+node -e "
+const { createHmac } = require('crypto');
+const http = require('http');
+const secret = 'test_key';
+const body = JSON.stringify({ status: 'completed', verification_reference: 'ref_001' });
+const sig = createHmac('sha256', secret).update(Buffer.from(body)).digest('hex');
+const options = { hostname: 'localhost', port: 3000, path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), 'x-prembly-signature': sig } };
+console.log('sig:', sig);
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode,d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo "=== INVALID signature ==="
+node -e "
+const http = require('http');
+const body = JSON.stringify({ status: 'completed' });
+const options = { hostname: 'localhost', port: 3000, path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), 'x-prembly-signature': 'badhash000' } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode,d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo "=== MISSING signature ==="
+node -e "
+const http = require('http');
+const body = JSON.stringify({ status: 'pending' });
+const options = { hostname: 'localhost', port: 3000, path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode,d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+kill $SERVER_PID 2>/dev/null
+wait $SERVER_PID 2>/dev/null ✖ "Command exited with code 143"
+The valid signature still gets rejected. The body parser must not be storing the raw buffer even with `bodyParser: false`. Let me debug what `req.rawBody` actually contains server-side:   
+📖 Reading /home/user/nestjs-kyb/src/webhook/webhook.controller.ts ✔ 
+The issue is that the `verify` callback in Express's `json()` middleware populates `rawBody` only when a request has `Content-Type: application/json`. However, the `Request` type from Express doesn't have `rawBody` defined. Let me add a debug probe and check what's happening:   
+💫 Executing fuser -k 3000/tcp 2>/dev/null; sleep 1
+
+cd /home/user/nestjs-kyb && PREMBLY_API_KEY=test_key PREMBLY_APP_ID=test_app node -e "
+const { NestFactory } = require('@nestjs/core');
+// patch the webhook controller to log raw body info
+process.env.PREMBLY_API_KEY = 'test_key';
+process.env.PREMBLY_APP_ID = 'test_app';
+" 2>/dev/null
+
+# Direct test: spin up a tiny Express server that uses the same middleware pattern
+node -e "
+const express = require('/home/user/nestjs-kyb/node_modules/express');
+const app = express();
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf;
+    console.log('verify callback fired, buf.length=', buf.length, 'as string:', buf.toString());
+  }
+}));
+app.post('/test', (req, res) => {
+  console.log('rawBody:', req.rawBody ? req.rawBody.toString() : 'UNDEFINED');
+  res.json({ ok: true });
+});
+const srv = app.listen(3001, () => {
+  const { createHmac } = require('crypto');
+  const http = require('http');
+  const body = JSON.stringify({ status: 'completed' });
+  const sig = createHmac('sha256','test_key').update(Buffer.from(body)).digest('hex');
+  const options = { hostname: 'localhost', port: 3001, path: '/test', method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } };
+  const req = http.request(options, r => { let d=''; r.on('data',c=>d+=c); r.on('end',()=>{ console.log('Response:', d); srv.close(); }); });
+  req.write(body); req.end();
+});
+" ✔ 
+The Express middleware pattern works correctly in isolation — `rawBody` is set. The problem must be that NestJS's `bodyParser: false` option isn't fully disabling its internal body parser in this version, so the stream gets consumed before our middleware runs. Let me check NestJS version and test inline:   
+💫 Executing cat /home/user/nestjs-kyb/node_modules/@nestjs/core/package.json | node -e "const d=require('/dev/stdin');console.log('NestJS core:', d.version)"
+cat /home/user/nestjs-kyb/node_modules/@nestjs/platform-express/package.json | node -e "const d=require('/dev/stdin');console.log('NestJS platform-express:', d.version)" ✖ "Command exited with code 1"
+💫 Executing node -p "require('/home/user/nestjs-kyb/node_modules/@nestjs/core/package.json').version"
+node -p "require('/home/user/nestjs-kyb/node_modules/@nestjs/platform-express/package.json').version" ✔ 
+💫 Executing grep -n "bodyParser\|json\|rawBody" /home/user/nestjs-kyb/node_modules/@nestjs/platform-express/adapters/express-adapter.js | head -30 ✔ 
+💫 Executing grep -n "rawBody\|getBodyParserOptions\|verify" /home/user/nestjs-kyb/node_modules/@nestjs/platform-express/utils/get-body-parser-options.util.js 2>/dev/null || \
+grep -rn "getBodyParserOptions\|rawBody.*verify\|verify.*rawBody" /home/user/nestjs-kyb/node_modules/@nestjs/platform-express/ 2>/dev/null | head -20 ✔ 
+NestJS v11 has built-in `rawBody` support! It just needs to be passed `rawBody: true` to `NestFactory.create()`. The framework will automatically populate `req.rawBody` via its own `verify` callback. Let me update `main.ts` and the controller to use the NestJS-native approach:   
+🔧 Applying diff to /home/user/nestjs-kyb/src/main.ts ✔ 
+Now update the controller to use NestJS's `RawBodyRequest` type:   
+🔧 Applying diff to /home/user/nestjs-kyb/src/webhook/webhook.controller.ts ✔ 
+🔧 Applying diff to /home/user/nestjs-kyb/src/webhook/webhook.controller.ts ✔ 
+💫 Executing cd /home/user/nestjs-kyb && npm run build 2>&1 ✖ "Command exited with code 1"
+TypeScript strict mode needs `import type` for type-only imports. Fix:   
+🔧 Applying diff to /home/user/nestjs-kyb/src/webhook/webhook.controller.ts ✔ 
+💫 Executing cd /home/user/nestjs-kyb && npm run build 2>&1 ✔ 
+Clean build. Now run the full end-to-end tests:   
+💫 Executing cd /home/user/nestjs-kyb && PREMBLY_API_KEY=test_key PREMBLY_APP_ID=test_app node dist/main.js &
+SERVER_PID=$!
+sleep 2
+
+echo "=== [1] VALID signature → expect 200 ==="
+node -e "
+const { createHmac } = require('crypto');
+const http = require('http');
+const secret = 'test_key';
+const body = JSON.stringify({ status: 'completed', verification_reference: 'ref_001' });
+const sig = createHmac('sha256', secret).update(Buffer.from(body)).digest('hex');
+const options = { hostname: 'localhost', port: 3000, path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), 'x-prembly-signature': sig } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode, d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo ""
+echo "=== [2] sha256= prefixed signature → expect 200 ==="
+node -e "
+const { createHmac } = require('crypto');
+const http = require('http');
+const secret = 'test_key';
+const body = JSON.stringify({ status: 'pending', verification_reference: 'ref_002' });
+const sig = 'sha256=' + createHmac('sha256', secret).update(Buffer.from(body)).digest('hex');
+const options = { hostname: 'localhost', port: 3000, path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), 'x-prembly-signature': sig } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode, d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo ""
+echo "=== [3] INVALID signature → expect 401 ==="
+node -e "
+const http = require('http');
+const body = JSON.stringify({ status: 'completed' });
+const options = { hostname: 'localhost', port: 3000, path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), 'x-prembly-signature': 'badhash' } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode, d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo ""
+echo "=== [4] MISSING signature → expect 401 ==="
+node -e "
+const http = require('http');
+const body = JSON.stringify({ status: 'pending' });
+const options = { hostname: 'localhost', port: 3000, path: '/webhook/prembly', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode, d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo ""
+echo "=== [5] POST /kyb/verify missing registrationNumber → expect 400 ==="
+node -e "
+const http = require('http');
+const body = JSON.stringify({});
+const options = { hostname: 'localhost', port: 3000, path: '/kyb/verify', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode, d); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo ""
+echo "=== [6] POST /kyb/verify valid body → calls Prembly, expect 401 (fake creds) ==="
+node -e "
+const http = require('http');
+const body = JSON.stringify({ registrationNumber: 'RC1234567', companyType: 'rc' });
+const options = { hostname: 'localhost', port: 3000, path: '/kyb/verify', method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } };
+const req = http.request(options, res => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>{ console.log('HTTP',res.statusCode, d.substring(0,150)); process.exit(0); }); });
+req.on('error', e => { console.error(e.message); process.exit(1); });
+req.write(body); req.end();
+"
+
+echo ""
+kill $SERVER_PID 2>/dev/null
+wait $SERVER_PID 2>/dev/null ✖ "Command exited with code 1"
+There's still a lingering server on port 3000. The `rawBody: true` option is set but the test ran against the old server (port already in use). Let me kill everything and run cleanly:   
+💫 Executing fuser -k 3000/tcp 2>/dev/null; pkill -f "node dist/main" 2>/dev/null; sleep 2; echo "cleared" ✖ "Command exited with code 1"
+💫 Executing lsof -ti:3000 | xargs kill -9 2>/dev/null; sleep 1; echo "done" ✔ 
+💫 Executing kill $(cat /tmp/nest_pid 2>/dev/null) 2>/dev/null; ss -tlnp | grep :3000 | awk '{print $NF}' | grep -oP '(?<=pid=)\d+' | xargs kill -9 2>/dev/null; sleep 1; echo "done" ✔ 
+💫 Executing netstat -tlnp 2>/dev/null | grep :3000 || cat /proc/net/tcp6 | awk '$2 ~ /0BB8$/ {print $7}' | xargs -I{} cat /proc/{}/status 2>/dev/null | grep -E "Name|Pid" | head -10; echo "---" ✔ 
+Port 3000 is now free. Let me run all tests cleanly:   

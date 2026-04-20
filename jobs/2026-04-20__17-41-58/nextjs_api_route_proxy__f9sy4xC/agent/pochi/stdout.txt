@@ -1,0 +1,64 @@
+- Initializing MCP connections...
+You
+# Next.js API Route Proxy for Prembly ## Background Create a Next.js API route that acts as a secure proxy to the Prembly NIN verification API, hiding the API key from the frontend. ## Requirements - Initialize a Next.js project in `/home/user/app`. - Create an API route `POST /api/verify-nin` that accepts a JSON body with a `number` field. - The route should call the Prembly NIN verification API (`https://api.prembly.com/api/v1/verification/nin` or `https://api.prembly.com/verification/nin` according to the documentation) using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables. - Set the headers `app-id` and `x-api-key` appropriately. - Return the JSON response from Prembly to the client. - The API route must handle errors appropriately. ## Implementation Guide 1. Initialize a Next.js project in `/home/user/app` using `npx create-next-app@latest app --javascript --eslint --tailwind --app --src-dir --use-npm`. 2. Create the API route in `src/app/api/verify-nin/route.js`. 3. Implement the POST handler to read the `number` from the request body. 4. Make a POST request to the Prembly sandbox API using `fetch` or `axios`. 5. Return the response to the client. ## Constraints - Project path: `/home/user/app` - Start command: `npm run build && npm start` - Port: 3000 - Use `https://api.prembly.com` as the base URL for the Prembly API. ## Integrations - Prembly   
+
+Pochi
+💭 Thinking for 132 characters   
+📋 Updating todo list (4 items) ✔ 
+💫 Executing cd /home/user && npx create-next-app@latest app --javascript --eslint --tailwind --app --src-dir --use-npm --no-turbopack 2>&1 ✔ 
+📋 Updating todo list (4 items) ✔ 
+💫 Executing mkdir -p /home/user/app/src/app/api/verify-nin ✔ 
+✏️  Writing /home/user/app/src/app/api/verify-nin/route.js ✔ 
+📋 Updating todo list (4 items) ✔ 
+💫 Executing cd /home/user/app && npm run build 2>&1 ✔ 
+Build succeeded and the route `/api/verify-nin` is registered as a dynamic server-rendered endpoint. Now start the server:   
+🛠️ Tool startBackgroundJob ✔ 
+🛠️ Tool readBackgroundJobOutput ✔ 
+Server is running. Let's do a quick smoke test to confirm the route responds correctly:   
+💫 Executing curl -s -X POST http://localhost:3000/api/verify-nin -H "Content-Type: application/json" -d '{}' | head -c 500 ✔ 
+📋 Updating todo list (4 items) ✔ 
+🎉 Task Completed
+The Next.js proxy is fully set up and running at `http://localhost:3000`.
+
+## What was created
+
+**Project:** `/home/user/app` (Next.js 16 with App Router)
+
+**API Route:** `src/app/api/verify-nin/route.js`
+
+### How it works
+
+`POST /api/verify-nin` accepts:
+```json
+{ "number": "<NIN>" }
+```
+
+It then makes a proxied POST request to `https://api.prembly.com/api/v1/verification/nin` with:
+- `app-id` header → `PREMBLY_APP_ID` env var
+- `x-api-key` header → `PREMBLY_API_KEY` env var
+
+The Prembly response (status code + JSON body) is forwarded directly to the client.
+
+### Error handling
+| Scenario | HTTP Status | Response |
+|---|---|---|
+| Missing `number` field | `400` | `{ "error": "Missing required field: number" }` |
+| Missing env credentials | `500` | `{ "error": "Server configuration error: missing API credentials" }` |
+| Unexpected exception | `500` | `{ "error": "Internal server error", "message": "..." }` |
+| Prembly error | Mirrors Prembly's status | Mirrors Prembly's JSON body |
+
+### Usage
+Set environment variables before starting:
+```bash
+PREMBLY_APP_ID=your_app_id PREMBLY_API_KEY=your_api_key npm start
+```
+
+Example request:
+```bash
+curl -X POST http://localhost:3000/api/verify-nin \
+  -H "Content-Type: application/json" \
+  -d '{"number": "12345678901"}'
+```   
+- Waiting for async work to complete (timeout: 60000ms)...
+✖ Async wait timeout reached. Remaining: 0 subtask(s), 1 job(s)
+  

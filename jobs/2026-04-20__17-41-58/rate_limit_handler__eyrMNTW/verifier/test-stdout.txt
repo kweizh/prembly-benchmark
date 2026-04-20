@@ -1,0 +1,176 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 25ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py FF.                                            [100%]
+
+=================================== FAILURES ===================================
+________________________ test_rate_limit_retry_success _________________________
+
+mock_server = None, express_app_mock = None
+
+    def test_rate_limit_retry_success(mock_server, express_app_mock):
+        req = urllib.request.Request(
+            "http://localhost:3000/verify-nin",
+            data=json.dumps({"nin": "11111111111"}).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        try:
+>           with urllib.request.urlopen(req) as response:
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_state.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+usr/lib/python3.12/urllib/request.py:215: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:521: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:630: in http_response
+    response = self.parent.error(
+usr/lib/python3.12/urllib/request.py:559: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:492: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <urllib.request.HTTPDefaultErrorHandler object at 0x7684079081d0>
+req = <urllib.request.Request object at 0x76840790a960>
+fp = <http.client.HTTPResponse object at 0x76840790abf0>, code = 401
+msg = 'Unauthorized', hdrs = <http.client.HTTPMessage object at 0x768407906f90>
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+>       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 401: Unauthorized
+
+usr/lib/python3.12/urllib/request.py:639: HTTPError
+
+During handling of the above exception, another exception occurred:
+
+mock_server = None, express_app_mock = None
+
+    def test_rate_limit_retry_success(mock_server, express_app_mock):
+        req = urllib.request.Request(
+            "http://localhost:3000/verify-nin",
+            data=json.dumps({"nin": "11111111111"}).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        try:
+            with urllib.request.urlopen(req) as response:
+                assert response.status == 200, f"Expected status 200 after retries, got {response.status}"
+                data = json.loads(response.read().decode())
+                assert data.get("success") is True, "Expected success: true in response"
+        except urllib.error.HTTPError as e:
+>           pytest.fail(f"Request failed with status {e.code}: {e.read().decode()}")
+E           Failed: Request failed with status 401: {"status":false,"message":"Authentication credentials were not provided.","data":null,"errors":{"code":"authentication_failed"},"meta":{"timestamp":"2026-04-20T09:53:06.014744","version":"v1"}}
+
+tests/test_final_state.py:150: Failed
+---------------------------- Captured stdout setup -----------------------------
+
+up to date, audited 77 packages in 941ms
+
+24 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+__________________________ test_rate_limit_exhausted ___________________________
+
+mock_server = None, express_app_mock = None
+
+    def test_rate_limit_exhausted(mock_server, express_app_mock):
+        req = urllib.request.Request(
+            "http://localhost:3000/verify-nin",
+            data=json.dumps({"nin": "22222222222"}).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        try:
+>           with urllib.request.urlopen(req) as response:
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_final_state.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+usr/lib/python3.12/urllib/request.py:215: in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:521: in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:630: in http_response
+    response = self.parent.error(
+usr/lib/python3.12/urllib/request.py:559: in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+usr/lib/python3.12/urllib/request.py:492: in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <urllib.request.HTTPDefaultErrorHandler object at 0x7684079081d0>
+req = <urllib.request.Request object at 0x768407679eb0>
+fp = <http.client.HTTPResponse object at 0x768407679b70>, code = 401
+msg = 'Unauthorized', hdrs = <http.client.HTTPMessage object at 0x76840767af90>
+
+    def http_error_default(self, req, fp, code, msg, hdrs):
+>       raise HTTPError(req.full_url, code, msg, hdrs, fp)
+E       urllib.error.HTTPError: HTTP Error 401: Unauthorized
+
+usr/lib/python3.12/urllib/request.py:639: HTTPError
+
+During handling of the above exception, another exception occurred:
+
+mock_server = None, express_app_mock = None
+
+    def test_rate_limit_exhausted(mock_server, express_app_mock):
+        req = urllib.request.Request(
+            "http://localhost:3000/verify-nin",
+            data=json.dumps({"nin": "22222222222"}).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        try:
+            with urllib.request.urlopen(req) as response:
+                pytest.fail(f"Expected 429 error, but got {response.status}")
+        except urllib.error.HTTPError as e:
+>           assert e.code == 429, f"Expected status 429 after exhausting retries, got {e.code}"
+E           AssertionError: Expected status 429 after exhausting retries, got 401
+E           assert 401 == 429
+E            +  where 401 = <HTTPError 401: 'Unauthorized'>.code
+
+tests/test_final_state.py:163: AssertionError
+==================================== PASSES ====================================
+__________________________ test_real_api_integration ___________________________
+---------------------------- Captured stdout setup -----------------------------
+
+up to date, audited 77 packages in 851ms
+
+24 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_real_api_integration
+FAILED tests/test_final_state.py::test_rate_limit_retry_success - Failed: Req...
+FAILED tests/test_final_state.py::test_rate_limit_exhausted - AssertionError:...
+========================= 2 failed, 1 passed in 6.22s ==========================

@@ -1,0 +1,57 @@
+- Initializing MCP connections...
+You
+# Node.js Backend Verification for NIN ## Background Prembly provides identity verification APIs. You need to implement a Node.js function that verifies a National Identity Number (NIN) using their API. ## Requirements * Create a Node.js script `verify.js` in `/home/user/project`. * The script should export a function `verifyNIN(ninNumber)` that makes a POST request to the Prembly verification endpoint for NIN. * Use the sandbox URL: `https://api.prembly.com/api/v1/verification/nin` (or similar depending on the exact Prembly sandbox path, but for this task, use `https://api.prembly.com/verification/vnin` as per documentation). * Use the `axios` library to make the request. * The function must use the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables for the `app-id` and `x-api-key` headers respectively. * The function should return the `data` object from the API response. ## Implementation Guide 1. Initialize a Node.js project in `/home/user/project`. 2. Install `axios`. 3. Create `verify.js` and implement the `verifyNIN` function as described. 4. Export the function using `module.exports = { verifyNIN };`. ## Constraints * Project path: /home/user/project * Use `axios` for HTTP requests.   
+
+Pochi
+💭 Thinking for 783 characters   
+I'll help you create a Node.js function for NIN verification using Prembly's API. Let me break this down into steps.   
+📋 Updating todo list (3 items) ✔ 
+💭 Thinking for 108 characters   
+💫 Executing cd /home/user/project && npm init -y ✔ 
+💭 Thinking for 59 characters   
+📋 Updating todo list (3 items) ✔ 
+💭 Thinking for 25 characters   
+💫 Executing cd /home/user/project && npm install axios ✔ 
+💭 Thinking for 89 characters   
+📋 Updating todo list (3 items) ✔ 
+💭 Thinking for 677 characters   
+✏️  Writing /home/user/project/verify.js ✔ 
+💭 Thinking for 101 characters   
+📋 Updating todo list (3 items) ✔ 
+💭 Thinking for 95 characters   
+📂 Listing files in /home/user/project ✔ 
+💭 Thinking for 109 characters   
+📖 Reading /home/user/project/verify.js ✔ 
+💭 Thinking for 115 characters   
+📖 Reading /home/user/project/package.json ✔ 
+💭 Thinking for 685 characters   
+🎉 Task Completed
+I've successfully created a Node.js backend for NIN verification using Prembly's API. Here's what was implemented:
+
+## Project Structure
+- **Location**: `/home/user/project`
+- **Dependencies**: axios (^1.15.1)
+
+## verify.js Implementation
+The `verifyNIN(ninNumber)` function:
+- Makes a POST request to `https://api.prembly.com/verification/vnin`
+- Uses `app-id` header from `PREMBLY_APP_ID` environment variable
+- Uses `x-api-key` header from `PREMBLY_API_KEY` environment variable
+- Returns the `data` object from the API response
+- Exported as `module.exports = { verifyNIN };`
+
+## Usage Example
+```javascript
+const { verifyNIN } = require('./verify');
+
+// Set environment variables
+process.env.PREMBLY_APP_ID = 'your_app_id';
+process.env.PREMBLY_API_KEY = 'your_api_key';
+
+// Verify a NIN
+const result = await verifyNIN('12345678901');
+console.log(result);
+```
+
+The implementation is ready to use with valid Prembly credentials and NIN numbers.   
+  

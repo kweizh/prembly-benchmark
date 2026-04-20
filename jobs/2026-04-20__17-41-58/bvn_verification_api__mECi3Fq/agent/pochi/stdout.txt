@@ -1,0 +1,50 @@
+- Initializing MCP connections...
+You
+# BVN Verification API with Prembly ## Background You need to build a Node.js Express server that verifies a Bank Verification Number (BVN) using Prembly's API. ## Requirements * Initialize a Node.js project in `/home/user/app`. * Create an Express server with a POST endpoint at `/verify-bvn`. * The endpoint should accept a JSON body with a `bvn` field. * It must call Prembly's BVN verification API using the sandbox environment (`https://api.prembly.com/verification/bvn`). * Provide the `app-id` and `x-api-key` headers using the environment variables `PREMBLY_APP_ID` and `PREMBLY_API_KEY`. * The endpoint should return the data received from Prembly. * Implement proper error handling. ## Implementation Guide 1. `cd /home/user/app` and run `npm init -y`. 2. Install `express` and `axios`. 3. Create an `index.js` file that sets up the Express server. 4. Implement the POST `/verify-bvn` endpoint to forward requests to the Prembly BVN verification API. 5. Ensure the server listens on port 3000. ## Constraints * Project path: /home/user/app * Start command: `npm start` (ensure this is defined in package.json to run `node index.js`) * Port: 3000 * Use `https://api.prembly.com` as the base URL. ## Integrations * None   
+
+Pochi
+💭 Thinking for 82 characters   
+📋 Updating todo list (4 items) ✔ 
+💫 Executing cd /home/user/app && npm init -y ✔ 
+📋 Updating todo list (4 items) ✔ 
+💫 Executing cd /home/user/app && npm install express axios ✔ 
+📋 Updating todo list (4 items) ✔ 
+✏️  Writing /home/user/app/index.js ✔ 
+📋 Updating todo list (4 items) ✔ 
+🔧 Applying diff to /home/user/app/package.json ✖ "File has not been read yet. Please read the file before editing it."
+📖 Reading /home/user/app/package.json ✔ 
+🔧 Applying diff to /home/user/app/package.json ✔ 
+📋 Updating todo list (4 items) ✔ 
+Let me verify the final state of both files:   
+💫 Executing cd /home/user/app && node -e "require('./index.js')" &
+sleep 2 && curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:3000/verify-bvn -H "Content-Type: application/json" -d '{}' && kill %1 2>/dev/null ✔ 
+The server starts correctly and returns `400` when the `bvn` field is missing — as expected.   
+🎉 Task Completed
+The BVN Verification API server has been set up in `/home/user/app` with the following structure:
+
+**`index.js`** — Express server with:
+- `POST /verify-bvn` endpoint that:
+  - Validates the `bvn` field is present in the request body (returns `400` if missing)
+  - Checks that `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables are set (returns `500` if missing)
+  - Forwards the request to `https://api.prembly.com/verification/bvn` with the required `app-id` and `x-api-key` headers
+  - Returns Prembly's response directly to the caller
+  - Handles Prembly API errors (passes through status code + response body) and unexpected network errors
+- Listens on port `3000`
+
+**`package.json`** — includes `"start": "node index.js"` so `npm start` launches the server.
+
+**Usage:**
+```bash
+# Set credentials
+export PREMBLY_APP_ID=your_app_id
+export PREMBLY_API_KEY=your_api_key
+
+# Start the server
+cd /home/user/app && npm start
+
+# Verify a BVN
+curl -X POST http://localhost:3000/verify-bvn \
+  -H "Content-Type: application/json" \
+  -d '{"bvn": "12345678901"}'
+```   
+  

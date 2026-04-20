@@ -1,0 +1,97 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 23ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 1 item
+
+tests/test_final_state.py F                                              [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_vue_widget_setup _____________________________
+
+start_app = None
+
+    def test_vue_widget_setup(start_app):
+        reason = "The application should have a button with id 'launch-widget' that triggers the Prembly widget when clicked."
+        truth = "Navigate to http://localhost:3000. Verify that a button with id 'launch-widget' is visible. Click the 'launch-widget' button. Verify that the Prembly widget iframe or modal is injected into the DOM (even if it shows an error due to dummy config_id, the SDK should attempt to load it and show an iframe)."
+    
+        verifier = PochiVerifier()
+>       result = verifier.verify(
+            reason=reason,
+            truth=truth,
+            use_browser_agent=True,
+            trajectory_dir="/logs/verifier/pochi/test_vue_widget_setup"
+        )
+
+tests/test_final_state.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+root/.cache/uv/archive-v0/TGXBvUGulqVtV-P5a4mCw/lib/python3.12/site-packages/pochi_verifier/verifier.py:195: in verify
+    return self._parse_result(proc.stdout, proc.stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <pochi_verifier.verifier.PochiVerifier object at 0x7cfb57ab4b30>
+stdout = '- Initializing MCP connections...\nYou\n## Reason for this test The application should have a button with id \'launch...ion steps (navigating to http://localhost:3000, clicking the button, and verifying the iframe injection)."\n}   \n  \n'
+stderr = '\x1b[37m2026-04-20 09:55:25.741\x1b[39m\x1b[0m\x1b[0m\t\x1b[32m\x1b[1mDEBUG\x1b[22m\x1b[39m\x1b[0m\x1b[0m\t\x1b[37m$b...[0m\t\x1b[37m\x1b[39m\x1b[0m\x1b[0m\x1b[1m\x1b[37m\tPochi\x1b[39m\x1b[22m\x1b[0m\x1b[0m\tProcess exiting with code 0\n'
+
+    def _parse_result(self, stdout: str, stderr: str) -> VerificationResult:
+        """Parses the stdout from pochi to extract the verification result."""
+        # Find the JSON object that follows the `Task Completed` marker (with possible whitespace)
+        match = re.search(r"Task Completed.*?(\{.*)", stdout, re.DOTALL)
+        if not match:
+            raise PochiOutputError("Cannot extract the JSON from the output message.")
+        json_str = match.group(1)
+        # Extract the full JSON object, accounting for nested/escaped braces
+        brace_count = 0
+        in_string = False
+        escape = False
+        for i, c in enumerate(json_str):
+            if escape:
+                escape = False
+                continue
+            if c == '\\':
+                escape = True
+                continue
+            if c == '"':
+                in_string = not in_string
+            if not in_string:
+                if c == '{':
+                    brace_count += 1
+                elif c == '}':
+                    brace_count -= 1
+                    if brace_count == 0:
+                        json_str = json_str[:i+1]
+                        break
+        try:
+            parsed_json = json.loads(json_str)
+        except json.JSONDecodeError as e:
+            raise PochiOutputError(f"Failed to parse JSON from pochi output: {e}") from e
+    
+        status = parsed_json.get("status")
+        reason = parsed_json.get("reason")
+    
+        if not status or not reason:
+            raise PochiOutputError("The result JSON is missing 'status' or 'reason'.")
+    
+        if status == "fail":
+>           raise VerificationFailedError(f"Verification failed: {reason}")
+E           pochi_verifier.verifier.VerificationFailedError: Verification failed: The 'newTask' tool, which is required by the 'pochi_verifier' instructions to create a browser sub-agent for verification, is not available in the current environment. Available tools are: attemptCompletion, useSkill, todoWrite. Without the 'newTask' tool, I cannot perform the browser-based verification steps (navigating to http://localhost:3000, clicking the button, and verifying the iframe injection).
+
+root/.cache/uv/archive-v0/TGXBvUGulqVtV-P5a4mCw/lib/python3.12/site-packages/pochi_verifier/verifier.py:246: VerificationFailedError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_vue_widget_setup - pochi_verifier.veri...
+========================= 1 failed in 88.46s (0:01:28) =========================

@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776678907.0491571,
+            "stop": 1776678907.2566097
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_valid_signature",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.04152213694760576,
+                "start": 1776678907.0690587,
+                "stop": 1776678907.249406,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_server = None\n\n    def test_valid_signature(start_server):\n        payload = json.dumps({\n            \"status\": True,\n            \"detail\": \"Verification Successful\",\n            \"response_code\": \"00\",\n            \"data\": {\"id\": \"12345\"}\n        }).encode('utf-8')\n    \n        signature = base64.b64encode(\n            hmac.new(TEST_SECRET.encode('utf-8'), payload, hashlib.sha256).digest()\n        ).decode('utf-8')\n    \n        req = urllib.request.Request(\n            f\"http://localhost:{PORT}/webhook\",\n            data=payload,\n            headers={\n                \"Content-Type\": \"application/json\",\n                \"x-prembly-signature\": signature\n            },\n            method=\"POST\"\n        )\n    \n        try:\n>           with urllib.request.urlopen(req) as response:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_final_state.py:77: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nusr/lib/python3.12/urllib/request.py:215: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:521: in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:630: in http_response\n    response = self.parent.error(\nusr/lib/python3.12/urllib/request.py:559: in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:492: in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib.request.HTTPDefaultErrorHandler object at 0x70e05f4d3ce0>\nreq = <urllib.request.Request object at 0x70e05f1855e0>\nfp = <http.client.HTTPResponse object at 0x70e05eee7a30>, code = 401\nmsg = 'Unauthorized', hdrs = <http.client.HTTPMessage object at 0x70e05eee7fe0>\n\n    def http_error_default(self, req, fp, code, msg, hdrs):\n>       raise HTTPError(req.full_url, code, msg, hdrs, fp)\nE       urllib.error.HTTPError: HTTP Error 401: Unauthorized\n\nusr/lib/python3.12/urllib/request.py:639: HTTPError\n\nDuring handling of the above exception, another exception occurred:\n\nstart_server = None\n\n    def test_valid_signature(start_server):\n        payload = json.dumps({\n            \"status\": True,\n            \"detail\": \"Verification Successful\",\n            \"response_code\": \"00\",\n            \"data\": {\"id\": \"12345\"}\n        }).encode('utf-8')\n    \n        signature = base64.b64encode(\n            hmac.new(TEST_SECRET.encode('utf-8'), payload, hashlib.sha256).digest()\n        ).decode('utf-8')\n    \n        req = urllib.request.Request(\n            f\"http://localhost:{PORT}/webhook\",\n            data=payload,\n            headers={\n                \"Content-Type\": \"application/json\",\n                \"x-prembly-signature\": signature\n            },\n            method=\"POST\"\n        )\n    \n        try:\n            with urllib.request.urlopen(req) as response:\n                assert response.status == 200, f\"Expected status 200, got {response.status}\"\n                res_body = json.loads(response.read().decode('utf-8'))\n                assert res_body.get(\"status\") == \"success\", f\"Expected success status, got {res_body}\"\n        except urllib.error.HTTPError as e:\n>           pytest.fail(f\"Valid signature request failed with HTTP {e.code}: {e.read().decode('utf-8')}\")\nE           Failed: Valid signature request failed with HTTP 401: {\"error\":\"Invalid signature\"}\n\ntests/test_final_state.py:82: Failed",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_invalid_signature",
+                "status": "passed",
+                "duration": 0.006094164040405303,
+                "start": 1776678907.2497904,
+                "stop": 1776678907.2562058,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

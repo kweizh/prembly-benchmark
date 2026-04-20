@@ -1,0 +1,53 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 1,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776678783.3475072,
+            "stop": 1776678789.5679667
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_rate_limit_retry_success",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 2.842603520024568,
+                "start": 1776678783.3689215,
+                "stop": 1776678786.3308933,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "mock_server = None, express_app_mock = None\n\n    def test_rate_limit_retry_success(mock_server, express_app_mock):\n        req = urllib.request.Request(\n            \"http://localhost:3000/verify-nin\",\n            data=json.dumps({\"nin\": \"11111111111\"}).encode('utf-8'),\n            headers={'Content-Type': 'application/json'},\n            method='POST'\n        )\n        try:\n>           with urllib.request.urlopen(req) as response:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_final_state.py:145: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nusr/lib/python3.12/urllib/request.py:215: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:521: in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:630: in http_response\n    response = self.parent.error(\nusr/lib/python3.12/urllib/request.py:559: in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:492: in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib.request.HTTPDefaultErrorHandler object at 0x7684079081d0>\nreq = <urllib.request.Request object at 0x76840790a960>\nfp = <http.client.HTTPResponse object at 0x76840790abf0>, code = 401\nmsg = 'Unauthorized', hdrs = <http.client.HTTPMessage object at 0x768407906f90>\n\n    def http_error_default(self, req, fp, code, msg, hdrs):\n>       raise HTTPError(req.full_url, code, msg, hdrs, fp)\nE       urllib.error.HTTPError: HTTP Error 401: Unauthorized\n\nusr/lib/python3.12/urllib/request.py:639: HTTPError\n\nDuring handling of the above exception, another exception occurred:\n\nmock_server = None, express_app_mock = None\n\n    def test_rate_limit_retry_success(mock_server, express_app_mock):\n        req = urllib.request.Request(\n            \"http://localhost:3000/verify-nin\",\n            data=json.dumps({\"nin\": \"11111111111\"}).encode('utf-8'),\n            headers={'Content-Type': 'application/json'},\n            method='POST'\n        )\n        try:\n            with urllib.request.urlopen(req) as response:\n                assert response.status == 200, f\"Expected status 200 after retries, got {response.status}\"\n                data = json.loads(response.read().decode())\n                assert data.get(\"success\") is True, \"Expected success: true in response\"\n        except urllib.error.HTTPError as e:\n>           pytest.fail(f\"Request failed with status {e.code}: {e.read().decode()}\")\nE           Failed: Request failed with status 401: {\"status\":false,\"message\":\"Authentication credentials were not provided.\",\"data\":null,\"errors\":{\"code\":\"authentication_failed\"},\"meta\":{\"timestamp\":\"2026-04-20T09:53:06.014744\",\"version\":\"v1\"}}\n\ntests/test_final_state.py:150: Failed",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_rate_limit_exhausted",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.2596695329993963,
+                "start": 1776678786.3311968,
+                "stop": 1776678786.728506,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "mock_server = None, express_app_mock = None\n\n    def test_rate_limit_exhausted(mock_server, express_app_mock):\n        req = urllib.request.Request(\n            \"http://localhost:3000/verify-nin\",\n            data=json.dumps({\"nin\": \"22222222222\"}).encode('utf-8'),\n            headers={'Content-Type': 'application/json'},\n            method='POST'\n        )\n        try:\n>           with urllib.request.urlopen(req) as response:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_final_state.py:160: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nusr/lib/python3.12/urllib/request.py:215: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:521: in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:630: in http_response\n    response = self.parent.error(\nusr/lib/python3.12/urllib/request.py:559: in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:492: in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib.request.HTTPDefaultErrorHandler object at 0x7684079081d0>\nreq = <urllib.request.Request object at 0x768407679eb0>\nfp = <http.client.HTTPResponse object at 0x768407679b70>, code = 401\nmsg = 'Unauthorized', hdrs = <http.client.HTTPMessage object at 0x76840767af90>\n\n    def http_error_default(self, req, fp, code, msg, hdrs):\n>       raise HTTPError(req.full_url, code, msg, hdrs, fp)\nE       urllib.error.HTTPError: HTTP Error 401: Unauthorized\n\nusr/lib/python3.12/urllib/request.py:639: HTTPError\n\nDuring handling of the above exception, another exception occurred:\n\nmock_server = None, express_app_mock = None\n\n    def test_rate_limit_exhausted(mock_server, express_app_mock):\n        req = urllib.request.Request(\n            \"http://localhost:3000/verify-nin\",\n            data=json.dumps({\"nin\": \"22222222222\"}).encode('utf-8'),\n            headers={'Content-Type': 'application/json'},\n            method='POST'\n        )\n        try:\n            with urllib.request.urlopen(req) as response:\n                pytest.fail(f\"Expected 429 error, but got {response.status}\")\n        except urllib.error.HTTPError as e:\n>           assert e.code == 429, f\"Expected status 429 after exhausting retries, got {e.code}\"\nE           AssertionError: Expected status 429 after exhausting retries, got 401\nE           assert 401 == 429\nE            +  where 401 = <HTTPError 401: 'Unauthorized'>.code\n\ntests/test_final_state.py:163: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_real_api_integration",
+                "status": "passed",
+                "duration": 2.837926995009184,
+                "start": 1776678786.7287307,
+                "stop": 1776678789.5675285,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

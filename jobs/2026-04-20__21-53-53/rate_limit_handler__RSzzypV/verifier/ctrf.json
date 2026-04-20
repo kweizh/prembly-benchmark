@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776693959.657512,
+            "stop": 1776693968.0672498
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_rate_limit_retry_success",
+                "status": "passed",
+                "duration": 3.3829208519891836,
+                "start": 1776693959.6788101,
+                "stop": 1776693963.0639493,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_rate_limit_exhausted",
+                "status": "passed",
+                "duration": 0.7252716969815083,
+                "start": 1776693963.0654085,
+                "stop": 1776693963.7913938,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_real_api_integration",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 4.151931726082694,
+                "start": 1776693963.7922735,
+                "stop": 1776693968.0669122,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "express_app_real = None\n\n    def test_real_api_integration(express_app_real):\n        # Test with the real API sandbox using a valid or invalid NIN\n        # According to Prembly sandbox docs, specific test data is needed,\n        # but we can just check that it doesn't return 404 or 500\n        req = urllib.request.Request(\n            \"http://localhost:3001/verify-nin\",\n            data=json.dumps({\"nin\": \"12345678901\"}).encode('utf-8'),\n            headers={'Content-Type': 'application/json'},\n            method='POST'\n        )\n        try:\n>           with urllib.request.urlopen(req) as response:\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_final_state.py:178: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nusr/lib/python3.12/urllib/request.py:215: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:521: in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:630: in http_response\n    response = self.parent.error(\nusr/lib/python3.12/urllib/request.py:559: in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:492: in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib.request.HTTPDefaultErrorHandler object at 0x756f0fced100>\nreq = <urllib.request.Request object at 0x756f0fbe9280>\nfp = <http.client.HTTPResponse object at 0x756f0fcf77c0>, code = 500\nmsg = 'Internal Server Error'\nhdrs = <http.client.HTTPMessage object at 0x756f0f957980>\n\n    def http_error_default(self, req, fp, code, msg, hdrs):\n>       raise HTTPError(req.full_url, code, msg, hdrs, fp)\nE       urllib.error.HTTPError: HTTP Error 500: Internal Server Error\n\nusr/lib/python3.12/urllib/request.py:639: HTTPError\n\nDuring handling of the above exception, another exception occurred:\n\nexpress_app_real = None\n\n    def test_real_api_integration(express_app_real):\n        # Test with the real API sandbox using a valid or invalid NIN\n        # According to Prembly sandbox docs, specific test data is needed,\n        # but we can just check that it doesn't return 404 or 500\n        req = urllib.request.Request(\n            \"http://localhost:3001/verify-nin\",\n            data=json.dumps({\"nin\": \"12345678901\"}).encode('utf-8'),\n            headers={'Content-Type': 'application/json'},\n            method='POST'\n        )\n        try:\n            with urllib.request.urlopen(req) as response:\n                assert response.status == 200, f\"Expected status 200, got {response.status}\"\n        except urllib.error.HTTPError as e:\n            # 400 Bad Request or 404 Not Found is acceptable if the NIN is invalid in sandbox\n            # But we want to make sure the API is actually reached\n>           assert e.code in [400, 404, 422], f\"Expected 400/404/422 from real API for invalid NIN, got {e.code}\"\nE           AssertionError: Expected 400/404/422 from real API for invalid NIN, got 500\nE           assert 500 in [400, 404, 422]\nE            +  where 500 = <HTTPError 500: 'Internal Server Error'>.code\n\ntests/test_final_state.py:183: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

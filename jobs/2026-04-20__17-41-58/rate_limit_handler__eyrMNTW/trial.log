@@ -1,0 +1,83 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo rate_limit_handler__eyrMNTW > /logs/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model anthropic/claude-4-6-sonnet --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly API Rate Limit Handler
+
+## Background
+You are building a Node.js backend that integrates with Prembly (Identitypass) to verify National Identity Numbers (NIN). The Prembly API may occasionally return a `429 Too Many Requests` status code when rate limits are exceeded. You need to implement an exponential backoff retry mechanism to handle this gracefully.
+
+## Requirements
+- Initialize a Node.js Express application in `/home/user/app`.
+- Create a `POST /verify-nin` endpoint that accepts a JSON body with a `nin` string (e.g., `{"nin": "12345678901"}`).
+- The endpoint must call the Prembly NIN API using the base URL from the `PREMBLY_BASE_URL` environment variable (defaulting to `https://api.prembly.com`) and the path `/verification/nin`.
+- Pass the `app-id` and `x-api-key` headers using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables.
+- Implement an exponential backoff retry mechanism for the Prembly API call: if the API returns a 429 status code, retry the request up to 3 times. Wait 100ms before the first retry, 200ms before the second, and 400ms before the third.
+- If the request succeeds, return the Prembly API response with a 200 status code.
+- If the request still fails with a 429 after 3 retries, return a 429 status code to the client with the message `"Rate limit exceeded, please try again later"`.
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `express` and `axios`.
+3. Create an `index.js` that sets up the Express server on `process.env.PORT` or port 3000.
+4. Implement the `POST /verify-nin` endpoint with the retry logic.
+5. Ensure the server parses JSON request bodies.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm start`
+- Port: `process.env.PORT` or 3000
+- Log file: `/home/user/app/output.log`
+- Use `axios` for HTTP requests.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

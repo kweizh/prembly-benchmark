@@ -1,0 +1,32 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776694272.1126652,
+            "stop": 1776694460.5010962
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_face_liveliness_react",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 188.35764250700595,
+                "start": 1776694272.1223927,
+                "stop": 1776694460.5007849,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_app = None\n\n    def test_face_liveliness_react(start_app):\n        reason = \"The React application should have a button that launches the Prembly Pass widget.\"\n        truth = \"Navigate to http://localhost:3000. Verify that a button with id `verify-btn` is visible. Click the `verify-btn` button. Verify that the Prembly Pass widget iframe or modal is added to the document.\"\n    \n        verifier = PochiVerifier()\n>       result = verifier.verify(\n            reason=reason,\n            truth=truth,\n            use_browser_agent=True,\n            trajectory_dir=\"/logs/verifier/pochi/test_face_liveliness_react\"\n        )\n\ntests/test_final_state.py:57: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nroot/.cache/uv/archive-v0/nYWUUYxXhFM6oeWu0syNv/lib/python3.12/site-packages/pochi_verifier/verifier.py:195: in verify\n    return self._parse_result(proc.stdout, proc.stderr)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <pochi_verifier.verifier.PochiVerifier object at 0x73a8c6391ca0>\nstdout = '- Initializing MCP connections...\\nYou\\n## Reason for this test The React application should have a button that launc... \u2716 \"Model tried to call unavailable tool \\'new_task\\'. Available tools: attemptCompletion, useSkill, todoWrite.\"\\n  \\n'\nstderr = '\\x1b[37m2026-04-20 14:11:18.745\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[32m\\x1b[1mDEBUG\\x1b[22m\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[37m$b...[0m\\t\\x1b[37m\\x1b[39m\\x1b[0m\\x1b[0m\\x1b[1m\\x1b[37m\\tPochi\\x1b[39m\\x1b[22m\\x1b[0m\\x1b[0m\\tProcess exiting with code 1\\n'\n\n    def _parse_result(self, stdout: str, stderr: str) -> VerificationResult:\n        \"\"\"Parses the stdout from pochi to extract the verification result.\"\"\"\n        # Find the JSON object that follows the `Task Completed` marker (with possible whitespace)\n        match = re.search(r\"Task Completed.*?(\\{.*)\", stdout, re.DOTALL)\n        if not match:\n>           raise PochiOutputError(\"Cannot extract the JSON from the output message.\")\nE           pochi_verifier.verifier.PochiOutputError: Cannot extract the JSON from the output message.\n\nroot/.cache/uv/archive-v0/nYWUUYxXhFM6oeWu0syNv/lib/python3.12/site-packages/pochi_verifier/verifier.py:211: PochiOutputError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

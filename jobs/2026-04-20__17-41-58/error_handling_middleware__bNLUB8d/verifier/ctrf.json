@@ -1,0 +1,47 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 3,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776678266.630584,
+            "stop": 1776678268.6515644
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_error_handling_middleware",
+                "status": "passed",
+                "duration": 1.9885168820037507,
+                "start": 1776678266.6564999,
+                "stop": 1776678268.6457925,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_package_json_exists",
+                "status": "passed",
+                "duration": 0.0005417169886641204,
+                "start": 1776678268.6462843,
+                "stop": 1776678268.6470141,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_index_js_exists",
+                "status": "passed",
+                "duration": 0.0038769389502704144,
+                "start": 1776678268.6472435,
+                "stop": 1776678268.651256,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

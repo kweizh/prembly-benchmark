@@ -1,0 +1,83 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo fastify_webhook_handler__MUAH5J4 > /logs/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model zai/glm-4.7 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Fastify Webhook Handler for Prembly
+
+## Background
+Prembly sends asynchronous webhook notifications when verifications are completed. To ensure the security of your endpoint, you must verify the `x-prembly-signature` header included in every webhook request. This signature is an HMAC-SHA256 hash of the raw request payload, generated using your Prembly Public Key.
+
+## Requirements
+- Create a Fastify server that listens on `POST /webhook`.
+- The server must read the raw request body to compute the HMAC-SHA256 signature using the secret key provided in the `PREMBLY_API_KEY` environment variable.
+- Compare the computed signature (base64 encoded) with the `x-prembly-signature` header.
+- If the signature is missing, invalid, or does not match, respond with HTTP status `401 Unauthorized` and `{"error": "Invalid signature"}`.
+- If the signature is valid, process the webhook (you can just respond with HTTP status `200 OK` and `{"status": "received"}`).
+
+## Implementation Guide
+1. Initialize a Node.js project in `/home/user/app`.
+2. Install `fastify` and `fastify-raw-body` (or handle raw body manually) to ensure you have the exact raw payload for signature verification.
+3. Create `server.js` that sets up the Fastify server and the `/webhook` route.
+4. Implement the HMAC-SHA256 verification logic using Node's built-in `crypto` module.
+
+## Constraints
+- **Project path**: `/home/user/app`
+- **Start command**: `npm start`
+- **Port**: 3000
+- You must use `fastify`.
+- The signature must be computed as a Base64 encoded HMAC-SHA256 string of the raw payload using `PREMBLY_API_KEY`.
+
+## Integrations
+- None required for this specific webhook receiver task.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

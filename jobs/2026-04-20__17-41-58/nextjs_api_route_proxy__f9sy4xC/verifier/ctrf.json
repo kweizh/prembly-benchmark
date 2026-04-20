@@ -1,0 +1,47 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 3,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776678583.3624644,
+            "stop": 1776678589.7459812
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_project_exists",
+                "status": "passed",
+                "duration": 0.00045880803372710943,
+                "start": 1776678583.3723648,
+                "stop": 1776678583.37302,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_build_succeeds",
+                "status": "passed",
+                "duration": 4.48282879992621,
+                "start": 1776678583.3732116,
+                "stop": 1776678587.8562942,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_api_route_proxy",
+                "status": "passed",
+                "duration": 1.8885622760863043,
+                "start": 1776678587.8565652,
+                "stop": 1776678589.7456057,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

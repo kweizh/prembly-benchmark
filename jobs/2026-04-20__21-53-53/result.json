@@ -1,0 +1,51 @@
+{
+    "id": "f292a125-bf5f-4583-8063-858b8650cd73",
+    "started_at": "2026-04-20T21:53:57.088324",
+    "finished_at": "2026-04-20T22:20:02.297974",
+    "n_total_trials": 16,
+    "stats": {
+        "n_trials": 16,
+        "n_errors": 2,
+        "evals": {
+            "pochi__glm-4.7__tasks": {
+                "n_trials": 16,
+                "n_errors": 2,
+                "metrics": [
+                    {
+                        "mean": 0.375
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "1.0": [
+                            "background_job_polling__KqKUU3s",
+                            "bvn_verification_api__TR5xmvW",
+                            "error_handling_middleware__GuKsem7",
+                            "express_secure_proxy__dfdjgrK",
+                            "nextjs_api_route_proxy__2Ud4Pow",
+                            "webhook_signature_verification__rMHHqBY"
+                        ],
+                        "0.0": [
+                            "driver_license_check__p2jB7zn",
+                            "express_nin_lookup_cache__MR4HrtA",
+                            "fastify_webhook_handler__MUAH5J4",
+                            "html_vanilla_widget__KX7q8NJ",
+                            "nestjs_kyb_service__vosNY3C",
+                            "nodejs_backend_verify_nin__JNwZTXj",
+                            "rate_limit_handler__RSzzypV",
+                            "vue_widget_setup__tHck9uv",
+                            "face_liveliness_react__NxWnwx4",
+                            "fintech_wallet_creation__jDDuMBm"
+                        ]
+                    }
+                },
+                "exception_stats": {
+                    "AgentTimeoutError": [
+                        "nestjs_kyb_service__vosNY3C",
+                        "fintech_wallet_creation__jDDuMBm"
+                    ]
+                }
+            }
+        }
+    }
+}
