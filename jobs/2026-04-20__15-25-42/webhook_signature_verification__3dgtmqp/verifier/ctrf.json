@@ -1,0 +1,38 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776670842.7065377,
+            "stop": 1776670843.7847667
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_valid_signature",
+                "status": "passed",
+                "duration": 1.0464018119964749,
+                "start": 1776670842.7299526,
+                "stop": 1776670843.7780278,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_invalid_signature",
+                "status": "passed",
+                "duration": 0.0058066810015589,
+                "start": 1776670843.778492,
+                "stop": 1776670843.7844822,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

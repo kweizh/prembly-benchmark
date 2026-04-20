@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776670738.2916508,
+            "stop": 1776670744.3033943
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_kyb_verify_endpoint",
+                "status": "passed",
+                "duration": 5.938857212022413,
+                "start": 1776670738.317188,
+                "stop": 1776670744.256831,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_webhook_valid_signature",
+                "status": "passed",
+                "duration": 0.010167771950364113,
+                "start": 1776670744.257405,
+                "stop": 1776670744.2678745,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_webhook_invalid_signature",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.01722592202713713,
+                "start": 1776670744.2681139,
+                "stop": 1776670744.3030384,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_app = None\n\n    def test_webhook_invalid_signature(start_app):\n        \"\"\"Test POST /webhook/prembly with invalid signature\"\"\"\n        payload = json.dumps({\"event\": \"verification.completed\", \"status\": \"success\"})\n        signature = \"invalid_signature\"\n    \n        result = subprocess.run(\n            [\n                \"curl\", \"-s\", \"-w\", \"%{http_code}\", \"-o\", \"/dev/null\", \"-X\", \"POST\", f\"http://localhost:{PORT}/webhook/prembly\",\n                \"-H\", \"Content-Type: application/json\",\n                \"-H\", f\"x-prembly-signature: {signature}\",\n                \"-d\", payload\n            ],\n            capture_output=True, text=True\n        )\n        assert result.returncode == 0, f\"curl failed: {result.stderr}\"\n        http_code = result.stdout.strip()\n>       assert http_code in [\"400\", \"401\", \"403\"], f\"Expected 400, 401 or 403 for invalid webhook signature, got {http_code}\"\nE       AssertionError: Expected 400, 401 or 403 for invalid webhook signature, got 200\nE       assert '200' in ['400', '401', '403']\n\ntests/test_final_state.py:95: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

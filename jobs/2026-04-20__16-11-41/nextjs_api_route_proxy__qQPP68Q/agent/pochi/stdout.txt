@@ -1,0 +1,26 @@
+- Initializing MCP connections...
+You
+# Next.js API Route Proxy for Prembly ## Background Create a Next.js API route that acts as a secure proxy to the Prembly NIN verification API, hiding the API key from the frontend. ## Requirements - Initialize a Next.js project in `/home/user/app`. - Create an API route `POST /api/verify-nin` that accepts a JSON body with a `number` field. - The route should call the Prembly NIN verification API (`https://api.prembly.com/api/v1/verification/nin` or `https://api.prembly.com/verification/nin` according to the documentation) using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables. - Set the headers `app-id` and `x-api-key` appropriately. - Return the JSON response from Prembly to the client. - The API route must handle errors appropriately. ## Implementation Guide 1. Initialize a Next.js project in `/home/user/app` using `npx create-next-app@latest app --javascript --eslint --tailwind --app --src-dir --use-npm`. 2. Create the API route in `src/app/api/verify-nin/route.js`. 3. Implement the POST handler to read the `number` from the request body. 4. Make a POST request to the Prembly sandbox API using `fetch` or `axios`. 5. Return the response to the client. ## Constraints - Project path: `/home/user/app` - Start command: `npm run build && npm start` - Port: 3000 - Use `https://api.prembly.com` as the base URL for the Prembly API. ## Integrations - Prembly   
+
+Pochi
+💭 Thinking for 834 characters   
+💫 Executing mkdir -p /home/user && cd /home/user && npx create-next-app@latest app --javascript --eslint --tailwind --app --src-dir --use-npm --import-alias "@/*" --empty ✔ 
+💭 Thinking for 908 characters   
+✏️  Writing /home/user/app/src/app/api/verify-nin/route.js ✔ 
+💭 Thinking for 175 characters   
+💫 Executing cat /home/user/app/src/app/api/verify-nin/route.js ✔ 
+💭 Thinking for 628 characters   
+💫 Executing cd /home/user/app && npm run build ✔ 
+💭 Thinking for 153 characters   
+🎉 Task Completed
+I have initialized a Next.js project and created the required API route that acts as a secure proxy to the Prembly NIN verification API.
+
+The API route is located at `/home/user/app/src/app/api/verify-nin/route.js`. It:
+1. Accepts a `POST` request with a JSON body containing a `number` field.
+2. Validates that the `number` is provided.
+3. Securely makes a request to `https://api.prembly.com/api/v1/verification/nin` using the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables to authenticate without exposing them to the frontend.
+4. Returns the JSON response from Prembly back to the client.
+5. Handles errors securely, returning appropriate HTTP status codes and error messages.
+
+You can test this setup by defining your `PREMBLY_APP_ID` and `PREMBLY_API_KEY` in a `.env.local` file, then starting the server with `npm start` (after `npm run build`) or `npm run dev`.   
+  

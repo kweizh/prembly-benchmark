@@ -1,0 +1,50 @@
+{
+    "id": "37a84c2d-7ca5-4dcb-a444-71b02dd926d3",
+    "started_at": "2026-04-20T15:25:46.595229",
+    "finished_at": "2026-04-20T15:43:18.034887",
+    "n_total_trials": 20,
+    "stats": {
+        "n_trials": 20,
+        "n_errors": 0,
+        "evals": {
+            "pochi__gemini-3-flash__tasks": {
+                "n_trials": 20,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 0.35
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "1.0": [
+                            "background_job_polling__9QG6muT",
+                            "bvn_verification_api__J2iAeKX",
+                            "error_handling_middleware__EC7ZLqx",
+                            "express_secure_proxy__rYXsdcY",
+                            "nodejs_backend_verify_nin__vZiwa2j",
+                            "rate_limit_handler__Qjjr7wK",
+                            "webhook_signature_verification__3dgtmqp"
+                        ],
+                        "0.0": [
+                            "document_verification_retry_flow__XLw4RFD",
+                            "driver_license_check__XSFPUpG",
+                            "express_nin_lookup_cache__7vomPn7",
+                            "face_liveliness_react__6HiBTSg",
+                            "fastify_webhook_handler__DrSgAmX",
+                            "fintech_wallet_creation__A22jRC7",
+                            "html_vanilla_widget__3tJGmeE",
+                            "kyb_business_verification__QTdRT6V",
+                            "mock_webhook_server__shR5jLu",
+                            "multi_step_onboarding_flow__VPpc5zt",
+                            "nestjs_kyb_service__rZjvWDA",
+                            "nextjs_api_route_proxy__xvm9xz9",
+                            "vue_widget_setup__6CzYuTh"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        }
+    }
+}

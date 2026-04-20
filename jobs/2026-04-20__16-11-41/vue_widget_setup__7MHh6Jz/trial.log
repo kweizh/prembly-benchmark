@@ -1,0 +1,83 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: echo vue_widget_setup__7MHh6Jz > /logs/trial_id
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Prembly Widget Integration in Vue 3
+
+## Background
+Prembly provides a browser-based widget for identity verification (e.g., Face Liveliness, Document Verification). You need to integrate the `prembly-pass` SDK into a Vue 3 application.
+
+## Requirements
+- Initialize a Vue 3 project using Vite.
+- Install the `prembly-pass` SDK.
+- Create a Vue component that initializes `PremblyPass` with the provided credentials and environment.
+- Add a button with the id `launch-widget` that triggers `prembly.launch()`.
+- The component should listen for `success` and `error` events and log the result to the console.
+
+## Implementation Guide
+1. Initialize a Vue 3 project in `/home/user/app` using Vite (e.g., `npm create vite@latest app -- --template vue` inside `/home/user`, or similar, but the project path must be exactly `/home/user/app`).
+2. Install `prembly-pass`.
+3. In `src/App.vue`, import `PremblyPass` and initialize it with:
+   - `app_id`: `'dummy_app_id'`
+   - `x_api_key`: `import.meta.env.VITE_PREMBLY_API_KEY`
+   - `environment`: `'test'` (which connects to the sandbox URL https://api.prembly.com)
+4. Add a button `<button id="launch-widget">Launch Prembly</button>` that calls the `launch` method with `config_id: 'dummy_config_id'` and a random `user_ref`.
+5. Run the app on port 3000.
+
+## Constraints
+- Project path: `/home/user/app`
+- Start command: `npm run dev -- --port 3000`
+- Port: 3000
+- You must use the `VITE_PREMBLY_API_KEY` environment variable for the API key.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

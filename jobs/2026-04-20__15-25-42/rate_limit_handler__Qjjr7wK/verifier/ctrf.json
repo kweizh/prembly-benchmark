@@ -1,0 +1,47 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 3,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776670778.1536102,
+            "stop": 1776670785.295743
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_rate_limit_retry_success",
+                "status": "passed",
+                "duration": 3.4437993849860504,
+                "start": 1776670778.1931098,
+                "stop": 1776670781.6376576,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_rate_limit_exhausted",
+                "status": "passed",
+                "duration": 0.7151477850275114,
+                "start": 1776670781.6380987,
+                "stop": 1776670782.353516,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_real_api_integration",
+                "status": "passed",
+                "duration": 2.9410021089715883,
+                "start": 1776670782.3537753,
+                "stop": 1776670785.2952857,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

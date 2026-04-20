@@ -1,0 +1,61 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 141ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py ..F                                            [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_api_route_proxy _____________________________
+
+start_app = None
+
+    def test_api_route_proxy(start_app):
+        """Test the /api/verify-nin endpoint using curl."""
+        result = subprocess.run(
+            [
+                "curl", "-s", "-X", "POST",
+                "http://localhost:3000/api/verify-nin",
+                "-H", "Content-Type: application/json",
+                "-d", '{"number": "12345678901"}'
+            ],
+            capture_output=True,
+            text=True
+        )
+    
+        assert result.returncode == 0, f"curl request failed: {result.stderr}"
+    
+        try:
+            data = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            pytest.fail(f"API did not return valid JSON. Output: {result.stdout}")
+    
+        # The Prembly API might return success or error, but the proxy should forward it
+        # We check if the response contains keys typical of Prembly responses
+>       assert "status" in data or "message" in data or "code" in data, \
+            f"Response JSON does not look like a Prembly API response: {data}"
+E       AssertionError: Response JSON does not look like a Prembly API response: {'error': 'Failed to verify NIN'}
+E       assert ('status' in {'error': 'Failed to verify NIN'} or 'message' in {'error': 'Failed to verify NIN'} or 'code' in {'error': 'Failed to verify NIN'})
+
+tests/test_final_state.py:78: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_project_exists
+PASSED tests/test_final_state.py::test_build_succeeds
+FAILED tests/test_final_state.py::test_api_route_proxy - AssertionError: Resp...
+========================= 1 failed, 2 passed in 8.59s ==========================

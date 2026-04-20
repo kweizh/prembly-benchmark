@@ -46,7 +46,7 @@ def start_app():
 
 def test_verify_license_endpoint(start_app):
     url = "http://localhost:3000/verify-license"
-    data = json.dumps({"license_number": "123456789"}).encode('utf-8')
+    data = json.dumps({"license_number": "DXG100"}).encode('utf-8')
     req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
     
     try:

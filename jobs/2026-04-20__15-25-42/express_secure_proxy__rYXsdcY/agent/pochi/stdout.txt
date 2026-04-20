@@ -1,0 +1,55 @@
+- Initializing MCP connections...
+You
+# Secure Backend Proxy for Prembly ## Background Prembly (Identitypass) provides APIs for identity verification. To secure our integration, we need to implement a backend proxy using Express.js that hides our API credentials (`app-id` and `x-api-key`) from the frontend while forwarding requests to the Prembly sandbox. ## Requirements * Create an Express server that acts as a proxy. * All requests to `/api/prembly/*` should be forwarded to `https://api.prembly.com/*`. * The proxy must automatically inject the `app-id` and `x-api-key` headers from the `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables. * The proxy must forward the request method, body, and query parameters correctly. * The server must listen on port 3000. ## Implementation Guide 1. Initialize a Node.js project in `/home/user/proxy-app`. 2. Install `express` and any necessary proxy middleware (like `http-proxy-middleware` or `axios`). 3. Create an `index.js` file that sets up the Express server. 4. Implement the proxy logic for the `/api/prembly/*` route. ## Constraints * Project path: /home/user/proxy-app * Start command: `node index.js` * Port: 3000 ## Integrations * None   
+
+Pochi
+💭 Thinking for 758 characters   
+📂 Listing files in /home/user ✔ 
+💭 Thinking for 182 characters   
+📂 Listing files in /home/user/proxy-app ✔ 
+📖 Reading /home/user/proxy-app/package.json ✔ 
+📋 Updating todo list (3 items) ✔ 
+💭 Thinking for 279 characters   
+📋 Updating todo list (3 items) ✔ 
+💫 Executing npm install express http-proxy-middleware ✔ 
+💭 Thinking for 767 characters   
+📋 Updating todo list (3 items) ✔ 
+✏️  Writing /home/user/proxy-app/index.js ✔ 
+💭 Thinking for 1084 characters   
+📋 Updating todo list (3 items) ✔ 
+💫 Executing node -c index.js ✔ 
+💭 Thinking for 685 characters   
+📖 Reading /home/user/proxy-app/package.json ✔ 
+💭 Thinking for 668 characters   
+🔧 Applying diff to /home/user/proxy-app/package.json ✔ 
+💭 Thinking for 714 characters   
+📋 Updating todo list (3 items) ✔ 
+💭 Thinking for 639 characters   
+🎉 Task Completed
+I have implemented the secure backend proxy for Prembly in `/home/user/proxy-app`.
+
+### Key Features:
+- **Express Server**: Listens on port 3000.
+- **Proxy Logic**: Uses `http-proxy-middleware` to forward all requests from `/api/prembly/*` to `https://api.prembly.com/*`.
+- **Credential Injection**: Automatically injects `app-id` and `x-api-key` headers from `PREMBLY_APP_ID` and `PREMBLY_API_KEY` environment variables respectively.
+- **Request Forwarding**: Correctly forwards request methods, bodies, and query parameters by using a streaming approach (avoiding body-parsing middleware that can interfere with proxying).
+
+### Files Created/Modified:
+- `/home/user/proxy-app/index.js`: Main server and proxy logic.
+- `/home/user/proxy-app/package.json`: Updated with dependencies and a `start` script.
+
+### How to Run:
+1. Ensure the environment variables are set:
+   ```bash
+   export PREMBLY_APP_ID=your_app_id
+   export PREMBLY_API_KEY=your_api_key
+   ```
+2. Start the server:
+   ```bash
+   cd /home/user/proxy-app
+   node index.js
+   ```
+   (or `npm start`)
+
+The proxy will now handle requests such as `GET /api/prembly/v1/verification/nin?number=...` and forward them to Prembly with the secure headers attached.   
+  

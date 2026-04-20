@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776673603.891549,
+            "stop": 1776673606.3953896
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_valid_nin_returns_201",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 2.0005819009966217,
+                "start": 1776673603.900843,
+                "stop": 1776673606.02447,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_app = None\n\n    def test_valid_nin_returns_201(start_app):\n        \"\"\"Priority 1: Send a POST request to API with valid NIN.\"\"\"\n        import urllib.request\n        import urllib.error\n    \n        data = json.dumps({\"ninNumber\": \"11111111111\"}).encode('utf-8')\n        req = urllib.request.Request(\n            \"http://localhost:3000/api/wallet/create\",\n            data=data,\n            headers={\"Content-Type\": \"application/json\"}\n        )\n    \n        try:\n>           response = urllib.request.urlopen(req)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_final_state.py:57: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nusr/lib/python3.12/urllib/request.py:215: in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:521: in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:630: in http_response\n    response = self.parent.error(\nusr/lib/python3.12/urllib/request.py:559: in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nusr/lib/python3.12/urllib/request.py:492: in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib.request.HTTPDefaultErrorHandler object at 0x708b234fee40>\nreq = <urllib.request.Request object at 0x708b234ec050>\nfp = <http.client.HTTPResponse object at 0x708b235fac50>, code = 400\nmsg = 'Bad Request', hdrs = <http.client.HTTPMessage object at 0x708b235fa930>\n\n    def http_error_default(self, req, fp, code, msg, hdrs):\n>       raise HTTPError(req.full_url, code, msg, hdrs, fp)\nE       urllib.error.HTTPError: HTTP Error 400: Bad Request\n\nusr/lib/python3.12/urllib/request.py:639: HTTPError\n\nDuring handling of the above exception, another exception occurred:\n\nstart_app = None\n\n    def test_valid_nin_returns_201(start_app):\n        \"\"\"Priority 1: Send a POST request to API with valid NIN.\"\"\"\n        import urllib.request\n        import urllib.error\n    \n        data = json.dumps({\"ninNumber\": \"11111111111\"}).encode('utf-8')\n        req = urllib.request.Request(\n            \"http://localhost:3000/api/wallet/create\",\n            data=data,\n            headers={\"Content-Type\": \"application/json\"}\n        )\n    \n        try:\n            response = urllib.request.urlopen(req)\n            assert response.getcode() == 201, f\"Expected 201 Created, got {response.getcode()}\"\n            res_body = json.loads(response.read().decode('utf-8'))\n            assert \"wallet_id\" in res_body, \"Expected 'wallet_id' in response\"\n            assert res_body[\"wallet_id\"] == \"new_wallet_123\", f\"Expected 'new_wallet_123', got {res_body['wallet_id']}\"\n        except urllib.error.HTTPError as e:\n>           pytest.fail(f\"Request failed with HTTP {e.code}: {e.read().decode('utf-8')}\")\nE           Failed: Request failed with HTTP 400: {\"error\":\"Verification failed\"}\n\ntests/test_final_state.py:63: Failed",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_invalid_nin_returns_400",
+                "status": "passed",
+                "duration": 0.3693503229878843,
+                "start": 1776673606.0247529,
+                "stop": 1776673606.3945894,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}
