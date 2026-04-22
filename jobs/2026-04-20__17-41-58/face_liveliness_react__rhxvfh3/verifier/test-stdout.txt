@@ -1,0 +1,97 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 28ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 1 item
+
+tests/test_final_state.py F                                              [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_face_liveliness_react __________________________
+
+start_app = None
+
+    def test_face_liveliness_react(start_app):
+        reason = "The React application should have a button that launches the Prembly Pass widget."
+        truth = "Navigate to http://localhost:3000. Verify that a button with id `verify-btn` is visible. Click the `verify-btn` button. Verify that the Prembly Pass widget iframe or modal is added to the document."
+    
+        verifier = PochiVerifier()
+>       result = verifier.verify(
+            reason=reason,
+            truth=truth,
+            use_browser_agent=True,
+            trajectory_dir="/logs/verifier/pochi/test_face_liveliness_react"
+        )
+
+tests/test_final_state.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+root/.cache/uv/archive-v0/bVgKtUQCumubmf3Er1Z4G/lib/python3.12/site-packages/pochi_verifier/verifier.py:149: in verify
+    return self._parse_result(proc.stdout, proc.stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <pochi_verifier.verifier.PochiVerifier object at 0x7f53bf3e6a80>
+stdout = '- Initializing MCP connections...\nYou\nYou are a software tester assigned to verify a test case using the agent brow...1/js) returned a \'Not Found\' error, which likely prevented the widget from being injected into the DOM."\n}   \n  \n'
+stderr = '\x1b[37m2026-04-21 10:27:31.306\x1b[39m\x1b[0m\x1b[0m\t\x1b[32m\x1b[1mDEBUG\x1b[22m\x1b[39m\x1b[0m\x1b[0m\t\x1b[37m$b...[0m\t\x1b[37m\x1b[39m\x1b[0m\x1b[0m\x1b[1m\x1b[37m\tPochi\x1b[39m\x1b[22m\x1b[0m\x1b[0m\tProcess exiting with code 0\n'
+
+    def _parse_result(self, stdout: str, stderr: str) -> VerificationResult:
+        """Parses the stdout from pochi to extract the verification result."""
+        # Find the JSON object that follows the `Task Completed` marker (with possible whitespace)
+        match = re.search(r"Task Completed.*?(\{.*)", stdout, re.DOTALL)
+        if not match:
+            raise PochiOutputError("Cannot extract the JSON from the output message.")
+        json_str = match.group(1)
+        # Extract the full JSON object, accounting for nested/escaped braces
+        brace_count = 0
+        in_string = False
+        escape = False
+        for i, c in enumerate(json_str):
+            if escape:
+                escape = False
+                continue
+            if c == '\\':
+                escape = True
+                continue
+            if c == '"':
+                in_string = not in_string
+            if not in_string:
+                if c == '{':
+                    brace_count += 1
+                elif c == '}':
+                    brace_count -= 1
+                    if brace_count == 0:
+                        json_str = json_str[:i+1]
+                        break
+        try:
+            parsed_json = json.loads(json_str)
+        except json.JSONDecodeError as e:
+            raise PochiOutputError(f"Failed to parse JSON from pochi output: {e}") from e
+    
+        status = parsed_json.get("status")
+        reason = parsed_json.get("reason")
+    
+        if not status or not reason:
+            raise PochiOutputError("The result JSON is missing 'status' or 'reason'.")
+    
+        if status == "fail":
+>           raise VerificationFailedError(f"Verification failed: {reason}")
+E           pochi_verifier.verifier.VerificationFailedError: Verification failed: The test failed because the Prembly Pass widget iframe or modal was not added to the document after clicking the 'verify-btn'. Although the button was visible and clickable, the widget failed to load. The browser agent noted that the script resource (https://api.prembly.com/identitypass/widget/v1/js) returned a 'Not Found' error, which likely prevented the widget from being injected into the DOM.
+
+root/.cache/uv/archive-v0/bVgKtUQCumubmf3Er1Z4G/lib/python3.12/site-packages/pochi_verifier/verifier.py:200: VerificationFailedError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_face_liveliness_react - pochi_verifier...
+======================== 1 failed in 421.97s (0:07:01) =========================

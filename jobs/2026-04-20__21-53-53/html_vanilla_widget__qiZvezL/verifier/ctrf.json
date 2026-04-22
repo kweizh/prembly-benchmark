@@ -1,0 +1,38 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776773667.9367042,
+            "stop": 1776773795.9479978
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_package_json_contains_prembly_pass",
+                "status": "passed",
+                "duration": 0.0005238980520516634,
+                "start": 1776773667.9484763,
+                "stop": 1776773667.9492016,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_html_vanilla_widget",
+                "status": "passed",
+                "duration": 127.99773874599487,
+                "start": 1776773667.9493968,
+                "stop": 1776773795.9476173,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

@@ -1,0 +1,106 @@
+{
+    "id": "512de1c6-6d98-4e5e-b9fa-e06a4d4966af",
+    "task_name": "vue_widget_setup",
+    "trial_name": "vue_widget_setup__dqfMNN6",
+    "trial_uri": "file:///home/kw/code/zealt/pochi-harbor/jobs/2026-04-21__18-34-46/vue_widget_setup__dqfMNN6",
+    "task_id": {
+        "path": "/home/kw/code/zealt/prembly-benchmark/browser_tests/vue_widget_setup"
+    },
+    "source": "browser_tests",
+    "task_checksum": "4e3aa0e0fa9c69a283819c377a8d89360c6013733a5db8f8e87ad3022278e525",
+    "config": {
+        "task": {
+            "path": "/home/kw/code/zealt/prembly-benchmark/browser_tests/vue_widget_setup",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "browser_tests"
+        },
+        "trial_name": "vue_widget_setup__dqfMNN6",
+        "trials_dir": "jobs/2026-04-21__18-34-46",
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": null,
+            "import_path": "agents.pochi:Pochi",
+            "model_name": "google/gemini-3-flash",
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "kwargs": {},
+            "env": {}
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "suppress_override_warnings": false,
+            "mounts_json": null,
+            "env": {},
+            "kwargs": {}
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "job_id": "73e9d596-ce52-4830-b9d4-f46a88fa6695"
+    },
+    "agent_info": {
+        "name": "pochi",
+        "version": "\u001b[37m2026-04-21 10:35:28.711\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:441974\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tPochiConfigManager\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tFailed to load config file\n\n\u001b[97m\u001b[101m\u001b[1m Error \u001b[22m\u001b[49m\u001b[39m\u001b[0m\u001b[0m ENOENT: no such file or directory, open '/root/.pochi/config.jsonc', ENOENT, /root/.pochi/config.jsonc, open, -2, 441979, 38, 441979, 38, /$bunfs/root/pochi\u001b[0m\u001b[0m\nerror stack:\n  • \u001b[33m\u001b[39m\u001b[0m\u001b[0m\t\u001b[0m\u001b[0m\n\t\u001b[37m\u001b[39m\u001b[0m\u001b[0m\n  • \u001b[33mpochi\u001b[39m\u001b[0m\u001b[0m\tload\u001b[0m\u001b[0m\n\t\u001b[37m$bunfs/root/pochi:441979\u001b[39m\u001b[0m\u001b[0m\n  • \u001b[33mpochi\u001b[39m\u001b[0m\u001b[0m\tnew PochiConfigFile\u001b[0m\u001b[0m\n\t\u001b[37m$bunfs/root/pochi:441974\u001b[39m\u001b[0m\u001b[0m\n  • \u001b[33mpochi\u001b[39m\u001b[0m\u001b[0m\tnew PochiConfigManager\u001b[0m\u001b[0m\n\t\u001b[37m$bunfs/root/pochi:442096\u001b[39m\u001b[0m\u001b[0m\n  • \u001b[33mpochi\u001b[39m\u001b[0m\u001b[0m\t\u001b[0m\u001b[0m\n\t\u001b[37m$bunfs/root/pochi:442217\u001b[39m\u001b[0m\u001b[0m\n  • \u001b[33mnative\u001b[39m\u001b[0m\u001b[0m\tmoduleEvaluation\u001b[0m\u001b[0m\n\t\u001b[37mnative:1\u001b[39m\u001b[0m\u001b[0m\n  • \u001b[33mnative\u001b[39m\u001b[0m\u001b[0m\tmoduleEvaluation\u001b[0m\u001b[0m\n\t\u001b[37mnative:1\u001b[39m\u001b[0m\u001b[0m\n  • \u001b[33m\u001b[39m\u001b[0m\u001b[0m\t\u001b[0m\u001b[0m\n\t\u001b[37m\u001b[39m\u001b[0m\u001b[0m\u001b[0m\u001b[0m\n\u001b[37m2026-04-21 10:35:28.941\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37mnative:1\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tPochi\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tpochi v0.6.8\n0.6.8\n\u001b[37m2026-04-21 10:35:28.945\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tPochi\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tProcess exiting with code 0",
+        "model_info": {
+            "name": "gemini-3-flash",
+            "provider": "google"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 0,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 0,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": {
+        "exception_type": "NonZeroAgentExitCodeError",
+        "exception_message": "Command failed (exit 143): export PATH=\"$HOME/.pochi/bin:$PATH\"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'\n# Prembly Widget Integration in Vue 3\n\n## Background\nPrembly provides a browser-based widget for identity verification (e.g., Face Liveliness, Document Verification). You need to integrate the `prembly-pass` SDK into a Vue 3 application.\n\n## Requirements\n- Initialize a Vue 3 project using Vite.\n- Install the `prembly-pass` SDK.\n- Create a Vue component that initializes `PremblyPass` with the provided credentials and environment.\n- Add a button with the id `launch-widget` that triggers `prembly.launch()`.\n- The component should listen for `success` and `error` events and log the result to the console.\n\n## Implementation Guide\n1. Initialize a Vue 3 project in `/home/user/app` using Vite (e.g., `npm create vite@latest app -- --template vue` inside `/home/user`, or similar, but the project path must be exactly `/home/user/app`).\n2. Install `prembly-pass`.\n3. In `src/App.vue`, import `PremblyPass` and initialize it with:\n   - `app_id`: `'dummy_app_id'`\n   - `x_api_key`: `import.meta.env.VITE_PREMBLY_API_KEY`\n   - `environment`: `'test'` (which connects to the sandbox URL https://api.prembly.com)\n4. Add a button `<button id=\"launch-widget\">Launch Prembly</button>` that calls the `launch` method with `config_id: 'dummy_config_id'` and a random `user_ref`.\n5. Run the app on port 3000.\n\n## Constraints\n- Project path: `/home/user/app`\n- Start command: `npm run dev -- --port 3000`\n- Port: 3000\n- You must use the `VITE_PREMBLY_API_KEY` environment variable for the API key.\nEOF\nstdout: \u001b[37m2026-04-21 10:35:30.181\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37mnative:1\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tPochi\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tpochi v0.6.8\n\u001b[37m2026-04-21 10:35:30.693\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:519633\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tloadAgents\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tLoaded 6 custom agents (6 valid, 0 invalid)\n\u001b[37m2026-04-21 10:35:30.695\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:519634\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tloadSkills\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tLoaded 2 skills (2 valid, 0 invalid)\n\u001b[37m2026-04-21 10:35:30.736\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:444677\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tPochiVendor\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tJWT is expiring or missing, fetching a new one\n\u001b[37m2026-04-21 10:35:36.042\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:416517\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tMCPHub\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tMCP servers configuration changed via signal:\n\u001b[37m2026-04-21 10:35:36.043\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b ... [truncated]\nstderr: None",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 538, in run\n    await self._execute_agent()\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 285, in _execute_agent\n    await asyncio.wait_for(\n  File \"/opt/miniconda3/lib/python3.12/asyncio/tasks.py\", line 520, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/installed/base.py\", line 41, in wrapper\n    return await fn(self, instruction, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/code/zealt/pochi-harbor/agents/pochi.py\", line 198, in run\n    await self.exec_as_agent(\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/installed/base.py\", line 358, in exec_as_agent\n    return await self._exec(\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/installed/base.py\", line 321, in _exec\n    raise NonZeroAgentExitCodeError(\nharbor.agents.installed.base.NonZeroAgentExitCodeError: Command failed (exit 143): export PATH=\"$HOME/.pochi/bin:$PATH\"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'\n# Prembly Widget Integration in Vue 3\n\n## Background\nPrembly provides a browser-based widget for identity verification (e.g., Face Liveliness, Document Verification). You need to integrate the `prembly-pass` SDK into a Vue 3 application.\n\n## Requirements\n- Initialize a Vue 3 project using Vite.\n- Install the `prembly-pass` SDK.\n- Create a Vue component that initializes `PremblyPass` with the provided credentials and environment.\n- Add a button with the id `launch-widget` that triggers `prembly.launch()`.\n- The component should listen for `success` and `error` events and log the result to the console.\n\n## Implementation Guide\n1. Initialize a Vue 3 project in `/home/user/app` using Vite (e.g., `npm create vite@latest app -- --template vue` inside `/home/user`, or similar, but the project path must be exactly `/home/user/app`).\n2. Install `prembly-pass`.\n3. In `src/App.vue`, import `PremblyPass` and initialize it with:\n   - `app_id`: `'dummy_app_id'`\n   - `x_api_key`: `import.meta.env.VITE_PREMBLY_API_KEY`\n   - `environment`: `'test'` (which connects to the sandbox URL https://api.prembly.com)\n4. Add a button `<button id=\"launch-widget\">Launch Prembly</button>` that calls the `launch` method with `config_id: 'dummy_config_id'` and a random `user_ref`.\n5. Run the app on port 3000.\n\n## Constraints\n- Project path: `/home/user/app`\n- Start command: `npm run dev -- --port 3000`\n- Port: 3000\n- You must use the `VITE_PREMBLY_API_KEY` environment variable for the API key.\nEOF\nstdout: \u001b[37m2026-04-21 10:35:30.181\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37mnative:1\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tPochi\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tpochi v0.6.8\n\u001b[37m2026-04-21 10:35:30.693\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:519633\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tloadAgents\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tLoaded 6 custom agents (6 valid, 0 invalid)\n\u001b[37m2026-04-21 10:35:30.695\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:519634\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tloadSkills\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tLoaded 2 skills (2 valid, 0 invalid)\n\u001b[37m2026-04-21 10:35:30.736\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:444677\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tPochiVendor\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tJWT is expiring or missing, fetching a new one\n\u001b[37m2026-04-21 10:35:36.042\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b[22m\u001b[39m\u001b[0m\u001b[0m\t\u001b[37m$bunfs/root/pochi:416517\u001b[39m\u001b[0m\u001b[0m\u001b[1m\u001b[37m\tMCPHub\u001b[39m\u001b[22m\u001b[0m\u001b[0m\tMCP servers configuration changed via signal:\n\u001b[37m2026-04-21 10:35:36.043\u001b[39m\u001b[0m\u001b[0m\t\u001b[32m\u001b[1mDEBUG\u001b ... [truncated]\nstderr: None\n",
+        "occurred_at": "2026-04-21T18:40:15.638656"
+    },
+    "started_at": "2026-04-21T10:34:52.359222Z",
+    "finished_at": "2026-04-21T10:41:42.553863Z",
+    "environment_setup": {
+        "started_at": "2026-04-21T10:34:52.360484Z",
+        "finished_at": "2026-04-21T10:35:00.313044Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-04-21T10:35:00.313055Z",
+        "finished_at": "2026-04-21T10:35:28.960099Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-04-21T10:35:28.960149Z",
+        "finished_at": "2026-04-21T10:40:15.637572Z"
+    },
+    "verifier": {
+        "started_at": "2026-04-21T10:40:15.645539Z",
+        "finished_at": "2026-04-21T10:41:27.826851Z"
+    }
+}
